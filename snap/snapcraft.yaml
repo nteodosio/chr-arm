@@ -1,0 +1,172 @@
+name: chromium
+version: 66.0.3359.170
+summary: Chromium web browser, open-source version of Chrome
+description: |
+ An open-source browser project that aims to build a safer, faster, and more
+ stable way for all Internet users to experience the web.
+confinement: strict
+
+apps:
+  chromium:
+    command: desktop-launch chromium.launcher
+    environment:
+      DISABLE_WAYLAND: 1
+      CHROME_DESKTOP: chromium.desktop
+    plugs:
+      - browser-sandbox
+      - camera
+      - cups-control
+      - desktop
+      - gsettings
+      - home
+      - mount-observe
+      - network
+      - network-manager
+      - opengl
+      - password-manager-service
+      - pulseaudio
+      - screen-inhibit-control
+      - unity7 # required for xdg-open to work
+      - upower-observe
+      - x11
+
+plugs:
+  browser-sandbox:
+    interface: browser-support
+    allow-sandbox: true
+
+parts:
+  chromium:
+    plugin: nil
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-66.0.3359.170.tar.xz
+    source-checksum: sha512/69c78975c517d6d59225c92968c1be879e3a2ca2a3671f38a5f8b6303719f6bc441b1d1fe0b19818ab7f9a06cd15bf8631d03ad4931da6fdc641ba2894eecad2
+    build-packages:
+      - ninja-build
+      - pkg-config
+      - lsb-release
+      - python
+      - bison
+      - clang-5.0
+      - llvm-5.0
+      - gperf
+      - libpulse-dev
+      - libcups2-dev
+      - libasound2-dev
+      - libnss3-dev
+      - mesa-common-dev
+      - libgles2-mesa-dev
+      - libpci-dev
+      - libxtst-dev
+      - libxss-dev
+      - libgtk-3-dev
+      - libglib2.0-dev
+      - libgnome-keyring-dev
+      - libudev-dev
+      - libdrm-dev
+      - libcap-dev
+      - libgcrypt-dev
+      - libkrb5-dev
+      - libxkbcommon-dev
+      - libpam0g-dev
+      - libffi-dev
+      - chrpath
+      - yasm
+    stage-packages:
+      - libgl1-mesa-glx
+      - libgnome-keyring0
+      - libnss3
+      - libsecret-1-0
+      - pulseaudio
+    override-build: |
+      set -eux
+      for patch in $(cat ../../../snap/patches/series)
+      do
+        case "$patch" in
+          \#*)
+            echo "skipping $patch";;
+          *)
+            patch -d . -p1 < ../../../snap/patches/$patch;;
+        esac
+      done
+      export CC=clang-5.0
+      export CXX=clang++-5.0
+      common_defines="\
+        google_api_key=\"AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o\" \
+        google_default_client_id=\"424119844901-tilod0e1nm0dt85e1evrdfp3cc3ec01d.apps.googleusercontent.com\" \
+        google_default_client_secret=\"WCCejhqORuxKG272GAWxsPIU\" \
+        enable_google_now=false \
+        enable_hangout_services_extension=true \
+        enable_mdns=true \
+        enable_nacl=false \
+        enable_wayland_server=false \
+        enable_webrtc=true \
+        enable_widevine=true \
+        fieldtrial_testing_like_official_build=true \
+        is_component_build=false \
+        is_component_ffmpeg=true \
+        is_debug=false \
+        is_desktop_linux=true \
+        is_official_build=true \
+        remove_webcore_debug_symbols=true \
+        symbol_level=1 \
+        treat_warnings_as_errors=false \
+        use_allocator=\"none\" \
+        use_alsa=true \
+        use_aura=true \
+        use_cups=true \
+        use_dbus=true \
+        use_gio=true \
+        use_glib=true \
+        use_gold=false \
+        use_gtk3=true \
+        use_libpci=true \
+        use_pulseaudio=true \
+        use_sysroot=false \
+        use_system_harfbuzz=false \
+        use_system_libjpeg=false \
+        rtc_enable_protobuf=false \
+        rtc_use_h264=true \
+        is_clang=true \
+        clang_base_path=\"/usr\" \
+        clang_use_chrome_plugins=false \
+        use_lld=false \
+        is_cfi=false \
+        use_thin_lto=false \
+        fatal_linker_warnings=false \
+        target_os=\"linux\" \
+        current_os=\"linux\" \
+        optimize_webui=false"
+      ffmpeg_extra_defines="\
+        proprietary_codecs=true \
+        ffmpeg_branding=\"Chrome\""
+      tools/gn/bootstrap/bootstrap.py --verbose --no-rebuild
+      out/Release/gn gen out/Release --args="$common_defines $ffmpeg_extra_defines"
+      ninja -v -C out/Release chrome chrome_sandbox chromedriver
+      T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
+      mkdir -p $T
+      cd out/Release
+      cp chrome chrome_*.pak chrome_sandbox headless_lib.pak icudtl.dat \
+          keyboard_resources.pak libffmpeg.so natives_blob.bin resources.pak \
+          snapshot_blob.bin transport_security_state_generator \
+          v8_context_snapshot.bin views_mus_resources.pak \
+          $T/
+      mkdir $T/locales
+      cp locales/*.pak $T/locales/
+      mkdir $T/swiftshader
+      cp swiftshader/* $T/swiftshader/
+  launcher:
+    plugin: dump
+    source: snap
+    after: [desktop-gtk3]
+    organize:
+      chromium.launcher: bin/
+  shared-mime-info:
+    after: [launcher, chromium]
+    plugin: nil
+    source: .
+    stage-packages:
+      - shared-mime-info
+    build-attributes: [no-system-libraries]
+    override-build: |
+      set -eux
+      update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime

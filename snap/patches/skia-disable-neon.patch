@@ -1,0 +1,23 @@
+Description: Include ext/convolver_neon.cc only if using neon
+Author: Gina Ko <yichunko@google.com>
+Origin: https://chromium.googlesource.com/chromium/src/+/c5997e3fc51e2a07f6af4a0e4d750fd34700a670
+
+--- a/skia/BUILD.gn
++++ b/skia/BUILD.gn
+@@ -282,10 +282,12 @@ component("skia") {
+       "ext/convolver_mips_dspr2.h",
+     ]
+   } else if (current_cpu == "arm" || current_cpu == "arm64") {
+-    sources += [
+-      "ext/convolver_neon.cc",
+-      "ext/convolver_neon.h",
+-    ]
++    if (arm_use_neon) {
++      sources += [
++        "ext/convolver_neon.cc",
++        "ext/convolver_neon.h",
++      ]
++    }
+   }
+ 
+   # The imported Skia gni source paths are made absolute by gn.
