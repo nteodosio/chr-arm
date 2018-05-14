@@ -11,4 +11,13 @@ if [ "$?" -ne "0" ]; then
   PASSWORD_STORE=basic
 fi
 
-exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE "$@"
+# Allow chromium to look for the flash player plugin inside the snap's
+# confinement. That .so file has to be extracted from the upstream flash
+# distribution (https://get.adobe.com/flashplayer/) and copied there.
+# Ref: https://launchpad.net/bugs/1771162
+FLASHSO=$SNAP_USER_DATA/.local/lib/libpepflashplayer.so
+if [ ! -e $FLASHSO ]; then
+  FLASHSO=
+fi
+
+exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE --ppapi-flash-path=$FLASHSO "$@"
