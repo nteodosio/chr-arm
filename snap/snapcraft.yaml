@@ -36,10 +36,18 @@ plugs:
     allow-sandbox: true
 
 parts:
+  # Launchpad builders have a timeout for how long they are allowed to access
+  # the internet (through a proxy) starting from the start of the build.
+  # Since the chromium part takes a long time to build, we need to ensure
+  # that all other parts that need to access the internet (to e.g. fetch build
+  # or stage packages) are built before it (before the proxy authentication is
+  # revoked).
+
   chromium:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-66.0.3359.170.tar.xz
     source-checksum: sha512/69c78975c517d6d59225c92968c1be879e3a2ca2a3671f38a5f8b6303719f6bc441b1d1fe0b19818ab7f9a06cd15bf8631d03ad4931da6fdc641ba2894eecad2
+    after: [launcher]
     build-packages:
       - ninja-build
       - pkg-config
@@ -71,11 +79,13 @@ parts:
       - libffi-dev
       - chrpath
       - yasm
+      - shared-mime-info
     stage-packages:
       - libgl1-mesa-glx
       - libgnome-keyring0
       - libnss3
       - libsecret-1-0
+      - shared-mime-info
       - pulseaudio
     override-build: |
       set -eux
@@ -163,9 +173,6 @@ parts:
   shared-mime-info:
     after: [launcher, chromium]
     plugin: nil
-    source: .
-    stage-packages:
-      - shared-mime-info
     build-attributes: [no-system-libraries]
     override-build: |
       set -eux
