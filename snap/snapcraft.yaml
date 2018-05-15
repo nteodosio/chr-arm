@@ -25,6 +25,7 @@ apps:
       - opengl
       - password-manager-service
       - pulseaudio
+      - removable-media
       - screen-inhibit-control
       - unity7 # required for xdg-open to work
       - upower-observe
