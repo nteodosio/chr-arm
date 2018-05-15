@@ -177,4 +177,8 @@ parts:
     build-attributes: [no-system-libraries]
     override-build: |
       set -eux
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share
+      cp -R $SNAPCRAFT_STAGE/usr/share/mime $SNAPCRAFT_PART_INSTALL/usr/share/
       update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime
+    prime:
+      - usr/share/mime/*
