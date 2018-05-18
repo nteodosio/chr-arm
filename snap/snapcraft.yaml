@@ -9,6 +9,7 @@ confinement: strict
 apps:
   chromium:
     command: desktop-launch chromium.launcher
+    desktop: bin/chromium.desktop
     environment:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
@@ -153,6 +154,8 @@ parts:
       tools/gn/bootstrap/bootstrap.py --verbose --no-rebuild
       out/Release/gn gen out/Release --args="$common_defines $ffmpeg_extra_defines"
       ninja -v -C out/Release chrome chrome_sandbox chromedriver
+      mkdir -p $SNAPCRAFT_PART_INSTALL
+      cp chrome/app/theme/chromium/product_logo_256.png $SNAPCRAFT_PART_INSTALL/chromium.png
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd out/Release
@@ -171,6 +174,7 @@ parts:
     after: [desktop-gtk3]
     organize:
       chromium.launcher: bin/
+      chromium.desktop: bin/
   shared-mime-info:
     after: [launcher, chromium]
     plugin: nil
