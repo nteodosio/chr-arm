@@ -153,7 +153,7 @@ parts:
         ffmpeg_branding=\"Chrome\""
       tools/gn/bootstrap/bootstrap.py --verbose --no-rebuild
       out/Release/gn gen out/Release --args="$common_defines $ffmpeg_extra_defines"
-      ninja -v -C out/Release chrome chrome_sandbox chromedriver
+      ninja -C out/Release chrome chrome_sandbox chromedriver
       mkdir -p $SNAPCRAFT_PART_INSTALL
       cp chrome/app/theme/chromium/product_logo_256.png $SNAPCRAFT_PART_INSTALL/chromium.png
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
