@@ -1,7 +1,7 @@
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
 @@ -14,6 +14,7 @@
- //    89, 91+
+ //    91+
  //
  // IDs > 1000 are reserved for distribution custom engines.
 +// 1001: DuckDuckGo

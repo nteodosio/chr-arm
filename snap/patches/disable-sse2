@@ -156,9 +156,9 @@ debian-bug: http://bugs.debian.org/750361
  #define SIMD_PADDING 8  // 8 * int16_t
  #endif
  
---- a/third_party/WebKit/Source/platform/audio/DirectConvolver.cpp
-+++ b/third_party/WebKit/Source/platform/audio/DirectConvolver.cpp
-@@ -35,7 +35,7 @@
+--- a/third_party/blink/renderer/platform/audio/direct_convolver.cc
++++ b/third_party/blink/renderer/platform/audio/direct_convolver.cc
+@@ -37,7 +37,7 @@
  #include <Accelerate/Accelerate.h>
  #endif
  
@@ -167,29 +167,11 @@ debian-bug: http://bugs.debian.org/750361
  #include <emmintrin.h>
  #endif
  
-@@ -83,7 +83,7 @@ void DirectConvolver::Process(AudioFloat
- #endif  // ARCH_CPU_X86
- #else
-   size_t i = 0;
--#if defined(ARCH_CPU_X86_FAMILY)
-+#if defined(ARCH_CPU_X86_64)
-   // Convolution using SSE2. Currently only do this if both |kernelSize| and
-   // |framesToProcess| are multiples of 4. If not, use the straightforward loop
-   // below.
-@@ -397,7 +397,7 @@ void DirectConvolver::Process(AudioFloat
-       }
-       dest_p[i++] = sum;
-     }
--#if defined(ARCH_CPU_X86_FAMILY)
-+#if defined(ARCH_CPU_X86_64)
-   }
- #endif
- #endif  // OS_MACOSX
---- a/third_party/WebKit/Source/platform/audio/SincResampler.cpp
-+++ b/third_party/WebKit/Source/platform/audio/SincResampler.cpp
+--- a/third_party/blink/renderer/platform/audio/sinc_resampler.cc
++++ b/third_party/blink/renderer/platform/audio/sinc_resampler.cc
 @@ -32,7 +32,7 @@
- #include "platform/audio/AudioBus.h"
- #include "platform/wtf/MathExtras.h"
+ #include "third_party/blink/renderer/platform/audio/audio_bus.h"
+ #include "third_party/blink/renderer/platform/wtf/math_extras.h"
  
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
@@ -205,17 +187,17 @@ debian-bug: http://bugs.debian.org/750361
          // If the sourceP address is not 16-byte aligned, the first several
          // frames (at most three) should be processed seperately.
          while ((reinterpret_cast<uintptr_t>(input_p) & 0x0F) && n) {
---- a/third_party/WebKit/Source/platform/audio/VectorMath.cpp
-+++ b/third_party/WebKit/Source/platform/audio/VectorMath.cpp
+--- a/third_party/blink/renderer/platform/audio/vector_math.cc
++++ b/third_party/blink/renderer/platform/audio/vector_math.cc
 @@ -37,7 +37,7 @@
- #include "platform/audio/cpu/arm/VectorMathNEON.h"
+ #include "third_party/blink/renderer/platform/audio/cpu/arm/vector_math_neon.h"
  #elif HAVE_MIPS_MSA_INTRINSICS
- #include "platform/audio/cpu/mips/VectorMathMSA.h"
+ #include "third_party/blink/renderer/platform/audio/cpu/mips/vector_math_msa.h"
 -#elif defined(ARCH_CPU_X86_FAMILY)
 +#elif defined(ARCH_CPU_X86_64)
- #include "platform/audio/cpu/x86/VectorMathX86.h"
+ #include "third_party/blink/renderer/platform/audio/cpu/x86/vector_math_x8_6.h"
  #else
- #include "platform/audio/VectorMathScalar.h"
+ #include "third_party/blink/renderer/platform/audio/vector_math_scalar.h"
 @@ -54,7 +54,7 @@ namespace Impl = Mac;
  namespace Impl = NEON;
  #elif HAVE_MIPS_MSA_INTRINSICS
@@ -225,8 +207,17 @@ debian-bug: http://bugs.debian.org/750361
  namespace Impl = X86;
  #else
  namespace Impl = Scalar;
---- a/third_party/WebKit/Source/platform/graphics/cpu/x86/WebGLImageConversionSSE.h
-+++ b/third_party/WebKit/Source/platform/graphics/cpu/x86/WebGLImageConversionSSE.h
+@@ -70,7 +70,7 @@ void PrepareFilterForConv(const float* f
+   // vectors are not implemented by all implementations.
+   DCHECK_EQ(-1, filter_stride);
+   DCHECK(prepared_filter);
+-#if defined(ARCH_CPU_X86_FAMILY) && !defined(OS_MACOSX)
++#if defined(ARCH_CPU_X86_64) && !defined(OS_MACOSX)
+   X86::PrepareFilterForConv(filter_p, filter_stride, filter_size,
+                             prepared_filter);
+ #endif
+--- a/third_party/blink/renderer/platform/graphics/cpu/x86/webgl_image_conversion_sse.h
++++ b/third_party/blink/renderer/platform/graphics/cpu/x86/webgl_image_conversion_sse.h
 @@ -7,7 +7,7 @@
  
  #include "build/build_config.h"
@@ -243,10 +234,10 @@ debian-bug: http://bugs.debian.org/750361
 -#endif  // ARCH_CPU_X86_FAMILY
 +#endif  // ARCH_CPU_X86_64
  
- #endif  // WebGLImageConversionSSE_h
---- a/third_party/WebKit/Source/platform/graphics/gpu/WebGLImageConversion.cpp
-+++ b/third_party/WebKit/Source/platform/graphics/gpu/WebGLImageConversion.cpp
-@@ -446,7 +446,7 @@ void Unpack<WebGLImageConversion::kDataF
+ #endif  // THIRD_PARTY_BLINK_RENDERER_PLATFORM_GRAPHICS_CPU_X86_WEBGL_IMAGE_CONVERSION_SSE_H_
+--- a/third_party/blink/renderer/platform/graphics/gpu/webgl_image_conversion.cc
++++ b/third_party/blink/renderer/platform/graphics/gpu/webgl_image_conversion.cc
+@@ -445,7 +445,7 @@ void Unpack<WebGLImageConversion::kDataF
    const uint32_t* source32 = reinterpret_cast_ptr<const uint32_t*>(source);
    uint32_t* destination32 = reinterpret_cast_ptr<uint32_t*>(destination);
  
@@ -255,7 +246,7 @@ debian-bug: http://bugs.debian.org/750361
    SIMD::UnpackOneRowOfBGRA8LittleToRGBA8(source32, destination32,
                                           pixels_per_row);
  #endif
-@@ -474,7 +474,7 @@ void Unpack<WebGLImageConversion::kDataF
+@@ -473,7 +473,7 @@ void Unpack<WebGLImageConversion::kDataF
      const uint16_t* source,
      uint8_t* destination,
      unsigned pixels_per_row) {
@@ -264,7 +255,7 @@ debian-bug: http://bugs.debian.org/750361
    SIMD::UnpackOneRowOfRGBA5551LittleToRGBA8(source, destination,
                                              pixels_per_row);
  #endif
-@@ -504,7 +504,7 @@ void Unpack<WebGLImageConversion::kDataF
+@@ -503,7 +503,7 @@ void Unpack<WebGLImageConversion::kDataF
      const uint16_t* source,
      uint8_t* destination,
      unsigned pixels_per_row) {
@@ -273,7 +264,7 @@ debian-bug: http://bugs.debian.org/750361
    SIMD::UnpackOneRowOfRGBA4444LittleToRGBA8(source, destination,
                                              pixels_per_row);
  #endif
-@@ -720,7 +720,7 @@ void Pack<WebGLImageConversion::kDataFor
+@@ -719,7 +719,7 @@ void Pack<WebGLImageConversion::kDataFor
            uint8_t>(const uint8_t* source,
                     uint8_t* destination,
                     unsigned pixels_per_row) {
@@ -282,7 +273,7 @@ debian-bug: http://bugs.debian.org/750361
    SIMD::PackOneRowOfRGBA8LittleToR8(source, destination, pixels_per_row);
  #endif
  #if HAVE_MIPS_MSA_INTRINSICS
-@@ -777,7 +777,7 @@ void Pack<WebGLImageConversion::kDataFor
+@@ -776,7 +776,7 @@ void Pack<WebGLImageConversion::kDataFor
            uint8_t>(const uint8_t* source,
                     uint8_t* destination,
                     unsigned pixels_per_row) {
@@ -291,7 +282,7 @@ debian-bug: http://bugs.debian.org/750361
    SIMD::PackOneRowOfRGBA8LittleToRA8(source, destination, pixels_per_row);
  #endif
  #if HAVE_MIPS_MSA_INTRINSICS
-@@ -889,7 +889,7 @@ void Pack<WebGLImageConversion::kDataFor
+@@ -888,7 +888,7 @@ void Pack<WebGLImageConversion::kDataFor
            uint8_t>(const uint8_t* source,
                     uint8_t* destination,
                     unsigned pixels_per_row) {
@@ -300,11 +291,11 @@ debian-bug: http://bugs.debian.org/750361
    SIMD::PackOneRowOfRGBA8LittleToRGBA8(source, destination, pixels_per_row);
  #endif
  #if HAVE_MIPS_MSA_INTRINSICS
---- a/third_party/WebKit/Source/modules/webaudio/AudioParamTimeline.cpp
-+++ b/third_party/WebKit/Source/modules/webaudio/AudioParamTimeline.cpp
+--- a/third_party/blink/renderer/modules/webaudio/audio_param_timeline.cc
++++ b/third_party/blink/renderer/modules/webaudio/audio_param_timeline.cc
 @@ -39,7 +39,7 @@
- #include "platform/wtf/CPU.h"
- #include "platform/wtf/MathExtras.h"
+ #include "third_party/blink/renderer/platform/wtf/cpu.h"
+ #include "third_party/blink/renderer/platform/wtf/math_extras.h"
  
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
