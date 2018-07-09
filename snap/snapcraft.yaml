@@ -1,5 +1,5 @@
 name: chromium
-version: 67.0.3396.62
+version: 67.0.3396.99
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -47,8 +47,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-67.0.3396.62.tar.xz
-    source-checksum: sha512/c768701a04600f6dd981ea036a28973df104281dcdadda20d0ae515a0b80112b94840cee36823676c4b4cd71e0e6ef069af801f746fea29d65f978a3666f6cb0
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-67.0.3396.99.tar.xz
+    source-checksum: sha512/b1cc7f5988d30efae0b3954232a402e2906bb27113f453a67d865a79afecf6a124c7833635d6083ea40f0cb7344e3cdb4a02f3b8ba4b1cd9798b5d2bccb23242
     after: [launcher]
     build-packages:
       - ninja-build
@@ -56,8 +56,8 @@ parts:
       - lsb-release
       - python
       - bison
-      - clang-5.0
-      - llvm-5.0
+      - clang-6.0
+      - llvm-6.0
       - gperf
       - libpulse-dev
       - libcups2-dev
@@ -100,8 +100,8 @@ parts:
             patch -d . -p1 < ../../../snap/patches/$patch;;
         esac
       done
-      export CC=clang-5.0
-      export CXX=clang++-5.0
+      export CC=clang-6.0
+      export CXX=clang++-6.0
       common_defines="\
         google_api_key=\"AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o\" \
         google_default_client_id=\"424119844901-tilod0e1nm0dt85e1evrdfp3cc3ec01d.apps.googleusercontent.com\" \
