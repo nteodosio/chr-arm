@@ -22,6 +22,4 @@ suppress-newer-clang-warning-flags.patch
 set-rpath-on-chromium-executables.patch
 add-missing-cstddef-include.patch
 fix-ffmpeg-ia32-build.patch
-fix-crashpad-linux-compat.patch
 fix-extra-arflags.patch
-libcxxabi-arm-ehabi-fix.patch

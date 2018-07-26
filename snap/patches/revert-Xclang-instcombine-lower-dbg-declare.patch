@@ -3,15 +3,15 @@ Description: revert of 074fa51f85b15ad2e2d6c804a03825d48dbeb063, which requires 
 
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -464,18 +464,6 @@ config("compiler") {
-     cflags += [ "-fcolor-diagnostics" ]
+@@ -488,18 +488,6 @@ config("compiler") {
+     }
    }
  
--  # TODO(hans): Remove this once Clang generates better optimized debug info by
--  # default. https://crbug.com/765793
 -  if (is_clang && !is_nacl && current_toolchain == host_toolchain &&
 -      target_os != "chromeos") {
 -    cflags += [
+-      # TODO(hans): Remove this once Clang generates better optimized debug info
+-      # by default. https://crbug.com/765793
 -      "-Xclang",
 -      "-mllvm",
 -      "-Xclang",

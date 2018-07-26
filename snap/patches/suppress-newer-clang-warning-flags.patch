@@ -4,7 +4,7 @@ Description: Do not use warning flags that require a newer Clang (xenial has 6.0
 
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1371,14 +1371,14 @@ config("default_warnings") {
+@@ -1399,14 +1399,14 @@ config("default_warnings") {
          "-Wno-user-defined-warnings",
  
          # TODO(thakis): https://crbug.com/753973
@@ -20,5 +20,5 @@ Description: Do not use warning flags that require a newer Clang (xenial has 6.0
 -        "-Wno-ignored-pragma-optimize",
 +        #"-Wno-ignored-pragma-optimize",
        ]
-       if (llvm_force_head_revision) {
-         cflags += [
+     } else if (use_xcode_clang) {
+       cflags += [

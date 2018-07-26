@@ -3,23 +3,22 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/build/toolchain/gcc_toolchain.gni
 +++ b/build/toolchain/gcc_toolchain.gni
-@@ -337,7 +337,7 @@ template("gcc_toolchain") {
- 
-       # TODO(thomasanderson): Remove the special ChromeOS case once
-       # https://crbug.com/829956 is fixed.
--      if (default_toolchain == "//build/toolchain/cros:target") {
-+      if (true) {
-         extra_arflags = "rcsD"
-       } else if (current_os == "aix") {
+@@ -339,7 +339,7 @@ template("gcc_toolchain") {
          # We use slightly different arflags for AIX.
+         extra_arflags = "-r -c -s"
+       } else {
+-        extra_arflags = "-r -c -s -D"
++        extra_arflags = "rcsD"
+       }
+ 
+       # Almost all targets build with //build/config/compiler:thin_archive which
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1560,7 +1560,7 @@ config("thin_archive") {
-   if ((is_posix && !is_nacl) || is_fuchsia) {
-     # TODO(thomasanderson): Enable on ChromeOS builds once
-     # https://crbug.com/829956 is fixed.
--    if (default_toolchain != "//build/toolchain/cros:target") {
-+    if (false) {
-       arflags = [ "-T" ]
-     }
+@@ -1583,7 +1583,6 @@ config("thin_archive") {
+   # have a "thin archive" mode (it does accept -T, but it means truncating
+   # archive names to 16 characters, which is not what we want).
+   if ((is_posix && !is_nacl && !is_mac && !is_ios) || is_fuchsia) {
+-    arflags = [ "-T" ]
    }
+ }
+ 
