@@ -56,8 +56,6 @@ parts:
       - lsb-release
       - python
       - bison
-      - clang-6.0
-      - llvm-6.0
       - gperf
       - libpulse-dev
       - libcups2-dev
@@ -100,8 +98,7 @@ parts:
             patch -d . -p1 < ../../../snap/patches/$patch;;
         esac
       done
-      export CC=clang-6.0
-      export CXX=clang++-6.0
+      tools/clang/scripts/update.py
       common_defines="\
         google_api_key=\"AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o\" \
         google_default_client_id=\"424119844901-tilod0e1nm0dt85e1evrdfp3cc3ec01d.apps.googleusercontent.com\" \
@@ -111,7 +108,6 @@ parts:
         enable_mdns=true \
         enable_nacl=false \
         enable_wayland_server=false \
-        enable_webrtc=true \
         enable_widevine=true \
         fieldtrial_testing_like_official_build=true \
         is_component_build=false \
@@ -138,13 +134,6 @@ parts:
         use_system_libjpeg=false \
         rtc_enable_protobuf=false \
         rtc_use_h264=true \
-        is_clang=true \
-        clang_base_path=\"/usr\" \
-        clang_use_chrome_plugins=false \
-        use_lld=false \
-        is_cfi=false \
-        use_thin_lto=false \
-        fatal_linker_warnings=false \
         target_os=\"linux\" \
         current_os=\"linux\" \
         optimize_webui=false"

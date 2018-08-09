@@ -14,12 +14,8 @@ default-allocator
 enable-chromecast-by-default.patch
 #skia-undef-HWCAP_CRC32.patch
 define__libc_malloc.patch
-use-clang-versioned.patch
 relax-ninja-version-requirement.patch
 no-new-ninja-flag.patch
-revert-Xclang-instcombine-lower-dbg-declare.patch
-suppress-newer-clang-warning-flags.patch
 set-rpath-on-chromium-executables.patch
 add-missing-cstddef-include.patch
 fix-ffmpeg-ia32-build.patch
-fix-extra-arflags.patch
