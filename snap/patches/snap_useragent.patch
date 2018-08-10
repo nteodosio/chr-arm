@@ -1,5 +1,5 @@
-Description: Add "Chromium" and "Ubuntu" to the user-agent text.
-Author: Chad Miller <chad.miller@canonical.com>
+Description: Add "Chromium" and "snap" to the user-agent text.
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/content/common/user_agent.cc
 +++ b/content/common/user_agent.cc
@@ -18,7 +18,7 @@ Author: Chad Miller <chad.miller@canonical.com>
    base::StringAppendF(
        &user_agent,
 -      "Mozilla/5.0 (%s) AppleWebKit/%d.%d (KHTML, like Gecko) %s Safari/%d.%d",
-+      "Mozilla/5.0 (%s) AppleWebKit/%d.%d (KHTML, like Gecko) Ubuntu %s %s Safari/%d.%d",
++      "Mozilla/5.0 (%s) AppleWebKit/%d.%d (KHTML, like Gecko) snap %s %s Safari/%d.%d",
        os_info.c_str(),
        WEBKIT_VERSION_MAJOR,
        WEBKIT_VERSION_MINOR,

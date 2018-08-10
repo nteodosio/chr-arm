@@ -1,6 +1,6 @@
 title-bar-default-system.patch-v35
 search-credit.patch
-chromium_useragent.patch
+snap_useragent.patch
 #configuration-directory.patch
 #arm-neon.patch
 additional-search-engines.patch
