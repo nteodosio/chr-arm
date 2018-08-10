@@ -151,14 +151,13 @@ parts:
       mkdir -p $T
       cd $OUT
       cp chrome chrome_*.pak chrome_sandbox headless_lib.pak icudtl.dat \
-          keyboard_resources.pak libffmpeg.so natives_blob.bin resources.pak \
-          snapshot_blob.bin transport_security_state_generator \
-          v8_context_snapshot.bin views_mus_resources.pak \
+          libffmpeg.so natives_blob.bin resources.pak \
+          snapshot_blob.bin v8_context_snapshot.bin \
           $T/
       mkdir $T/locales
       cp locales/*.pak $T/locales/
       mkdir $T/swiftshader
-      cp swiftshader/* $T/swiftshader/
+      cp swiftshader/*.so $T/swiftshader/
   launcher:
     plugin: dump
     source: snap
