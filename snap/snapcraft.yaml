@@ -103,7 +103,6 @@ parts:
         google_api_key=\"AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o\" \
         google_default_client_id=\"424119844901-tilod0e1nm0dt85e1evrdfp3cc3ec01d.apps.googleusercontent.com\" \
         google_default_client_secret=\"WCCejhqORuxKG272GAWxsPIU\" \
-        enable_google_now=false \
         enable_hangout_services_extension=true \
         enable_mdns=true \
         enable_nacl=false \
@@ -116,7 +115,7 @@ parts:
         is_desktop_linux=true \
         is_official_build=true \
         remove_webcore_debug_symbols=true \
-        symbol_level=1 \
+        symbol_level=0 \
         treat_warnings_as_errors=false \
         use_allocator=\"none\" \
         use_alsa=true \
