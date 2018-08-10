@@ -141,13 +141,16 @@ parts:
         proprietary_codecs=true \
         ffmpeg_branding=\"Chrome\""
       tools/gn/bootstrap/bootstrap.py --verbose --no-rebuild
-      out/Release/gn gen out/Release --args="$common_defines $ffmpeg_extra_defines"
-      ninja -C out/Release chrome chrome_sandbox chromedriver
+      OUT=out/Release
+      $OUT/gn gen $OUT --args="$common_defines $ffmpeg_extra_defines"
+      ninja -C $OUT chrome chrome_sandbox chromedriver
+      python build/gn_run_binary.py ./third_party/eu-strip/bin/eu-strip -o $OUT/chrome.stripped -f $OUT/chrome.debug $OUT/chrome
+      mv $OUT/chrome.stripped $OUT/chrome
       mkdir -p $SNAPCRAFT_PART_INSTALL
       cp chrome/app/theme/chromium/product_logo_256.png $SNAPCRAFT_PART_INSTALL/chromium.png
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
-      cd out/Release
+      cd $OUT
       cp chrome chrome_*.pak chrome_sandbox headless_lib.pak icudtl.dat \
           keyboard_resources.pak libffmpeg.so natives_blob.bin resources.pak \
           snapshot_blob.bin transport_security_state_generator \
