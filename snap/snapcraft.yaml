@@ -133,6 +133,7 @@ parts:
         use_system_libjpeg=false \
         rtc_enable_protobuf=false \
         rtc_use_h264=true \
+        is_cfi=false \
         target_os=\"linux\" \
         current_os=\"linux\" \
         optimize_webui=false"
