@@ -62,6 +62,9 @@ parts:
       - gawk
       - git
       - gperf
+      - subversion
+      - cmake
+      - libxml2-dev
       - libpulse-dev
       - libcups2-dev
       - libasound2-dev
@@ -95,6 +98,7 @@ parts:
       - pulseaudio
     override-build: |
       set -eux
+
       for patch in $(cat ../../../snap/patches/series)
       do
         case "$patch" in
@@ -104,10 +108,18 @@ parts:
             patch -d . -p1 < ../../../snap/patches/$patch;;
         esac
       done
-      cd third_party/eu-strip
-      ./build.sh
-      cd ../..
-      tools/clang/scripts/update.py
+
+      # Pre-built binaries are provided for eu-strip and clang on x86-64,
+      # for all other architectures they have to be built from source.
+      if [ $(arch) = "x86_64" ]; then
+        tools/clang/scripts/update.py
+      else
+        cd third_party/eu-strip
+        ./build.sh
+        cd ../..
+        tools/clang/scripts/update.py --force-local-build --without-android --gcc-toolchain=/usr --use-system-cmake
+      fi
+
       common_defines="\
         google_api_key=\"AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o\" \
         google_default_client_id=\"424119844901-tilod0e1nm0dt85e1evrdfp3cc3ec01d.apps.googleusercontent.com\" \
@@ -149,12 +161,20 @@ parts:
       ffmpeg_extra_defines="\
         proprietary_codecs=true \
         ffmpeg_branding=\"Chrome\""
+
+      # Build GN
       tools/gn/bootstrap/bootstrap.py --verbose --no-rebuild
+
+      # Build chromium
       OUT=out/Release
       $OUT/gn gen $OUT --args="$common_defines $ffmpeg_extra_defines"
       ninja -C $OUT chrome chrome_sandbox chromedriver
+
+      # Strip debug symbols off the chrome binary
       python build/gn_run_binary.py ./third_party/eu-strip/bin/eu-strip -o $OUT/chrome.stripped -f $OUT/chrome.debug $OUT/chrome
       mv $OUT/chrome.stripped $OUT/chrome
+
+      # Install to $SNAPCRAFT_PART_INSTALL
       mkdir -p $SNAPCRAFT_PART_INSTALL
       cp chrome/app/theme/chromium/product_logo_256.png $SNAPCRAFT_PART_INSTALL/chromium.png
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
@@ -168,6 +188,7 @@ parts:
       cp locales/*.pak $T/locales/
       mkdir $T/swiftshader
       cp swiftshader/*.so $T/swiftshader/
+
   launcher:
     plugin: dump
     source: snap
@@ -175,6 +196,7 @@ parts:
     organize:
       chromium.launcher: bin/
       chromium.desktop: bin/
+
   shared-mime-info:
     after: [launcher, chromium]
     plugin: nil
