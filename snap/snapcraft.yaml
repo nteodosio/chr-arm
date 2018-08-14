@@ -51,11 +51,15 @@ parts:
     source-checksum: sha512/ab94f89e614919932d4d960bac8e5450c4d3f26dea4892e6591762bfaeeb4707a090352d4a952bcb55e34fde4950db22a36004788efd26ffb22b28770e9795c4
     after: [launcher]
     build-packages:
+      - autoconf
       - ninja-build
       - pkg-config
       - lsb-release
       - python
       - bison
+      - flex
+      - gawk
+      - git
       - gperf
       - libpulse-dev
       - libcups2-dev
@@ -80,6 +84,7 @@ parts:
       - chrpath
       - yasm
       - shared-mime-info
+      - zlib1g-dev
     stage-packages:
       - libgl1-mesa-glx
       - libgnome-keyring0
@@ -98,6 +103,9 @@ parts:
             patch -d . -p1 < ../../../snap/patches/$patch;;
         esac
       done
+      cd third_party/eu-strip
+      ./build.sh
+      cd ../..
       tools/clang/scripts/update.py
       common_defines="\
         google_api_key=\"AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o\" \
