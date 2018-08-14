@@ -52,6 +52,7 @@ parts:
     after: [launcher]
     build-packages:
       - autoconf
+      - automake
       - ninja-build
       - pkg-config
       - lsb-release
