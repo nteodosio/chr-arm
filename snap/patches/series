@@ -19,3 +19,4 @@ no-new-ninja-flag.patch
 set-rpath-on-chromium-executables.patch
 add-missing-cstddef-include.patch
 fix-ffmpeg-ia32-build.patch
+clang-build-only-needed-targets.patch
