@@ -26,3 +26,29 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    # Copy select output to the main tree.
    # TODO(hans): Make this (and the .gypi and .isolate files) version number
+@@ -746,25 +739,6 @@ def UpdateClang(args):
+                                        VERSION, 'lib', platform)
+   asan_rt_lib_dst_dir = os.path.join(LLVM_BUILD_DIR, 'lib', 'clang',
+                                      VERSION, 'lib', platform)
+-  # Blacklists:
+-  CopyDirectoryContents(os.path.join(asan_rt_lib_src_dir, '..', '..', 'share'),
+-                        os.path.join(asan_rt_lib_dst_dir, '..', '..', 'share'))
+-  # Headers:
+-  if sys.platform != 'win32':
+-    CopyDirectoryContents(
+-        os.path.join(COMPILER_RT_BUILD_DIR, 'include/sanitizer'),
+-        os.path.join(LLVM_BUILD_DIR, 'lib/clang', VERSION, 'include/sanitizer'))
+-  # Static and dynamic libraries:
+-  CopyDirectoryContents(asan_rt_lib_src_dir, asan_rt_lib_dst_dir)
+-  if sys.platform == 'darwin':
+-    for dylib in glob.glob(os.path.join(asan_rt_lib_dst_dir, '*.dylib')):
+-      # Fix LC_ID_DYLIB for the ASan dynamic libraries to be relative to
+-      # @executable_path.
+-      # TODO(glider): this is transitional. We'll need to fix the dylib
+-      # name either in our build system, or in Clang. See also
+-      # http://crbug.com/344836.
+-      subprocess.call(['install_name_tool', '-id',
+-                       '@executable_path/' + os.path.basename(dylib), dylib])
+ 
+   if args.with_android:
+     make_toolchain = os.path.join(
