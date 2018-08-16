@@ -51,6 +51,7 @@ parts:
     source-checksum: sha512/ab94f89e614919932d4d960bac8e5450c4d3f26dea4892e6591762bfaeeb4707a090352d4a952bcb55e34fde4950db22a36004788efd26ffb22b28770e9795c4
     after: [launcher]
     build-packages:
+      - quilt
       - autoconf
       - automake
       - ninja-build
@@ -99,15 +100,7 @@ parts:
     override-build: |
       set -eux
 
-      for patch in $(cat ../../../snap/patches/series)
-      do
-        case "$patch" in
-          \#*)
-            echo "skipping $patch";;
-          *)
-            patch -d . -p1 < ../../../snap/patches/$patch;;
-        esac
-      done
+      QUILT_PATCHES=../../../snap/patches quilt push -a
 
       # Write SVN configuration file with HTTP proxy settings to work around
       # https://launchpad.net/bugs/1668358 until the fix is deployed on
