@@ -109,6 +109,19 @@ parts:
         esac
       done
 
+      # Write SVN configuration file with HTTP proxy settings to work around
+      # https://launchpad.net/bugs/1668358 until the fix is deployed on
+      # launchpad builders.
+      PROXY_HOST_PORT=$(echo $http_proxy | cut -d/ -f3)
+      PROXY_HOST=$(echo $PROXY_HOST_PORT | cut -d: -f1)
+      PROXY_PORT=$(echo $PROXY_HOST_PORT | cut -d: -f2)
+      mkdir -p $HOME/.subversion
+      cat > $HOME/.subversion/servers << EOL
+      [global]
+      http-proxy-host = $PROXY_HOST
+      http-proxy-port = $PROXY_PORT
+      EOL
+
       # Pre-built binaries are provided for eu-strip and clang on x86-64,
       # for all other architectures they have to be built from source.
       if [ $(arch) = "x86_64" ]; then
