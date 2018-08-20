@@ -155,6 +155,10 @@ parts:
       mkdir $T/swiftshader
       cp swiftshader/*.so $T/swiftshader/
 
+      # Fix setuid bits on the sandbox executable
+      # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
+      chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome_sandbox
+
   launcher:
     plugin: dump
     source: snap
