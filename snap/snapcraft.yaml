@@ -86,6 +86,7 @@ parts:
       - libxkbcommon-dev
       - libpam0g-dev
       - libffi-dev
+      - uuid-dev
       - chrpath
       - yasm
       - shared-mime-info
