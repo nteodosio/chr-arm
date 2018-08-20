@@ -20,3 +20,4 @@ fix-ffmpeg-ia32-build.patch
 gn-no-last-commit-position.patch
 relax-ninja-version-requirement.patch
 clang-build-only-needed-targets.patch
+gn-bootstrap-do-not-run-gen-without-args.patch
