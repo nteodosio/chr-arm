@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/update.py
 +++ b/tools/clang/scripts/update.py
-@@ -606,7 +606,7 @@ def UpdateClang(args):
+@@ -615,7 +615,7 @@ def UpdateClang(args):
  
    # Build lld and code coverage tools. This is done separately from the rest of
    # the build because these tools require threading support.
@@ -12,7 +12,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    print 'Building the following tools with threading support: %s' % (
          str(tools_with_threading))
  
-@@ -720,13 +720,6 @@ def UpdateClang(args):
+@@ -729,13 +729,6 @@ def UpdateClang(args):
                          '-DSANITIZER_MIN_OSX_VERSION="10.7"']
    # compiler-rt is part of the llvm checkout on Windows but a stand-alone
    # directory elsewhere, see the TODO above COMPILER_RT_DIR.
@@ -26,7 +26,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    # Copy select output to the main tree.
    # TODO(hans): Make this (and the .gypi and .isolate files) version number
-@@ -746,25 +739,6 @@ def UpdateClang(args):
+@@ -755,25 +748,6 @@ def UpdateClang(args):
                                         VERSION, 'lib', platform)
    asan_rt_lib_dst_dir = os.path.join(LLVM_BUILD_DIR, 'lib', 'clang',
                                       VERSION, 'lib', platform)
