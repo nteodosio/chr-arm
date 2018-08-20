@@ -128,6 +128,8 @@ parts:
       fi
 
       # Build GN
+      export CXX=$PWD/third_party/llvm-build/Release+Asserts/bin/clang++
+      export AR=$PWD/third_party/llvm-build/Release+Asserts/bin/llvm-ar
       tools/gn/bootstrap/bootstrap.py --verbose --no-rebuild
 
       # Build chromium
