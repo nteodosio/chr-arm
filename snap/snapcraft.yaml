@@ -146,10 +146,11 @@ parts:
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
-      cp chrome chrome_*.pak chrome_sandbox headless_lib.pak icudtl.dat \
+      cp chrome chrome_*.pak headless_lib.pak icudtl.dat \
           libffmpeg.so natives_blob.bin resources.pak \
           snapshot_blob.bin v8_context_snapshot.bin \
           $T/
+      cp chrome_sandbox $T/chrome-sandbox
       mkdir $T/locales
       cp locales/*.pak $T/locales/
       mkdir $T/swiftshader
@@ -157,7 +158,7 @@ parts:
 
       # Fix setuid bits on the sandbox executable
       # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
-      chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome_sandbox
+      chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome-sandbox
 
   launcher:
     plugin: dump
