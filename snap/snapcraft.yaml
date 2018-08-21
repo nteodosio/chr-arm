@@ -36,6 +36,18 @@ plugs:
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes
+  sound-themes:
+    interface: content
+    target: $SNAP/data-dir/sounds
+    default-provider: gtk-common-themes
 
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
@@ -162,6 +174,10 @@ parts:
       # Fix setuid bits on the sandbox executable
       # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
       chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome-sandbox
+
+      # Add data-dir mount layout to the snap as a temporary workaround until
+      # https://github.com/snapcore/snapd/pull/5395 lands in snapd.
+      mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/{icons,sounds,themes}
 
   launcher:
     plugin: dump
