@@ -101,6 +101,7 @@ parts:
       - uuid-dev
       - chrpath
       - yasm
+      - libglib2.0-bin
       - shared-mime-info
       - zlib1g-dev
     stage-packages:
@@ -110,6 +111,8 @@ parts:
       - libsecret-1-0
       - shared-mime-info
       - pulseaudio
+      - libgtk-3-common
+      - ubuntu-settings
     override-build: |
       set -eux
 
@@ -195,6 +198,9 @@ parts:
       set -eux
       mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share
       cp -R $SNAPCRAFT_STAGE/usr/share/mime $SNAPCRAFT_PART_INSTALL/usr/share/
+      cp -R $SNAPCRAFT_STAGE/usr/share/glib-2.0 $SNAPCRAFT_PART_INSTALL/usr/share/
+      glib-compile-schemas $SNAPCRAFT_PART_INSTALL/usr/share/glib-2.0/schemas
       update-mime-database $SNAPCRAFT_PART_INSTALL/usr/share/mime
     prime:
+      - usr/share/glib-2.0/schemas/*
       - usr/share/mime/*
