@@ -61,7 +61,7 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-70.0.3521.2.tar.xz
     source-checksum: sha512/0bcd3706fa86626b8f03f99b141f70b631797412bf67b455cb24a296a6436802acefe5a040553c65984529e4efd7990c659622aeb64b6a1ae1982014d66d4827
-    after: [launcher]
+    after: [gtk3-locales, launcher]
     build-packages:
       - quilt
       - autoconf
@@ -210,3 +210,22 @@ parts:
     prime:
       - usr/share/glib-2.0/schemas/*
       - usr/share/mime/*
+
+  gtk3-locales:
+    plugin: nil
+    build-packages:
+      - apt
+      - dpkg
+    override-build: |
+      set -eux
+
+      # In Ubuntu compiled locales for GTK are installed by langpacks,
+      # not by libgtk-3-common. Fetch all the langpacks and keep only the
+      # GTK locales.
+      apt download "language-pack-gnome-*-base"
+      for deb in *.deb; do dpkg-deb -x $deb .; done
+      cd usr/share/locale-langpack
+      find . -type f -not -name "gtk30*.mo" -exec rm '{}' \;
+      cd -
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share
+      cp -R usr/share/locale-langpack $SNAPCRAFT_PART_INSTALL/usr/share/
