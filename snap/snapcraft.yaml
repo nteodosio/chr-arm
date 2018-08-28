@@ -181,6 +181,10 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/sounds
       mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/themes
 
+      # Remove unneeded stage files to save space
+      cd $SNAPCRAFT_STAGE/usr/share
+      rm -rf apport bash-completion bug doc doc-base icons lintian man pam-configs pkgconfig themes upstart zsh
+
   launcher:
     plugin: dump
     source: snap
