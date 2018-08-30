@@ -115,7 +115,7 @@ parts:
     override-build: |
       set -eux
 
-      QUILT_PATCHES=../../../snap/patches quilt push -a
+      QUILT_PATCHES=../../../patches quilt push -a
 
       # Write SVN configuration file with HTTP proxy settings to work around
       # https://launchpad.net/bugs/1668358 until the fix is deployed on
@@ -147,7 +147,7 @@ parts:
       # Build chromium
       OUT=out/Release
       mkdir -p $OUT
-      cp ../../../snap/args.gn $OUT/
+      cp ../../../args.gn $OUT/
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
@@ -182,12 +182,14 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/themes
 
   launcher:
-    plugin: dump
-    source: snap
+    plugin: nil
+    source: .
     after: [desktop-gtk3]
-    organize:
-      chromium.launcher: bin/
-      chromium.desktop: bin/
+    override-prime: |
+      set -eux
+      mkdir bin
+      cp $SNAPCRAFT_PART_SRC/chromium.launcher bin/
+      cp $SNAPCRAFT_PART_SRC/chromium.desktop bin/
 
   shared-mime-info:
     after: [launcher, chromium]
