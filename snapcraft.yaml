@@ -174,7 +174,7 @@ parts:
     after: [desktop-gtk3]
     override-prime: |
       set -eux
-      mkdir bin
+      mkdir -p bin
       cp $SNAPCRAFT_PART_SRC/chromium.launcher bin/
       cp $SNAPCRAFT_PART_SRC/chromium.desktop bin/
 
