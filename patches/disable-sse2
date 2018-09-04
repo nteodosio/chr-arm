@@ -24,16 +24,16 @@ debian-bug: http://bugs.debian.org/750361
          return base::WrapUnique(new TextureCompressorETC1SSE());
 --- a/media/base/sinc_resampler.cc
 +++ b/media/base/sinc_resampler.cc
-@@ -81,7 +81,7 @@
- #include "base/numerics/math_constants.h"
+@@ -82,7 +82,7 @@
  #include "build/build_config.h"
+ #include "cc/base/math_util.h"
  
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(__x86_64__)
  #include <xmmintrin.h>
  #define CONVOLVE_FUNC Convolve_SSE
  #elif defined(ARCH_CPU_ARM_FAMILY) && defined(USE_NEON)
-@@ -326,7 +326,7 @@ float SincResampler::Convolve_C(const fl
+@@ -333,7 +333,7 @@ float SincResampler::Convolve_C(const fl
        kernel_interpolation_factor * sum2);
  }
  
