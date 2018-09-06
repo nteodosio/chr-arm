@@ -195,7 +195,7 @@ debian-bug: http://bugs.debian.org/750361
  #include "third_party/blink/renderer/platform/audio/cpu/mips/vector_math_msa.h"
 -#elif defined(ARCH_CPU_X86_FAMILY)
 +#elif defined(ARCH_CPU_X86_64)
- #include "third_party/blink/renderer/platform/audio/cpu/x86/vector_math_x8_6.h"
+ #include "third_party/blink/renderer/platform/audio/cpu/x86/vector_math_x86.h"
  #else
  #include "third_party/blink/renderer/platform/audio/vector_math_scalar.h"
 @@ -54,7 +54,7 @@ namespace Impl = Mac;
@@ -293,7 +293,7 @@ debian-bug: http://bugs.debian.org/750361
  #if HAVE_MIPS_MSA_INTRINSICS
 --- a/third_party/blink/renderer/modules/webaudio/audio_param_timeline.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_param_timeline.cc
-@@ -39,7 +39,7 @@
+@@ -38,7 +38,7 @@
  #include "third_party/blink/renderer/platform/wtf/cpu.h"
  #include "third_party/blink/renderer/platform/wtf/math_extras.h"
  
