@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/update.py
 +++ b/tools/clang/scripts/update.py
-@@ -615,7 +615,7 @@ def UpdateClang(args):
+@@ -589,7 +589,7 @@ def UpdateClang(args):
  
    # Build lld and code coverage tools. This is done separately from the rest of
    # the build because these tools require threading support.
@@ -12,7 +12,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    print 'Building the following tools with threading support: %s' % (
          str(tools_with_threading))
  
-@@ -729,13 +729,6 @@ def UpdateClang(args):
+@@ -703,13 +703,6 @@ def UpdateClang(args):
                          '-DSANITIZER_MIN_OSX_VERSION="10.7"']
    # compiler-rt is part of the llvm checkout on Windows but a stand-alone
    # directory elsewhere, see the TODO above COMPILER_RT_DIR.
@@ -26,22 +26,22 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    # Copy select output to the main tree.
    # TODO(hans): Make this (and the .gypi and .isolate files) version number
-@@ -755,25 +748,6 @@ def UpdateClang(args):
-                                        VERSION, 'lib', platform)
-   asan_rt_lib_dst_dir = os.path.join(LLVM_BUILD_DIR, 'lib', 'clang',
-                                      VERSION, 'lib', platform)
+@@ -729,25 +722,6 @@ def UpdateClang(args):
+                                   VERSION, 'lib', platform)
+   rt_lib_dst_dir = os.path.join(LLVM_BUILD_DIR, 'lib', 'clang', VERSION, 'lib',
+                                 platform)
 -  # Blacklists:
--  CopyDirectoryContents(os.path.join(asan_rt_lib_src_dir, '..', '..', 'share'),
--                        os.path.join(asan_rt_lib_dst_dir, '..', '..', 'share'))
+-  CopyDirectoryContents(os.path.join(rt_lib_src_dir, '..', '..', 'share'),
+-                        os.path.join(rt_lib_dst_dir, '..', '..', 'share'))
 -  # Headers:
 -  if sys.platform != 'win32':
 -    CopyDirectoryContents(
 -        os.path.join(COMPILER_RT_BUILD_DIR, 'include/sanitizer'),
 -        os.path.join(LLVM_BUILD_DIR, 'lib/clang', VERSION, 'include/sanitizer'))
 -  # Static and dynamic libraries:
--  CopyDirectoryContents(asan_rt_lib_src_dir, asan_rt_lib_dst_dir)
+-  CopyDirectoryContents(rt_lib_src_dir, rt_lib_dst_dir)
 -  if sys.platform == 'darwin':
--    for dylib in glob.glob(os.path.join(asan_rt_lib_dst_dir, '*.dylib')):
+-    for dylib in glob.glob(os.path.join(rt_lib_dst_dir, '*.dylib')):
 -      # Fix LC_ID_DYLIB for the ASan dynamic libraries to be relative to
 -      # @executable_path.
 -      # TODO(glider): this is transitional. We'll need to fix the dylib
