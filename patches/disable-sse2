@@ -302,7 +302,7 @@ debian-bug: http://bugs.debian.org/750361
  #include <emmintrin.h>
  #endif
  
-@@ -1369,7 +1369,7 @@ std::tuple<size_t, float, unsigned> Audi
+@@ -1400,7 +1400,7 @@ std::tuple<size_t, float, unsigned> Audi
      size_t current_frame,
      float value,
      unsigned write_index) {
@@ -311,7 +311,7 @@ debian-bug: http://bugs.debian.org/750361
    auto number_of_values = current_state.number_of_values;
  #endif
    auto fill_to_frame = current_state.fill_to_frame;
-@@ -1382,7 +1382,7 @@ std::tuple<size_t, float, unsigned> Audi
+@@ -1413,7 +1413,7 @@ std::tuple<size_t, float, unsigned> Audi
    double delta_time = time2 - time1;
    float k = delta_time > 0 ? 1 / delta_time : 0;
    const float value_delta = value2 - value1;
@@ -320,7 +320,7 @@ debian-bug: http://bugs.debian.org/750361
    if (fill_to_frame > write_index) {
      // Minimize in-loop operations. Calculate starting value and increment.
      // Next step: value += inc.
-@@ -1510,7 +1510,7 @@ std::tuple<size_t, float, unsigned> Audi
+@@ -1541,7 +1541,7 @@ std::tuple<size_t, float, unsigned> Audi
      size_t current_frame,
      float value,
      unsigned write_index) {
@@ -329,7 +329,7 @@ debian-bug: http://bugs.debian.org/750361
    auto number_of_values = current_state.number_of_values;
  #endif
    auto fill_to_frame = current_state.fill_to_frame;
-@@ -1561,7 +1561,7 @@ std::tuple<size_t, float, unsigned> Audi
+@@ -1592,7 +1592,7 @@ std::tuple<size_t, float, unsigned> Audi
      for (; write_index < fill_to_frame; ++write_index)
        values[write_index] = target;
    } else {
@@ -338,7 +338,7 @@ debian-bug: http://bugs.debian.org/750361
      if (fill_to_frame > write_index) {
        // Resolve recursion by expanding constants to achieve a 4-step
        // loop unrolling.
-@@ -1695,7 +1695,7 @@ std::tuple<size_t, float, unsigned> Audi
+@@ -1726,7 +1726,7 @@ std::tuple<size_t, float, unsigned> Audi
    // Oversampled curve data can be provided if sharp discontinuities are
    // desired.
    unsigned k = 0;
