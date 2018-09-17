@@ -126,7 +126,7 @@ parts:
         cd third_party/eu-strip
         ./build.sh
         cd ../..
-        tools/clang/scripts/update.py --force-local-build --without-android --gcc-toolchain=/usr --use-system-cmake
+        tools/clang/scripts/update.py --force-local-build --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
       # Build GN
