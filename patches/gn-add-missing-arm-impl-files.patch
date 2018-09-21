@@ -1,5 +1,6 @@
 Description: add missing armhf-specific files to gn source tree
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Bug: https://bugs.chromium.org/p/gn/issues/detail?id=6
 
 --- /dev/null
 +++ b/tools/gn/base/numerics/safe_conversions_arm_impl.h
