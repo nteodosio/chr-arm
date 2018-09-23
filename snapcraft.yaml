@@ -158,8 +158,11 @@ parts:
       cp chrome_sandbox $T/chrome-sandbox
       mkdir $T/locales
       cp locales/*.pak $T/locales/
-      mkdir $T/swiftshader
-      cp swiftshader/*.so $T/swiftshader/
+      if [ -d swiftshader ]; then
+        # not built on arm*
+        mkdir $T/swiftshader
+        cp swiftshader/*.so $T/swiftshader/
+      fi
 
       # Fix setuid bits on the sandbox executable
       # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
