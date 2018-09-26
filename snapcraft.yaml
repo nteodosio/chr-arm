@@ -1,5 +1,5 @@
 name: chromium
-version: 71.0.3554.4
+version: 71.0.3559.6
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -59,8 +59,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-71.0.3554.4.tar.xz
-    source-checksum: sha512/ad4c6bc8ab857bf1a928b959129f5b64c1333f109cc7a5482f3bea3cab070faee85e41128acc4d9e479a312dd66ec201cf115e2dd8e35587f1bdd95ff78dfd18
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-71.0.3559.6.tar.xz
+    source-checksum: sha512/12ba43ee94aa185d13035c01755b0166082fe4831f1787e755de11a9b6121c0384eb04352f0582659a23908acc4544db359a30e0f22715d69f357c8a1baa3aac
     after: [gtk3-locales, launcher]
     build-packages:
       - quilt
@@ -132,7 +132,7 @@ parts:
       # Build GN
       export CXX=$PWD/third_party/llvm-build/Release+Asserts/bin/clang++
       export AR=$PWD/third_party/llvm-build/Release+Asserts/bin/llvm-ar
-      tools/gn/bootstrap/bootstrap.py
+      tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
       # Build chromium
       OUT=out/Release

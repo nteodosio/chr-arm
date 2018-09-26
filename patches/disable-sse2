@@ -2,26 +2,6 @@ description: don't set sse2 compiler flags on i386
 author: Michael Gilbert <mgilbert@debian.org>
 debian-bug: http://bugs.debian.org/750361
 
---- a/cc/raster/texture_compressor.cc
-+++ b/cc/raster/texture_compressor.cc
-@@ -8,7 +8,7 @@
- #include "base/memory/ptr_util.h"
- #include "cc/raster/texture_compressor_etc1.h"
- 
--#if defined(ARCH_CPU_X86_FAMILY)
-+#if defined(ARCH_CPU_X86_64)
- #include "base/cpu.h"
- #include "cc/raster/texture_compressor_etc1_sse.h"
- #endif
-@@ -18,7 +18,7 @@ namespace cc {
- std::unique_ptr<TextureCompressor> TextureCompressor::Create(Format format) {
-   switch (format) {
-     case kFormatETC1: {
--#if defined(ARCH_CPU_X86_FAMILY)
-+#if defined(ARCH_CPU_X86_64)
-       base::CPU cpu;
-       if (cpu.has_sse2()) {
-         return base::WrapUnique(new TextureCompressorETC1SSE());
 --- a/media/base/sinc_resampler.cc
 +++ b/media/base/sinc_resampler.cc
 @@ -82,7 +82,7 @@

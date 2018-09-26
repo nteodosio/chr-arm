@@ -23,7 +23,6 @@ use_dbus = true
 use_gio = true
 use_glib = true
 use_gold = false
-use_gtk3 = true
 use_libpci = true
 use_pulseaudio = true
 use_sysroot = false
