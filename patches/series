@@ -21,3 +21,4 @@ gn-no-last-commit-position.patch
 gn-add-missing-arm-impl-files.patch
 relax-ninja-version-requirement.patch
 clang-build-only-needed-targets.patch
+atspi-build-with-version-in-xenial.patch
