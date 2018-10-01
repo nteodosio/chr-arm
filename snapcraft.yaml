@@ -194,6 +194,7 @@ parts:
   shared-mime-info:
     after: [launcher, chromium]
     plugin: nil
+    override-pull: ""
     override-prime: |
       set -eux
       glib-compile-schemas usr/share/glib-2.0/schemas
@@ -208,6 +209,7 @@ parts:
     build-packages:
       - apt
       - dpkg
+    override-pull: ""
     override-build: |
       set -eux
 
