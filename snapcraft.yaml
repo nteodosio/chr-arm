@@ -57,11 +57,20 @@ parts:
   # or stage packages) are built before it (before the proxy authentication is
   # revoked).
 
+  chromium-build:
+    plugin: nil
+    source: build
+    override-build: |
+      set -eux
+      mkdir -p $SNAPCRAFT_PART_INSTALL/build/
+      cp -r args.gn patches $SNAPCRAFT_PART_INSTALL/build/
+    override-prime: ""
+
   chromium:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-71.0.3559.6.tar.xz
     source-checksum: sha512/12ba43ee94aa185d13035c01755b0166082fe4831f1787e755de11a9b6121c0384eb04352f0582659a23908acc4544db359a30e0f22715d69f357c8a1baa3aac
-    after: [gtk3-locales, launcher]
+    after: [chromium-build, gtk3-locales, launcher]
     build-packages:
       - quilt
       - autoconf
@@ -116,7 +125,7 @@ parts:
     override-build: |
       set -eux
 
-      QUILT_PATCHES=../../../patches quilt push -a
+      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
 
       # Pre-built binaries are provided for eu-strip and clang on x86-64,
       # for all other architectures they have to be built from source.
@@ -137,7 +146,7 @@ parts:
       # Build chromium
       OUT=out/Release
       mkdir -p $OUT
-      cp ../../../args.gn $OUT/
+      cp $SNAPCRAFT_STAGE/build/args.gn $OUT/
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
