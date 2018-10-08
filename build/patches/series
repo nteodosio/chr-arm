@@ -8,7 +8,6 @@ additional-search-engines.patch
 disable-sse2
 widevine-revision.patch
 widevine-other-locations
-widevine-allow-enable.patch
 default-allocator
 enable-chromecast-by-default.patch
 #skia-undef-HWCAP_CRC32.patch
