@@ -204,22 +204,19 @@ parts:
       cd usr/share
       rm -rf apport bash-completion bug doc doc-base icons lintian man pam-configs pkgconfig themes upstart zsh
 
+  # In Ubuntu compiled locales for GTK are installed by langpacks, not by
+  # libgtk-3-common. Fetch all the langpacks and keep only the GTK locales.
   gtk3-locales:
     plugin: nil
     build-packages:
       - apt
       - dpkg
-    override-pull: ""
+    override-pull: |
+      set -eux
+      apt download "language-pack-gnome-*-base"
     override-build: |
       set -eux
-
-      # In Ubuntu compiled locales for GTK are installed by langpacks,
-      # not by libgtk-3-common. Fetch all the langpacks and keep only the
-      # GTK locales.
-      apt download "language-pack-gnome-*-base"
       for deb in *.deb; do dpkg-deb -x $deb .; done
-      cd usr/share/locale-langpack
-      find . -type f -not -name "gtk30*.mo" -exec rm '{}' \;
-      cd -
+      find usr/share/locale-langpack -type f -not -name "gtk30*.mo" -exec rm '{}' \;
       mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share
       cp -R usr/share/locale-langpack $SNAPCRAFT_PART_INSTALL/usr/share/
