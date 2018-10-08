@@ -5,6 +5,7 @@ description: |
  An open-source browser project that aims to build a safer, faster, and more
  stable way for all Internet users to experience the web.
 confinement: strict
+base: core18
 
 apps:
   chromium:
