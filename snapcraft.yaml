@@ -58,12 +58,10 @@ parts:
   # revoked).
 
   chromium-build:
-    plugin: nil
+    plugin: dump
     source: build
-    override-build: |
-      set -eux
-      mkdir -p $SNAPCRAFT_PART_INSTALL/build/
-      cp -r args.gn patches $SNAPCRAFT_PART_INSTALL/build/
+    organize:
+      '*' : build/
     override-prime: ""
 
   chromium:
