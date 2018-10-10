@@ -177,6 +177,12 @@ parts:
       # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
       chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome-sandbox
 
+      # Add data-dir mount layout to the snap as a temporary workaround until
+      # https://github.com/snapcore/snapd/pull/5395 lands in snapd.
+      mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/icons
+      mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/sounds
+      mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/themes
+
   launcher:
     plugin: nil
     source: .
