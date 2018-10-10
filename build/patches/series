@@ -6,7 +6,7 @@ snap_useragent.patch
 additional-search-engines.patch
 #touch-v35
 disable-sse2
-widevine-revision.patch
+widevine-enable-version-string.patch
 widevine-other-locations
 default-allocator
 enable-chromecast-by-default.patch
