@@ -84,6 +84,7 @@ parts:
       - gperf
       - subversion
       - cmake
+      - default-jre-headless
       - libxml2-dev
       - libpulse-dev
       - libcups2-dev
