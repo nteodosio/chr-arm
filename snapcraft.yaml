@@ -1,5 +1,5 @@
 name: chromium
-version: 70.0.3538.22
+version: 71.0.3578.30
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -57,11 +57,18 @@ parts:
   # or stage packages) are built before it (before the proxy authentication is
   # revoked).
 
+  chromium-build:
+    plugin: dump
+    source: build
+    organize:
+      '*' : build/
+    override-prime: ""
+
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-70.0.3538.22.tar.xz
-    source-checksum: sha512/5af260a217734965e4475211646a992b0c568e81610f552c13773082055ee7cc3356f9d60b85abc118e7d7866c903ddc6f4e64d1f0c4126cba19d886dc79b189
-    after: [gtk3-locales, launcher]
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-71.0.3578.30.tar.xz
+    source-checksum: sha512/7f8114b678cb2ab9f449ab0dd91ef668d953cd6dd97c47cd187644820af137d9914b9b59f876802f58f8b2ddd78833529a8efc02b7d2ea3abeb21366258120cd
+    after: [chromium-build, gtk3-locales, launcher]
     build-packages:
       - quilt
       - autoconf
@@ -116,7 +123,7 @@ parts:
     override-build: |
       set -eux
 
-      QUILT_PATCHES=../../../patches quilt push -a
+      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
 
       # Pre-built binaries are provided for eu-strip and clang on x86-64,
       # for all other architectures they have to be built from source.
@@ -126,18 +133,18 @@ parts:
         cd third_party/eu-strip
         ./build.sh
         cd ../..
-        tools/clang/scripts/update.py --force-local-build --without-android --gcc-toolchain=/usr --use-system-cmake
+        tools/clang/scripts/update.py --force-local-build --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
       # Build GN
       export CXX=$PWD/third_party/llvm-build/Release+Asserts/bin/clang++
       export AR=$PWD/third_party/llvm-build/Release+Asserts/bin/llvm-ar
-      tools/gn/bootstrap/bootstrap.py
+      tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
       # Build chromium
       OUT=out/Release
       mkdir -p $OUT
-      cp ../../../args.gn $OUT/
+      cp $SNAPCRAFT_STAGE/build/args.gn $OUT/
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
@@ -187,6 +194,7 @@ parts:
   shared-mime-info:
     after: [launcher, chromium]
     plugin: nil
+    override-pull: ""
     override-prime: |
       set -eux
       glib-compile-schemas usr/share/glib-2.0/schemas
@@ -196,21 +204,19 @@ parts:
       cd usr/share
       rm -rf apport bash-completion bug doc doc-base icons lintian man pam-configs pkgconfig themes upstart zsh
 
+  # In Ubuntu compiled locales for GTK are installed by langpacks, not by
+  # libgtk-3-common. Fetch all the langpacks and keep only the GTK locales.
   gtk3-locales:
     plugin: nil
     build-packages:
       - apt
       - dpkg
+    override-pull: |
+      set -eux
+      apt download "language-pack-gnome-*-base"
     override-build: |
       set -eux
-
-      # In Ubuntu compiled locales for GTK are installed by langpacks,
-      # not by libgtk-3-common. Fetch all the langpacks and keep only the
-      # GTK locales.
-      apt download "language-pack-gnome-*-base"
       for deb in *.deb; do dpkg-deb -x $deb .; done
-      cd usr/share/locale-langpack
-      find . -type f -not -name "gtk30*.mo" -exec rm '{}' \;
-      cd -
+      find usr/share/locale-langpack -type f -not -name "gtk30*.mo" -exec rm '{}' \;
       mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share
       cp -R usr/share/locale-langpack $SNAPCRAFT_PART_INSTALL/usr/share/

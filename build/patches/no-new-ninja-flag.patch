@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/gn/bootstrap/bootstrap.py
 +++ b/tools/gn/bootstrap/bootstrap.py
-@@ -80,7 +80,7 @@ def main(argv):
+@@ -85,7 +85,7 @@ def main(argv):
    shutil.copy2(
        os.path.join(BOOTSTRAP_DIR, 'last_commit_position.h'), gn_build_dir)
    subprocess.check_call(
@@ -11,4 +11,4 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +      ['ninja', '-C', gn_build_dir, 'gn'])
    shutil.copy2(os.path.join(gn_build_dir, 'gn'), gn_path)
  
-   gn_gen_args = options.gn_gen_args or ''
+   if not options.skip_generate_buildfiles:

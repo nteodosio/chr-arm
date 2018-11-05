@@ -6,9 +6,8 @@ snap_useragent.patch
 additional-search-engines.patch
 #touch-v35
 disable-sse2
-widevine-revision.patch
+widevine-enable-version-string.patch
 widevine-other-locations
-widevine-allow-enable.patch
 default-allocator
 enable-chromecast-by-default.patch
 #skia-undef-HWCAP_CRC32.patch
@@ -21,4 +20,3 @@ gn-no-last-commit-position.patch
 gn-add-missing-arm-impl-files.patch
 relax-ninja-version-requirement.patch
 clang-build-only-needed-targets.patch
-gn-bootstrap-do-not-run-gen-without-args.patch
