@@ -13,12 +13,10 @@ default-allocator
 enable-chromecast-by-default.patch
 #skia-undef-HWCAP_CRC32.patch
 define__libc_malloc.patch
-no-new-ninja-flag.patch
 set-rpath-on-chromium-executables.patch
 add-missing-cstddef-include.patch
 fix-ffmpeg-ia32-build.patch
 gn-no-last-commit-position.patch
 gn-add-missing-arm-impl-files.patch
-relax-ninja-version-requirement.patch
 clang-build-only-needed-targets.patch
 gn-bootstrap-do-not-run-gen-without-args.patch
