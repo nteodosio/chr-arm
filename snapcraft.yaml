@@ -183,14 +183,11 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/themes
 
   launcher:
-    plugin: nil
-    source: .
     after: [desktop-gtk3]
-    override-prime: |
-      set -eux
-      mkdir -p bin
-      cp $SNAPCRAFT_PART_SRC/chromium.launcher bin/
-      cp $SNAPCRAFT_PART_SRC/chromium.desktop bin/
+    plugin: dump
+    source: launcher
+    organize:
+      '*': bin/
 
   shared-mime-info:
     after: [launcher, chromium]
