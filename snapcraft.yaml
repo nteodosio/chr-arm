@@ -9,7 +9,7 @@ base: core18
 
 apps:
   chromium:
-    command: bin/desktop-launch bin/chromium.launcher
+    command: bin/desktop-launch "$SNAP/bin/chromium.launcher"
     desktop: bin/chromium.desktop
     environment:
       DISABLE_WAYLAND: 1
