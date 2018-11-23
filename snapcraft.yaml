@@ -209,6 +209,7 @@ parts:
   # libgtk-3-common. Fetch all the langpacks and keep only the GTK locales.
   gtk3-locales:
     plugin: nil
+    source: empty # work around a snapcraft 2.x bug
     build-packages:
       - apt
       - dpkg
