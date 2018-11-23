@@ -9,7 +9,7 @@ base: core18
 
 apps:
   chromium:
-    command: desktop-launch chromium.launcher
+    command: bin/desktop-launch "$SNAP/bin/chromium.launcher"
     desktop: bin/chromium.desktop
     environment:
       DISABLE_WAYLAND: 1
@@ -186,14 +186,11 @@ parts:
       mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/themes
 
   launcher:
-    plugin: nil
-    source: .
     after: [desktop-gtk3]
-    override-prime: |
-      set -eux
-      mkdir -p bin
-      cp $SNAPCRAFT_PART_SRC/chromium.launcher bin/
-      cp $SNAPCRAFT_PART_SRC/chromium.desktop bin/
+    plugin: dump
+    source: launcher
+    organize:
+      '*': bin/
 
   shared-mime-info:
     after: [launcher, chromium]
