@@ -208,7 +208,7 @@ debian-bug: http://bugs.debian.org/750361
  
  namespace blink {
 @@ -195,6 +195,6 @@ ALWAYS_INLINE void PackOneRowOfRGBA8Litt
- }  // namespace SIMD
+ }  // namespace simd
  }  // namespace blink
  
 -#endif  // ARCH_CPU_X86_FAMILY
@@ -223,7 +223,7 @@ debian-bug: http://bugs.debian.org/750361
  
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
-   SIMD::UnpackOneRowOfBGRA8LittleToRGBA8(source32, destination32,
+   simd::UnpackOneRowOfBGRA8LittleToRGBA8(source32, destination32,
                                           pixels_per_row);
  #endif
 @@ -473,7 +473,7 @@ void Unpack<WebGLImageConversion::kDataF
@@ -232,7 +232,7 @@ debian-bug: http://bugs.debian.org/750361
      unsigned pixels_per_row) {
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
-   SIMD::UnpackOneRowOfRGBA5551LittleToRGBA8(source, destination,
+   simd::UnpackOneRowOfRGBA5551LittleToRGBA8(source, destination,
                                              pixels_per_row);
  #endif
 @@ -503,7 +503,7 @@ void Unpack<WebGLImageConversion::kDataF
@@ -241,7 +241,7 @@ debian-bug: http://bugs.debian.org/750361
      unsigned pixels_per_row) {
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
-   SIMD::UnpackOneRowOfRGBA4444LittleToRGBA8(source, destination,
+   simd::UnpackOneRowOfRGBA4444LittleToRGBA8(source, destination,
                                              pixels_per_row);
  #endif
 @@ -719,7 +719,7 @@ void Pack<WebGLImageConversion::kDataFor
@@ -250,7 +250,7 @@ debian-bug: http://bugs.debian.org/750361
                     unsigned pixels_per_row) {
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
-   SIMD::PackOneRowOfRGBA8LittleToR8(source, destination, pixels_per_row);
+   simd::PackOneRowOfRGBA8LittleToR8(source, destination, pixels_per_row);
  #endif
  #if HAVE_MIPS_MSA_INTRINSICS
 @@ -776,7 +776,7 @@ void Pack<WebGLImageConversion::kDataFor
@@ -259,7 +259,7 @@ debian-bug: http://bugs.debian.org/750361
                     unsigned pixels_per_row) {
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
-   SIMD::PackOneRowOfRGBA8LittleToRA8(source, destination, pixels_per_row);
+   simd::PackOneRowOfRGBA8LittleToRA8(source, destination, pixels_per_row);
  #endif
  #if HAVE_MIPS_MSA_INTRINSICS
 @@ -888,7 +888,7 @@ void Pack<WebGLImageConversion::kDataFor
@@ -268,7 +268,7 @@ debian-bug: http://bugs.debian.org/750361
                     unsigned pixels_per_row) {
 -#if defined(ARCH_CPU_X86_FAMILY)
 +#if defined(ARCH_CPU_X86_64)
-   SIMD::PackOneRowOfRGBA8LittleToRGBA8(source, destination, pixels_per_row);
+   simd::PackOneRowOfRGBA8LittleToRGBA8(source, destination, pixels_per_row);
  #endif
  #if HAVE_MIPS_MSA_INTRINSICS
 --- a/third_party/blink/renderer/modules/webaudio/audio_param_timeline.cc
