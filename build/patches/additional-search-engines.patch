@@ -46,7 +46,7 @@
    SEARCH_ENGINE_GOOGLE,
 --- a/components/search_engines/template_url_prepopulate_data.cc
 +++ b/components/search_engines/template_url_prepopulate_data.cc
-@@ -51,7 +51,7 @@ namespace {
+@@ -33,7 +33,7 @@ namespace {
  
  // Default (for countries with no better engine set)
  const PrepopulatedEngine* const engines_default[] = {
@@ -55,7 +55,7 @@
  };
  
  // United Arab Emirates
-@@ -166,7 +166,7 @@ const PrepopulatedEngine* const engines_
+@@ -148,7 +148,7 @@ const PrepopulatedEngine* const engines_
  
  // Germany
  const PrepopulatedEngine* const engines_DE[] = {
@@ -64,7 +64,7 @@
  };
  
  // Denmark
-@@ -216,12 +216,12 @@ const PrepopulatedEngine* const engines_
+@@ -198,12 +198,12 @@ const PrepopulatedEngine* const engines_
  
  // France
  const PrepopulatedEngine* const engines_FR[] = {
@@ -79,7 +79,7 @@
  };
  
  // Greece
-@@ -556,7 +556,7 @@ const PrepopulatedEngine* const engines_
+@@ -538,7 +538,7 @@ const PrepopulatedEngine* const engines_
  
  // United States
  const PrepopulatedEngine* const engines_US[] = {
@@ -88,7 +88,7 @@
  };
  
  // Uruguay
-@@ -591,6 +591,7 @@ const PrepopulatedEngine* const engines_
+@@ -573,6 +573,7 @@ const PrepopulatedEngine* const engines_
  
  // A list of all the engines that we know about.
  const PrepopulatedEngine* const kAllEngines[] = {
