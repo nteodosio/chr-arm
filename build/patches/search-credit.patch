@@ -3,7 +3,7 @@ Author: Chad Miller <chad.miller@canonical.com>
 
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
-@@ -85,7 +85,7 @@
+@@ -52,7 +52,7 @@
        "name": "\u767e\u5ea6",
        "keyword": "baidu.com",
        "favicon_url": "https://www.baidu.com/favicon.ico",
@@ -12,6 +12,15 @@ Author: Chad Miller <chad.miller@canonical.com>
        "alternate_urls": [
          "https://www.baidu.com/s?ie={inputEncoding}&wd={searchTerms}",
          "https://www.baidu.com/s?ie={inputEncoding}&word={searchTerms}",
+@@ -99,7 +99,7 @@
+       "name": "DuckDuckGo",
+       "keyword": "duckduckgo.com",
+       "favicon_url": "https://duckduckgo.com/favicon.ico",
+-      "search_url": "https://duckduckgo.com/?q={searchTerms}",
++      "search_url": "https://duckduckgo.com/?q={searchTerms}&t=canonical",
+       "suggest_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
+       "type": "SEARCH_ENGINE_DUCKDUCKGO",
+       "id": 92
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
 @@ -950,6 +950,9 @@ std::string TemplateURLRef::HandleReplac

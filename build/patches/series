@@ -3,7 +3,6 @@ search-credit.patch
 snap_useragent.patch
 #configuration-directory.patch
 #arm-neon.patch
-additional-search-engines.patch
 #touch-v35
 disable-sse2
 widevine-enable-version-string.patch
