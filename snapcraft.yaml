@@ -1,5 +1,5 @@
 name: chromium
-version: 73.0.3639.1
+version: 73.0.3642.0
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -67,8 +67,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-73.0.3639.1.tar.xz
-    source-checksum: sha512/dc5ff67712129a5d856cf11c3e0a6580d942457c765bfe1da2defe292ad8087e1ac44893df43a9c4c470aa3a15ea1b6a648512e344bde39fdb4e8b6e2bc7e14a
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-73.0.3642.0.tar.xz
+    source-checksum: sha512/69f2c1168b5f41f969a0015858a0b09dce26a05ef83a219b6f772ce4fc029e8f0229bf8806525106bf8f8b25fdb66ee2054c667166cff871412adf517554eb6e
     after: [chromium-build, gtk3-locales, launcher]
     build-packages:
       - quilt
