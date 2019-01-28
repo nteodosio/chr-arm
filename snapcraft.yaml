@@ -29,6 +29,7 @@ apps:
       - pulseaudio
       - removable-media
       - screen-inhibit-control
+      - u2f-devices
       - unity7 # required for xdg-open to work
       - upower-observe
       - x11
