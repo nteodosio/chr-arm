@@ -1,0 +1,14 @@
+Description: do not build gn with Identical Code Folding (which is a gold-only option)
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/tools/gn/build/gen.py
++++ b/tools/gn/build/gen.py
+@@ -299,7 +299,7 @@ def WriteGNNinja(path, platform, host, o
+           ldflags.append('-Wl,-strip-all')
+ 
+       # Enable identical code-folding.
+-      if not platform.is_darwin():
++      if not platform.is_darwin() and False:
+         ldflags.append('-Wl,--icf=all')
+ 
+     cflags.extend([
