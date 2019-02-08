@@ -3,7 +3,6 @@ search-credit.patch
 snap_useragent.patch
 #configuration-directory.patch
 #arm-neon.patch
-additional-search-engines.patch
 #touch-v35
 disable-sse2
 widevine-enable-version-string.patch
@@ -18,4 +17,3 @@ fix-ffmpeg-ia32-build.patch
 gn-no-last-commit-position.patch
 gn-add-missing-arm-impl-files.patch
 clang-build-only-needed-targets.patch
-gn-do-not-build-with-icf.patch
