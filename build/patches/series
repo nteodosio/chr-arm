@@ -17,4 +17,3 @@ fix-ffmpeg-ia32-build.patch
 gn-no-last-commit-position.patch
 gn-add-missing-arm-impl-files.patch
 clang-build-only-needed-targets.patch
-gn-do-not-build-with-icf.patch

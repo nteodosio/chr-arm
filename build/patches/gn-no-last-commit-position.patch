@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/gn/bootstrap/bootstrap.py
 +++ b/tools/gn/bootstrap/bootstrap.py
-@@ -76,8 +76,6 @@ def main(argv):
+@@ -115,8 +115,6 @@ def main(argv):
      cmd.append('--debug')
    subprocess.check_call(cmd)
  
