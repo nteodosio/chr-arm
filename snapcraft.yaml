@@ -134,9 +134,9 @@ parts:
       if [ $(arch) = "x86_64" ]; then
         tools/clang/scripts/update.py
       else
-        cd third_party/eu-strip
+        cd buildtools/third_party/eu-strip
         ./build.sh
-        cd ../..
+        cd ../../..
         tools/clang/scripts/update.py --force-local-build --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
@@ -153,7 +153,7 @@ parts:
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
       # Strip debug symbols off the chrome binary
-      python build/gn_run_binary.py ./third_party/eu-strip/bin/eu-strip -o $OUT/chrome.stripped -f $OUT/chrome.debug $OUT/chrome
+      python build/gn_run_binary.py ./buildtools/third_party/eu-strip/bin/eu-strip -o $OUT/chrome.stripped -f $OUT/chrome.debug $OUT/chrome
       mv $OUT/chrome.stripped $OUT/chrome
 
       # Install to $SNAPCRAFT_PART_INSTALL
