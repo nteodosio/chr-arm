@@ -1,0 +1,15 @@
+Description: fix gn link failure with older versions of clang.
+ This reverts https://gn.googlesource.com/gn/+/082fbe397d5217dc21b01c63c7f20eb6b77a3093.
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/tools/gn/build/gen.py
++++ b/tools/gn/build/gen.py
+@@ -334,7 +334,7 @@ def WriteGNNinja(path, platform, host, o
+       ldflags.append('-maix64')
+ 
+     if platform.is_posix():
+-      ldflags.append('-lpthread')
++      ldflags.append('-pthread')
+ 
+     if options.use_lto:
+       cflags.extend(['-flto', '-fwhole-program-vtables'])
