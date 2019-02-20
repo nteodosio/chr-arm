@@ -17,4 +17,5 @@ add-missing-cstddef-include.patch
 fix-ffmpeg-ia32-build.patch
 gn-no-last-commit-position.patch
 gn-add-missing-arm-impl-files.patch
+gn-fix-link-pthread.patch
 clang-build-only-needed-targets.patch
