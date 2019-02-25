@@ -197,6 +197,12 @@ parts:
     organize:
       '*': bin/
 
+  tests:
+    plugin: dump
+    source: tests
+    organize:
+      '*': tests/
+
   shared-mime-info:
     after: [launcher, chromium]
     plugin: nil
