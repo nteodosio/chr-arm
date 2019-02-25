@@ -19,3 +19,4 @@ gn-no-last-commit-position.patch
 gn-add-missing-arm-impl-files.patch
 gn-fix-link-pthread.patch
 clang-build-only-needed-targets.patch
+chromedriver-snap-aware.patch
