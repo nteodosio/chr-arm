@@ -33,6 +33,10 @@ apps:
       - unity7 # required for xdg-open to work
       - upower-observe
       - x11
+  chromedriver:
+    command: "$SNAP/usr/lib/chromium-browser/chromedriver"
+    plugs:
+      - network
 
 plugs:
   browser-sandbox:
@@ -163,7 +167,7 @@ parts:
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
-      cp chrome chrome_*.pak headless_lib.pak icudtl.dat \
+      cp chrome chromedriver chrome_*.pak headless_lib.pak icudtl.dat \
           libffmpeg.so natives_blob.bin resources.pak \
           snapshot_blob.bin v8_context_snapshot.bin \
           $T/
