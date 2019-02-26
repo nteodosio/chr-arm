@@ -34,7 +34,7 @@ apps:
       - upower-observe
       - x11
   chromedriver:
-    command: "$SNAP/usr/lib/chromium-browser/chromedriver"
+    command: usr/lib/chromium-browser/chromedriver
     plugs:
       - network
 
