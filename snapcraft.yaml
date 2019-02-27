@@ -36,7 +36,27 @@ apps:
   chromedriver:
     command: usr/lib/chromium-browser/chromedriver
     plugs:
+      - network-bind
+      # + all the plugs required by chromium, so that when chromedriver
+      # executes chromium it inherits the correct set of permissions
+      - browser-sandbox
+      - camera
+      - cups-control
+      - desktop
+      - gsettings
+      - home
+      - mount-observe
       - network
+      - network-manager
+      - opengl
+      - password-manager-service
+      - pulseaudio
+      - removable-media
+      - screen-inhibit-control
+      - u2f-devices
+      - unity7
+      - upower-observe
+      - x11
 
 plugs:
   browser-sandbox:

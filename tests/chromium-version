@@ -10,9 +10,10 @@ from gi.repository import Snapd
 
 if __name__ == '__main__':
     options = webdriver.chrome.options.Options()
-    options.binary_location = "/snap/bin/chromium.chromedriver"
+    options.binary_location = "/snap/chromium/current/command-chromium.wrapper"
     options.add_argument("headless")
-    driver = webdriver.Chrome(chrome_options=options)
+    driver_path = "/snap/bin/chromium.chromedriver"
+    driver = webdriver.Chrome(executable_path=driver_path, options=options)
     version = driver.capabilities['version']
 
     client = Snapd.Client()

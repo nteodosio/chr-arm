@@ -19,9 +19,10 @@ from selenium.webdriver.support import expected_conditions as EC
 
 if __name__ == '__main__':
     options = webdriver.chrome.options.Options()
-    options.binary_location = "/snap/bin/chromium.chromedriver"
+    options.binary_location = "/snap/chromium/current/command-chromium.wrapper"
     options.add_argument("headless")
-    driver = webdriver.Chrome(chrome_options=options)
+    driver_path = "/snap/bin/chromium.chromedriver"
+    driver = webdriver.Chrome(executable_path=driver_path, options=options)
 
     tests_dir = os.path.dirname(os.path.realpath(__file__))
     html5test_dir = os.path.join(tests_dir, "data", "HTML5test")
