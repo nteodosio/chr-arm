@@ -33,6 +33,30 @@ apps:
       - unity7 # required for xdg-open to work
       - upower-observe
       - x11
+  chromedriver:
+    command: usr/lib/chromium-browser/chromedriver
+    plugs:
+      - network-bind
+      # + all the plugs required by chromium, so that when chromedriver
+      # executes chromium it inherits the correct set of permissions
+      - browser-sandbox
+      - camera
+      - cups-control
+      - desktop
+      - gsettings
+      - home
+      - mount-observe
+      - network
+      - network-manager
+      - opengl
+      - password-manager-service
+      - pulseaudio
+      - removable-media
+      - screen-inhibit-control
+      - u2f-devices
+      - unity7
+      - upower-observe
+      - x11
 
 plugs:
   browser-sandbox:
@@ -163,7 +187,7 @@ parts:
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
-      cp chrome chrome_*.pak headless_lib.pak icudtl.dat \
+      cp chrome chromedriver chrome_*.pak headless_lib.pak icudtl.dat \
           libffmpeg.so natives_blob.bin resources.pak \
           snapshot_blob.bin v8_context_snapshot.bin \
           $T/
@@ -192,6 +216,12 @@ parts:
     source: launcher
     organize:
       '*': bin/
+
+  tests:
+    plugin: dump
+    source: tests
+    organize:
+      '*': tests/
 
   shared-mime-info:
     after: [launcher, chromium]
