@@ -17,6 +17,7 @@ apps:
     plugs:
       - browser-sandbox
       - camera
+      - chromium-config
       - cups-control
       - desktop
       - gsettings
@@ -41,6 +42,7 @@ apps:
       # executes chromium it inherits the correct set of permissions
       - browser-sandbox
       - camera
+      - chromium-config
       - cups-control
       - desktop
       - gsettings
@@ -74,6 +76,9 @@ plugs:
     interface: content
     target: $SNAP/data-dir/sounds
     default-provider: gtk-common-themes
+  chromium-config:
+    interface: personal-files
+    read: [$HOME/.config/chromium]
 
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
