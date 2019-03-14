@@ -1,5 +1,31 @@
 #!/bin/sh
 
+# When running the snap for the first time, try and locate an existing chromium
+# config in $HOME/.config/chromium, and import it if it was created by an older
+# version of chromium (the profile data format is not guaranteed to be
+# forward-compatible). This requires the personal-files plug to be connected.
+if [ ! -d "$HOME/.config/chromium" ]; then
+  REALHOME=$(getent passwd $(id -u) | cut -d ':' -f 6)
+  CHROMIUM_CONFIG="$REALHOME/.config/chromium"
+  if [ -d "$CHROMIUM_CONFIG" ]; then
+    PREF_FILE="$CHROMIUM_CONFIG/Default/Preferences"
+    if [ -r "$PREF_FILE" ]; then
+      VERSION=$(sed -e 's/.*"last_chrome_version":"\([0-9\.]\+\)".*/\1/' "$PREF_FILE")
+      if [ ! -z "$VERSION" ]; then
+        OLD=$(printf "$VERSION\n$SNAP_VERSION" | sort -V | head -1)
+        if [ "$OLD" = "$VERSION" ]; then
+          printf "Importing existing chromium profile from $CHROMIUM_CONFIG (version $VERSION)\n"
+          TS1=$(date +%s.%3N)
+          cp -R "$CHROMIUM_CONFIG" "$HOME/.config/"
+          TS2=$(date +%s.%3N)
+          T=$(printf "$TS1 $TS2" | awk '{printf "%.3f",$2-$1}')
+          printf "Import done in $T s\n"
+        fi
+      fi
+    fi
+  fi
+fi
+
 # Specify that no encrypted password store (keyring) should be used when the
 # password-manager-service interface is not plugged, because Chromium won't
 # fall back to the basic store (no encryption) if it fails to talk to the
