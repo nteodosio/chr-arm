@@ -15,9 +15,7 @@ apps:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
     plugs:
-      - browser-sandbox
       - camera
-      - chromium-config
       - cups-control
       - desktop
       - gsettings
@@ -40,9 +38,7 @@ apps:
       - network-bind
       # + all the plugs required by chromium, so that when chromedriver
       # executes chromium it inherits the correct set of permissions
-      - browser-sandbox
       - camera
-      - chromium-config
       - cups-control
       - desktop
       - gsettings
