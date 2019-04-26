@@ -19,8 +19,8 @@ Author: Chad Miller <chad.miller@canonical.com>
 -      "search_url": "https://duckduckgo.com/?q={searchTerms}",
 +      "search_url": "https://duckduckgo.com/?q={searchTerms}&t=canonical",
        "suggest_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
+       "new_tab_url": "https://duckduckgo.com/chrome_newtab",
        "type": "SEARCH_ENGINE_DUCKDUCKGO",
-       "id": 92
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
 @@ -953,6 +953,9 @@ std::string TemplateURLRef::HandleReplac
