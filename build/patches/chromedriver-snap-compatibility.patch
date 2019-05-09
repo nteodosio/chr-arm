@@ -1,0 +1,19 @@
+Description: overwrite the binary location of the chromium executable in the
+ options passed to chromedriver, if it is set to /usr/bin/chromium-browser
+ (because the snap version cannot see the chromium executable there). This is
+ for compatibility with existing chromedriver scripts. Newly written scripts
+ should simply not specify a binary location and let chromedriver find it
+ automatically.
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/chrome/test/chromedriver/chrome_launcher.cc
++++ b/chrome/test/chromedriver/chrome_launcher.cc
+@@ -134,6 +134,8 @@ Status PrepareDesktopCommandLine(const C
+                                  std::vector<std::string>* extension_bg_pages,
+                                  base::FilePath* user_data_dir) {
+   base::FilePath program = capabilities.binary;
++  if (program == base::FilePath("/usr/bin/chromium-browser"))
++    program.clear();
+   if (program.empty()) {
+     if (!FindChrome(&program))
+       return Status(kUnknownError, "cannot find Chrome binary");
