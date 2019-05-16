@@ -1,0 +1,586 @@
+From 421304ab176fa4339b3b763566521d1dfe4116f8 Mon Sep 17 00:00:00 2001
+From: Jeremy Roman <jbroman@chromium.org>
+Date: Wed, 08 May 2019 23:08:36 +0000
+Subject: [PATCH] Avoid includes from encoded_form_data.h and blob_data.h that would circularly depend on mojom targets.
+
+Since it isn't possible for a proper dependency on //third_party/blink/renderer/platform
+to exist in the typemap, the used headers *must not* include headers that are themselves
+outputs of //services/network/public/mojom:mojom_blink (or any similar target).
+
+Consequently a bunch of code is moved *out* of these headers so that such includes are
+no longer required.
+
+After this, it is now possible to build the following objects (which lead to waterfall
+failures) without blob.mojom-blink.h existing, among others:
+  obj/components/mirroring/mojom/service_blink/mirroring_service.mojom-blink.o
+  obj/components/translate/content/common/common_blink/translate.mojom-blink.o
+  obj/services/network/public/mojom/mojom_blink/host_resolver.mojom-blink-test-utils.o
+
+Bug: 960972
+Change-Id: Icea5b17b31d20da4b92979df6bb1dbe647d912ba
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/1601541
+Reviewed-by: Marijn Kruisselbrink <mek@chromium.org>
+Reviewed-by: Daniel Cheng <dcheng@chromium.org>
+Commit-Queue: Marijn Kruisselbrink <mek@chromium.org>
+Auto-Submit: Jeremy Roman <jbroman@chromium.org>
+Cr-Commit-Position: refs/heads/master@{#657912}
+---
+
+diff --git a/third_party/blink/renderer/core/fetch/blob_bytes_consumer.cc b/third_party/blink/renderer/core/fetch/blob_bytes_consumer.cc
+index 9308f12..f5d5511 100644
+--- a/third_party/blink/renderer/core/fetch/blob_bytes_consumer.cc
++++ b/third_party/blink/renderer/core/fetch/blob_bytes_consumer.cc
+@@ -7,6 +7,7 @@
+ #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+ #include "third_party/blink/renderer/core/fetch/form_data_bytes_consumer.h"
+ #include "third_party/blink/renderer/platform/blob/blob_data.h"
++#include "third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h"
+ 
+ namespace blink {
+ 
+diff --git a/third_party/blink/renderer/core/fetch/form_data_bytes_consumer.cc b/third_party/blink/renderer/core/fetch/form_data_bytes_consumer.cc
+index e37cea2..47256d6 100644
+--- a/third_party/blink/renderer/core/fetch/form_data_bytes_consumer.cc
++++ b/third_party/blink/renderer/core/fetch/form_data_bytes_consumer.cc
+@@ -15,6 +15,7 @@
+ #include "third_party/blink/renderer/platform/loader/fetch/data_pipe_bytes_consumer.h"
+ #include "third_party/blink/renderer/platform/network/encoded_form_data.h"
+ #include "third_party/blink/renderer/platform/network/form_data_encoder.h"
++#include "third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h"
+ #include "third_party/blink/renderer/platform/wtf/functional.h"
+ #include "third_party/blink/renderer/platform/wtf/text/text_codec.h"
+ #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+diff --git a/third_party/blink/renderer/core/fetch/form_data_bytes_consumer_test.cc b/third_party/blink/renderer/core/fetch/form_data_bytes_consumer_test.cc
+index 105b5fe1..6fff99d 100644
+--- a/third_party/blink/renderer/core/fetch/form_data_bytes_consumer_test.cc
++++ b/third_party/blink/renderer/core/fetch/form_data_bytes_consumer_test.cc
+@@ -8,6 +8,7 @@
+ #include "base/stl_util.h"
+ #include "mojo/public/cpp/bindings/binding_set.h"
+ #include "mojo/public/cpp/system/data_pipe_utils.h"
++#include "services/network/public/mojom/data_pipe_getter.mojom-blink.h"
+ #include "testing/gmock/include/gmock/gmock.h"
+ #include "testing/gtest/include/gtest/gtest.h"
+ #include "third_party/blink/public/platform/web_http_body.h"
+diff --git a/third_party/blink/renderer/core/messaging/blink_transferable_message.cc b/third_party/blink/renderer/core/messaging/blink_transferable_message.cc
+index 27c80c3..f2ad6c0 100644
+--- a/third_party/blink/renderer/core/messaging/blink_transferable_message.cc
++++ b/third_party/blink/renderer/core/messaging/blink_transferable_message.cc
+@@ -6,6 +6,7 @@
+ 
+ #include <utility>
+ #include "mojo/public/cpp/base/big_buffer.h"
++#include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+ #include "third_party/blink/public/platform/web_string.h"
+ #include "third_party/blink/renderer/core/imagebitmap/image_bitmap.h"
+ #include "third_party/blink/renderer/platform/blob/blob_data.h"
+diff --git a/third_party/blink/renderer/platform/blob/blob_bytes_provider.h b/third_party/blink/renderer/platform/blob/blob_bytes_provider.h
+index a66f1f17..faafa10 100644
+--- a/third_party/blink/renderer/platform/blob/blob_bytes_provider.h
++++ b/third_party/blink/renderer/platform/blob/blob_bytes_provider.h
+@@ -7,6 +7,7 @@
+ 
+ #include "base/sequenced_task_runner.h"
+ #include "third_party/blink/public/mojom/blob/blob_registry.mojom-blink.h"
++#include "third_party/blink/public/mojom/blob/data_element.mojom-blink.h"
+ #include "third_party/blink/renderer/platform/blob/blob_data.h"
+ 
+ namespace blink {
+diff --git a/third_party/blink/renderer/platform/blob/blob_data.cc b/third_party/blink/renderer/platform/blob/blob_data.cc
+index 8a1c9ff..2462b79 100644
+--- a/third_party/blink/renderer/platform/blob/blob_data.cc
++++ b/third_party/blink/renderer/platform/blob/blob_data.cc
+@@ -38,7 +38,9 @@
+ #include "base/single_thread_task_runner.h"
+ #include "mojo/public/cpp/bindings/strong_binding.h"
+ #include "services/network/public/mojom/data_pipe_getter.mojom-blink.h"
++#include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+ #include "third_party/blink/public/mojom/blob/blob_registry.mojom-blink.h"
++#include "third_party/blink/public/mojom/blob/data_element.mojom-blink.h"
+ #include "third_party/blink/public/platform/file_path_conversion.h"
+ #include "third_party/blink/public/platform/interface_provider.h"
+ #include "third_party/blink/public/platform/platform.h"
+@@ -105,6 +107,15 @@
+ 
+ RawData::RawData() = default;
+ 
++BlobData::BlobData(FileCompositionStatus composition)
++    : file_composition_(composition) {}
++
++BlobData::~BlobData() {}
++
++Vector<mojom::blink::DataElementPtr> BlobData::ReleaseElements() {
++  return std::move(elements_);
++}
++
+ std::unique_ptr<BlobData> BlobData::CreateForFileWithUnknownSize(
+     const String& path) {
+   std::unique_ptr<BlobData> data = base::WrapUnique(
+@@ -297,6 +308,19 @@
+     last_bytes_provider_->AppendData(std::move(data));
+ }
+ 
++// static
++scoped_refptr<BlobDataHandle> BlobDataHandle::Create(
++    const String& uuid,
++    const String& type,
++    uint64_t size,
++    mojom::blink::BlobPtrInfo blob_info) {
++  if (blob_info.is_valid()) {
++    return base::AdoptRef(
++        new BlobDataHandle(uuid, type, size, std::move(blob_info)));
++  }
++  return base::AdoptRef(new BlobDataHandle(uuid, type, size));
++}
++
+ BlobDataHandle::BlobDataHandle()
+     : uuid_(CreateCanonicalUUIDString()),
+       size_(0),
+diff --git a/third_party/blink/renderer/platform/blob/blob_data.h b/third_party/blink/renderer/platform/blob/blob_data.h
+index c5829fe3..82135c9 100644
+--- a/third_party/blink/renderer/platform/blob/blob_data.h
++++ b/third_party/blink/renderer/platform/blob/blob_data.h
+@@ -31,11 +31,18 @@
+ #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_BLOB_BLOB_DATA_H_
+ #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_BLOB_BLOB_DATA_H_
+ 
++// This file is required via serialized_blob.typemap and, transitively,
++// encoded_form_data.typemap. To avoid build circularity issues, it should not
++// transitively include anything that is generated from a mojom_blink target.
++//
++// This requires some gymnastics below, to explicitly forward-declare the
++// required types without reference to the generator output headers.
++
+ #include <memory>
+ #include "base/gtest_prod_util.h"
+ #include "base/thread_annotations.h"
+-#include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+-#include "third_party/blink/public/mojom/blob/data_element.mojom-blink.h"
++#include "mojo/public/cpp/bindings/interface_ptr.h"
++#include "mojo/public/cpp/bindings/struct_ptr.h"
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ #include "third_party/blink/renderer/platform/wtf/allocator.h"
+ #include "third_party/blink/renderer/platform/wtf/forward.h"
+@@ -43,10 +50,29 @@
+ #include "third_party/blink/renderer/platform/wtf/thread_safe_ref_counted.h"
+ #include "third_party/blink/renderer/platform/wtf/threading_primitives.h"
+ 
++namespace network {
++namespace mojom {
++namespace blink {
++class DataPipeGetter;
++using DataPipeGetterPtr = mojo::InterfacePtr<DataPipeGetter>;
++}  // namespace blink
++}  // namespace mojom
++}  // namespace network
++
+ namespace blink {
+ namespace mojom {
+ namespace blink {
++class Blob;
++using BlobPtr = mojo::InterfacePtr<Blob>;
++using BlobPtrInfo = mojo::InterfacePtrInfo<Blob>;
++
++class BlobReaderClient;
++using BlobReaderClientPtr = mojo::InterfacePtr<BlobReaderClient>;
++
+ class BlobRegistry;
++
++class DataElement;
++using DataElementPtr = mojo::StructPtr<DataElement>;
+ }
+ }  // namespace mojom
+ 
+@@ -79,9 +105,9 @@
+     NO_UNKNOWN_SIZE_FILES
+   };
+ 
+-  explicit BlobData(FileCompositionStatus composition =
+-                        FileCompositionStatus::NO_UNKNOWN_SIZE_FILES)
+-      : file_composition_(composition) {}
++  explicit BlobData(
++      FileCompositionStatus = FileCompositionStatus::NO_UNKNOWN_SIZE_FILES);
++  ~BlobData();
+ 
+   // Calling append* on objects returned by createFor___WithUnknownSize will
+   // check-fail. The caller can only have an unknown-length file if it is the
+@@ -104,9 +130,7 @@
+   const Vector<mojom::blink::DataElementPtr>& Elements() const {
+     return elements_;
+   }
+-  Vector<mojom::blink::DataElementPtr> ReleaseElements() {
+-    return std::move(elements_);
+-  }
++  Vector<mojom::blink::DataElementPtr> ReleaseElements();
+ 
+   void AppendBytes(const void*, size_t length);
+   void AppendData(scoped_refptr<RawData>);
+@@ -172,17 +196,10 @@
+     return base::AdoptRef(new BlobDataHandle(uuid, type, size));
+   }
+ 
+-  static scoped_refptr<BlobDataHandle> Create(
+-      const String& uuid,
+-      const String& type,
+-      uint64_t size,
+-      mojom::blink::BlobPtrInfo blob_info) {
+-    if (blob_info.is_valid()) {
+-      return base::AdoptRef(
+-          new BlobDataHandle(uuid, type, size, std::move(blob_info)));
+-    }
+-    return base::AdoptRef(new BlobDataHandle(uuid, type, size));
+-  }
++  static scoped_refptr<BlobDataHandle> Create(const String& uuid,
++                                              const String& type,
++                                              uint64_t size,
++                                              mojom::blink::BlobPtrInfo);
+ 
+   String Uuid() const { return uuid_.IsolatedCopy(); }
+   String GetType() const { return type_.IsolatedCopy(); }
+diff --git a/third_party/blink/renderer/platform/blob/testing/fake_blob_registry.cc b/third_party/blink/renderer/platform/blob/testing/fake_blob_registry.cc
+index d85a2d6..b700087b 100644
+--- a/third_party/blink/renderer/platform/blob/testing/fake_blob_registry.cc
++++ b/third_party/blink/renderer/platform/blob/testing/fake_blob_registry.cc
+@@ -5,6 +5,7 @@
+ #include "third_party/blink/renderer/platform/blob/testing/fake_blob_registry.h"
+ 
+ #include "mojo/public/cpp/bindings/strong_binding.h"
++#include "third_party/blink/public/mojom/blob/data_element.mojom-blink.h"
+ #include "third_party/blink/renderer/platform/blob/testing/fake_blob.h"
+ 
+ namespace blink {
+diff --git a/third_party/blink/renderer/platform/exported/web_blob_info.cc b/third_party/blink/renderer/platform/exported/web_blob_info.cc
+index b4808d0..7c4a712 100644
+--- a/third_party/blink/renderer/platform/exported/web_blob_info.cc
++++ b/third_party/blink/renderer/platform/exported/web_blob_info.cc
+@@ -4,6 +4,7 @@
+ 
+ #include "third_party/blink/public/platform/web_blob_info.h"
+ 
++#include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+ #include "third_party/blink/renderer/platform/blob/blob_data.h"
+ 
+ namespace blink {
+diff --git a/third_party/blink/renderer/platform/exported/web_http_body.cc b/third_party/blink/renderer/platform/exported/web_http_body.cc
+index 8f5324c..9888991 100644
+--- a/third_party/blink/renderer/platform/exported/web_http_body.cc
++++ b/third_party/blink/renderer/platform/exported/web_http_body.cc
+@@ -32,9 +32,11 @@
+ 
+ #include "mojo/public/cpp/system/data_pipe.h"
+ #include "services/network/public/mojom/data_pipe_getter.mojom-blink.h"
++#include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+ #include "third_party/blink/renderer/platform/file_metadata.h"
+ #include "third_party/blink/renderer/platform/network/encoded_form_data.h"
+ #include "third_party/blink/renderer/platform/network/form_data_encoder.h"
++#include "third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h"
+ #include "third_party/blink/renderer/platform/shared_buffer.h"
+ 
+ namespace blink {
+diff --git a/third_party/blink/renderer/platform/exported/web_service_worker_response.cc b/third_party/blink/renderer/platform/exported/web_service_worker_response.cc
+index e3cde41..317e4d1 100644
+--- a/third_party/blink/renderer/platform/exported/web_service_worker_response.cc
++++ b/third_party/blink/renderer/platform/exported/web_service_worker_response.cc
+@@ -4,6 +4,7 @@
+ 
+ #include "third_party/blink/public/platform/modules/service_worker/web_service_worker_response.h"
+ 
++#include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+ #include "third_party/blink/public/platform/web_http_header_visitor.h"
+ #include "third_party/blink/renderer/platform/blob/blob_data.h"
+ #include "third_party/blink/renderer/platform/network/http_header_map.h"
+diff --git a/third_party/blink/renderer/platform/loader/cors/cors_test.cc b/third_party/blink/renderer/platform/loader/cors/cors_test.cc
+index c595094..5365a93 100644
+--- a/third_party/blink/renderer/platform/loader/cors/cors_test.cc
++++ b/third_party/blink/renderer/platform/loader/cors/cors_test.cc
+@@ -6,6 +6,7 @@
+ 
+ #include "testing/gtest/include/gtest/gtest.h"
+ #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
++#include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+ 
+ namespace blink {
+ 
+diff --git a/third_party/blink/renderer/platform/network/BUILD.gn b/third_party/blink/renderer/platform/network/BUILD.gn
+index d895fca..2ef1999 100644
+--- a/third_party/blink/renderer/platform/network/BUILD.gn
++++ b/third_party/blink/renderer/platform/network/BUILD.gn
+@@ -62,6 +62,7 @@
+     "parsed_content_type.h",
+     "server_timing_header.cc",
+     "server_timing_header.h",
++    "wrapped_data_pipe_getter.h",
+   ]
+ 
+   sources += get_target_outputs(":http_names")
+diff --git a/third_party/blink/renderer/platform/network/encoded_form_data.cc b/third_party/blink/renderer/platform/network/encoded_form_data.cc
+index bdd6f26..f4315e8 100644
+--- a/third_party/blink/renderer/platform/network/encoded_form_data.cc
++++ b/third_party/blink/renderer/platform/network/encoded_form_data.cc
+@@ -23,16 +23,70 @@
+ 
+ #include "third_party/blink/renderer/platform/file_metadata.h"
+ #include "third_party/blink/renderer/platform/network/form_data_encoder.h"
++#include "third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h"
+ #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
+ #include "third_party/blink/renderer/platform/wtf/text/text_encoding.h"
+ 
+ namespace blink {
+ 
++FormDataElement::FormDataElement() : type_(kData) {}
++
++FormDataElement::FormDataElement(const Vector<char>& array)
++    : type_(kData), data_(array) {}
++
+ bool FormDataElement::IsSafeToSendToAnotherThread() const {
+   return filename_.IsSafeToSendToAnotherThread() &&
+          blob_uuid_.IsSafeToSendToAnotherThread();
+ }
+ 
++FormDataElement::FormDataElement(const String& filename,
++                                 int64_t file_start,
++                                 int64_t file_length,
++                                 double expected_file_modification_time)
++    : type_(kEncodedFile),
++      filename_(filename),
++      file_start_(file_start),
++      file_length_(file_length),
++      expected_file_modification_time_(expected_file_modification_time) {}
++
++FormDataElement::FormDataElement(const String& blob_uuid,
++                                 scoped_refptr<BlobDataHandle> optional_handle)
++    : type_(kEncodedBlob),
++      blob_uuid_(blob_uuid),
++      optional_blob_data_handle_(std::move(optional_handle)) {}
++
++FormDataElement::FormDataElement(
++    scoped_refptr<WrappedDataPipeGetter> data_pipe_getter)
++    : type_(kDataPipe), data_pipe_getter_(std::move(data_pipe_getter)) {}
++
++FormDataElement::FormDataElement(const FormDataElement&) = default;
++FormDataElement::FormDataElement(FormDataElement&&) = default;
++FormDataElement::~FormDataElement() = default;
++FormDataElement& FormDataElement::operator=(const FormDataElement&) = default;
++FormDataElement& FormDataElement::operator=(FormDataElement&&) = default;
++
++bool operator==(const FormDataElement& a, const FormDataElement& b) {
++  if (&a == &b)
++    return true;
++
++  if (a.type_ != b.type_)
++    return false;
++  if (a.type_ == FormDataElement::kData)
++    return a.data_ == b.data_;
++  if (a.type_ == FormDataElement::kEncodedFile) {
++    return a.filename_ == b.filename_ && a.file_start_ == b.file_start_ &&
++           a.file_length_ == b.file_length_ &&
++           a.expected_file_modification_time_ ==
++               b.expected_file_modification_time_;
++  }
++  if (a.type_ == FormDataElement::kEncodedBlob)
++    return a.blob_uuid_ == b.blob_uuid_;
++  if (a.type_ == FormDataElement::kDataPipe)
++    return a.data_pipe_getter_ == b.data_pipe_getter_;
++
++  return true;
++}
++
+ inline EncodedFormData::EncodedFormData()
+     : identifier_(0), contains_password_data_(false) {}
+ 
+diff --git a/third_party/blink/renderer/platform/network/encoded_form_data.h b/third_party/blink/renderer/platform/network/encoded_form_data.h
+index 6a3075b..e51137d 100644
+--- a/third_party/blink/renderer/platform/network/encoded_form_data.h
++++ b/third_party/blink/renderer/platform/network/encoded_form_data.h
+@@ -20,8 +20,16 @@
+ #ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_ENCODED_FORM_DATA_H_
+ #define THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_ENCODED_FORM_DATA_H_
+ 
++// This file is required via encoded_form_data.typemap. To avoid build
++// circularity issues, it should not transitively include anything that is
++// generated from a mojom_blink target.
++//
++// This requires some gymnastics below, to explicitly forward-declare the
++// required types without reference to the generator output headers.
++
+ #include <utility>
+ 
++#include "mojo/public/cpp/bindings/struct_traits.h"
+ #include "third_party/blink/renderer/platform/blob/blob_data.h"
+ #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+ #include "third_party/blink/renderer/platform/wtf/allocator.h"
+@@ -30,61 +38,38 @@
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ 
+-#include "services/network/public/mojom/data_pipe_getter.mojom-blink.h"
+-
+ namespace network {
+ namespace mojom {
+ class URLRequestBodyDataView;
+-}
++}  // namespace mojom
+ }  // namespace network
+ 
+ namespace blink {
+ 
+ class BlobDataHandle;
+-
+-// Refcounted wrapper around a DataPipeGetter to allow sharing the move-only
+-// type. This is only needed so EncodedFormData/FormDataElement have a copy
+-// constructor.
+-class PLATFORM_EXPORT WrappedDataPipeGetter final
+-    : public RefCounted<WrappedDataPipeGetter> {
+- public:
+-  explicit WrappedDataPipeGetter(
+-      network::mojom::blink::DataPipeGetterPtr data_pipe_getter)
+-      : data_pipe_getter_(std::move(data_pipe_getter)) {}
+-  ~WrappedDataPipeGetter() = default;
+-
+-  network::mojom::blink::DataPipeGetterPtr* GetPtr() {
+-    return &data_pipe_getter_;
+-  }
+-
+- private:
+-  network::mojom::blink::DataPipeGetterPtr data_pipe_getter_;
+-};
++class WrappedDataPipeGetter;
+ 
+ class PLATFORM_EXPORT FormDataElement final {
+   DISALLOW_NEW();
+ 
+  public:
+-  FormDataElement() : type_(kData) {}
+-  explicit FormDataElement(const Vector<char>& array)
+-      : type_(kData), data_(array) {}
++  FormDataElement();
++  explicit FormDataElement(const Vector<char>&);
+   FormDataElement(const String& filename,
+                   int64_t file_start,
+                   int64_t file_length,
+-                  double expected_file_modification_time)
+-      : type_(kEncodedFile),
+-        filename_(filename),
+-        file_start_(file_start),
+-        file_length_(file_length),
+-        expected_file_modification_time_(expected_file_modification_time) {}
++                  double expected_file_modification_time);
+   FormDataElement(const String& blob_uuid,
+-                  scoped_refptr<BlobDataHandle> optional_handle)
+-      : type_(kEncodedBlob),
+-        blob_uuid_(blob_uuid),
+-        optional_blob_data_handle_(std::move(optional_handle)) {}
+-  explicit FormDataElement(
+-      scoped_refptr<WrappedDataPipeGetter> data_pipe_getter)
+-      : type_(kDataPipe), data_pipe_getter_(std::move(data_pipe_getter)) {}
++                  scoped_refptr<BlobDataHandle> optional_handle);
++  explicit FormDataElement(scoped_refptr<WrappedDataPipeGetter>);
++
++  FormDataElement(const FormDataElement&);
++  FormDataElement(FormDataElement&&);
++
++  ~FormDataElement();
++
++  FormDataElement& operator=(const FormDataElement&);
++  FormDataElement& operator=(FormDataElement&&);
+ 
+   bool IsSafeToSendToAnotherThread() const;
+ 
+@@ -99,26 +84,8 @@
+   scoped_refptr<WrappedDataPipeGetter> data_pipe_getter_;
+ };
+ 
+-inline bool operator==(const FormDataElement& a, const FormDataElement& b) {
+-  if (&a == &b)
+-    return true;
+-
+-  if (a.type_ != b.type_)
+-    return false;
+-  if (a.type_ == FormDataElement::kData)
+-    return a.data_ == b.data_;
+-  if (a.type_ == FormDataElement::kEncodedFile)
+-    return a.filename_ == b.filename_ && a.file_start_ == b.file_start_ &&
+-           a.file_length_ == b.file_length_ &&
+-           a.expected_file_modification_time_ ==
+-               b.expected_file_modification_time_;
+-  if (a.type_ == FormDataElement::kEncodedBlob)
+-    return a.blob_uuid_ == b.blob_uuid_;
+-  if (a.type_ == FormDataElement::kDataPipe)
+-    return a.data_pipe_getter_ == b.data_pipe_getter_;
+-
+-  return true;
+-}
++PLATFORM_EXPORT bool operator==(const FormDataElement& a,
++                                const FormDataElement& b);
+ 
+ inline bool operator!=(const FormDataElement& a, const FormDataElement& b) {
+   return !(a == b);
+diff --git a/third_party/blink/renderer/platform/network/encoded_form_data_mojom_traits.cc b/third_party/blink/renderer/platform/network/encoded_form_data_mojom_traits.cc
+index d449da7..02c7cbc 100644
+--- a/third_party/blink/renderer/platform/network/encoded_form_data_mojom_traits.cc
++++ b/third_party/blink/renderer/platform/network/encoded_form_data_mojom_traits.cc
+@@ -12,9 +12,11 @@
+ #include "mojo/public/cpp/bindings/array_traits_wtf_vector.h"
+ #include "mojo/public/cpp/bindings/string_traits_wtf.h"
+ #include "services/network/public/mojom/data_pipe_getter.mojom-blink.h"
++#include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+ #include "third_party/blink/public/mojom/blob/blob_registry.mojom-blink.h"
+ #include "third_party/blink/public/platform/interface_provider.h"
+ #include "third_party/blink/public/platform/platform.h"
++#include "third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h"
+ 
+ namespace mojo {
+ 
+diff --git a/third_party/blink/renderer/platform/network/encoded_form_data_test.cc b/third_party/blink/renderer/platform/network/encoded_form_data_test.cc
+index ba3e7e1..c71f053 100644
+--- a/third_party/blink/renderer/platform/network/encoded_form_data_test.cc
++++ b/third_party/blink/renderer/platform/network/encoded_form_data_test.cc
+@@ -16,6 +16,7 @@
+ #include "third_party/blink/public/mojom/blob/blob.mojom-blink.h"
+ #include "third_party/blink/renderer/platform/network/encoded_form_data.h"
+ #include "third_party/blink/renderer/platform/network/encoded_form_data_mojom_traits.h"
++#include "third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h"
+ 
+ #include "testing/gtest/include/gtest/gtest.h"
+ 
+diff --git a/third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h b/third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h
+new file mode 100644
+index 0000000..f50bf14
+--- /dev/null
++++ b/third_party/blink/renderer/platform/network/wrapped_data_pipe_getter.h
+@@ -0,0 +1,35 @@
++// Copyright 2019 The Chromium Authors. All rights reserved.
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#ifndef THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_WRAPPED_DATA_PIPE_GETTER_H_
++#define THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_WRAPPED_DATA_PIPE_GETTER_H_
++
++#include "third_party/blink/renderer/platform/platform_export.h"
++
++#include "services/network/public/mojom/data_pipe_getter.mojom-blink.h"
++
++namespace blink {
++
++// Refcounted wrapper around a DataPipeGetter to allow sharing the move-only
++// type. This is only needed so EncodedFormData/FormDataElement have a copy
++// constructor.
++class PLATFORM_EXPORT WrappedDataPipeGetter final
++    : public RefCounted<WrappedDataPipeGetter> {
++ public:
++  explicit WrappedDataPipeGetter(
++      network::mojom::blink::DataPipeGetterPtr data_pipe_getter)
++      : data_pipe_getter_(std::move(data_pipe_getter)) {}
++  ~WrappedDataPipeGetter() = default;
++
++  network::mojom::blink::DataPipeGetterPtr* GetPtr() {
++    return &data_pipe_getter_;
++  }
++
++ private:
++  network::mojom::blink::DataPipeGetterPtr data_pipe_getter_;
++};
++
++}  // namespace blink
++
++#endif  // THIRD_PARTY_BLINK_RENDERER_PLATFORM_NETWORK_WRAPPED_DATA_PIPE_GETTER_H_

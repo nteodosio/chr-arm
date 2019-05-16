@@ -16,3 +16,4 @@ add-missing-cstddef-include.patch
 gn-no-last-commit-position.patch
 clang-build-only-needed-targets.patch
 chromedriver-snap-compatibility.patch
+fix-mojom-circular-deps.patch
