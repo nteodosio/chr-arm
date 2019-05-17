@@ -17,3 +17,4 @@ fix-ffmpeg-ia32-build.patch
 gn-no-last-commit-position.patch
 clang-build-only-needed-targets.patch
 chromedriver-snap-compatibility.patch
+revert-gn-4960.patch
