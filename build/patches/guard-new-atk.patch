@@ -1,0 +1,165 @@
+From 2dac378d588924287aa903168318ff6d44b9b158 Mon Sep 17 00:00:00 2001
+From: Daniel Bratell <bratell@opera.com>
+Date: Fri, 17 May 2019 07:01:34 +0000
+Subject: [PATCH] Guard some accessibility code that requires a newer atk lib
+
+On some development platforms (like Ubuntu 16.04 LTS), newer
+atk libraries are not available so code need to be optional.
+
+For production builds a sysroot with all the required libraries
+must be used.
+
+This adds checks for Atk 2.30 to some places, and changes the
+ifdef style to be the same in all checks.
+
+Change-Id: Iec48dd31774a5ba148a71ecb545befe4339d860c
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/1614205
+Auto-Submit: Daniel Bratell <bratell@opera.com>
+Commit-Queue: Martin Robinson <mrobinson@igalia.com>
+Reviewed-by: Martin Robinson <mrobinson@igalia.com>
+Cr-Commit-Position: refs/heads/master@{#660750}
+---
+
+diff --git a/ui/accessibility/platform/ax_platform_node_auralinux.cc b/ui/accessibility/platform/ax_platform_node_auralinux.cc
+index d6d0abd..66043e4 100644
+--- a/ui/accessibility/platform/ax_platform_node_auralinux.cc
++++ b/ui/accessibility/platform/ax_platform_node_auralinux.cc
+@@ -36,6 +36,10 @@
+ #include "ui/accessibility/platform/ax_platform_text_boundary.h"
+ #include "ui/gfx/geometry/rect_conversions.h"
+ 
++#if defined(ATK_CHECK_VERSION) && ATK_CHECK_VERSION(2, 10, 0)
++#define ATK_210
++#endif
++
+ #if defined(ATK_CHECK_VERSION) && ATK_CHECK_VERSION(2, 12, 0)
+ #define ATK_212
+ #endif
+@@ -232,12 +236,12 @@
+       return AXCoordinateSystem::kScreen;
+     case ATK_XY_WINDOW:
+       return AXCoordinateSystem::kRootFrame;
+-#ifdef ATK_230
++#if defined(ATK_230)
+     case ATK_XY_PARENT:
+       // AXCoordinateSystem does not support parent coordinates.
+       NOTIMPLEMENTED();
+       return AXCoordinateSystem::kFrame;
+-#endif  // ATK_230
++#endif
+     default:
+       return AXCoordinateSystem::kScreen;
+   }
+@@ -548,7 +552,7 @@
+   return obj->GrabFocus();
+ }
+ 
+-#if ATK_CHECK_VERSION(2, 30, 0)
++#if defined(ATK_230)
+ gboolean ScrollTo(AtkComponent* component, AtkScrollType scroll_type) {
+   AXPlatformNodeAuraLinux* obj =
+       AtkObjectToAXPlatformNodeAuraLinux(ATK_OBJECT(component));
+@@ -586,7 +590,7 @@
+   iface->get_size = GetSize;
+   iface->ref_accessible_at_point = RefAccesibleAtPoint;
+   iface->grab_focus = GrabFocus;
+-#if ATK_CHECK_VERSION(2, 30, 0)
++#if defined(ATK_230)
+   if (SupportsAtkComponentScrollingInterface()) {
+     iface->scroll_to = ScrollTo;
+     iface->scroll_to_point = ScrollToPoint;
+@@ -1179,7 +1183,7 @@
+   return SetSelection(atk_text, 0, start_offset, end_offset);
+ }
+ 
+-#if ATK_CHECK_VERSION(2, 10, 0)
++#if defined(ATK_210)
+ char* GetStringAtOffset(AtkText* atk_text,
+                         int offset,
+                         AtkTextGranularity atk_granularity,
+@@ -1196,7 +1200,7 @@
+   return GetTextWithBoundaryType(atk_text, offset, boundary, start_offset,
+                                  end_offset);
+ }
+-#endif  // ATK_CHECK_VERSION(2, 10, 0)
++#endif
+ 
+ gfx::Rect GetUnclippedParentHypertextRangeBoundsRect(
+     AXPlatformNodeDelegate* ax_platform_node_delegate,
+@@ -1234,7 +1238,7 @@
+       AtkObjectToAXPlatformNodeAuraLinux(ATK_OBJECT(atk_text));
+   if (obj) {
+     switch (coordinate_type) {
+-#ifdef ATK_230
++#if defined(ATK_230)
+       case ATK_XY_PARENT:
+         rect = GetUnclippedParentHypertextRangeBoundsRect(obj->GetDelegate(),
+                                                           offset, offset + 1);
+@@ -1273,7 +1277,7 @@
+       AtkObjectToAXPlatformNodeAuraLinux(ATK_OBJECT(atk_text));
+   if (obj) {
+     switch (coordinate_type) {
+-#ifdef ATK_230
++#if defined(ATK_230)
+       case ATK_XY_PARENT:
+         rect = GetUnclippedParentHypertextRangeBoundsRect(
+             obj->GetDelegate(), start_offset, end_offset);
+@@ -1313,7 +1317,7 @@
+   iface->remove_selection = RemoveSelection;
+   iface->set_selection = SetSelection;
+ 
+-#if ATK_CHECK_VERSION(2, 10, 0)
++#if defined(ATK_210)
+   iface->get_string_at_offset = GetStringAtOffset;
+ #endif
+ }
+@@ -1774,7 +1778,7 @@
+ 
+ }  // namespace atk_table_cell
+ 
+-#endif  // ifdef ATK_212
++#endif  // ATK_212
+ 
+ namespace atk_object {
+ 
+@@ -3790,9 +3794,11 @@
+     case ATK_XY_WINDOW:
+       scroll_to += GetParentFrameOriginInScreenCoordinates();
+       break;
++#if defined(ATK_230)
+     case ATK_XY_PARENT:
+       scroll_to += GetParentOriginInScreenCoordinates();
+       break;
++#endif
+   }
+ 
+   ui::AXActionData action_data;
+@@ -3814,6 +3820,7 @@
+   return document;
+ }
+ 
++#if defined(ATK_230)
+ base::Optional<gfx::Point> AXPlatformNodeAuraLinux::CalculateScrollToPoint(
+     AtkScrollType scroll_type) {
+   AXPlatformNodeAuraLinux* document = FindTopmostDocumentAncestor();
+@@ -3846,5 +3853,6 @@
+   NOTREACHED();
+   return base::nullopt;
+ }
++#endif
+ 
+ }  // namespace ui
+diff --git a/ui/accessibility/platform/ax_platform_node_auralinux.h b/ui/accessibility/platform/ax_platform_node_auralinux.h
+index 60b1b45..bd059da 100644
+--- a/ui/accessibility/platform/ax_platform_node_auralinux.h
++++ b/ui/accessibility/platform/ax_platform_node_auralinux.h
+@@ -78,7 +78,9 @@
+   AtkHyperlink* GetAtkHyperlink();
+ 
+   void ScrollToPoint(AtkCoordType atk_coord_type, int x, int y);
++#if defined(ATK_CHECK_VERSION) && ATK_CHECK_VERSION(2, 30, 0)
+   base::Optional<gfx::Point> CalculateScrollToPoint(AtkScrollType scroll_type);
++#endif  // ATK_230
+ 
+   // Misc helpers
+   void GetFloatAttributeInGValue(ax::mojom::FloatAttribute attr, GValue* value);
