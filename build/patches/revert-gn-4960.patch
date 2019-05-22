@@ -2,7 +2,7 @@ Description: revert https://gn.googlesource.com/gn/+/0d038c2e0a32a528713d3dfaf1f
 
 --- a/tools/gn/build/gen.py
 +++ b/tools/gn/build/gen.py
-@@ -520,6 +520,7 @@ def WriteGNNinja(path, platform, host, o
+@@ -522,6 +522,7 @@ def WriteGNNinja(path, platform, host, o
          'tools/gn/setup.cc',
          'tools/gn/source_dir.cc',
          'tools/gn/source_file.cc',
