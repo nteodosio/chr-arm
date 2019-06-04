@@ -14,7 +14,7 @@ if __name__ == '__main__':
     options.add_argument("headless")
     driver_path = "/snap/bin/chromium.chromedriver"
     driver = webdriver.Chrome(executable_path=driver_path, options=options)
-    version = driver.capabilities['version']
+    version = driver.capabilities['browserVersion']
 
     client = Snapd.Client()
     snap = client.get_snap_sync("chromium")
