@@ -142,6 +142,7 @@ parts:
       - libgl1-mesa-glx
       - libgtk-3-0
       - libnss3
+      - libsecret-1-0
       - libxss1
       - pulseaudio
       - shared-mime-info
