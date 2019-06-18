@@ -1,5 +1,5 @@
 name: chromium
-version: 75.0.3770.90
+version: 76.0.3809.25
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -93,8 +93,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-75.0.3770.90.tar.xz
-    source-checksum: sha512/5956ad1cf342f143c0587299bdd5497acfc958975e5b4878731c40e0e5db58280ea8b36ca077cafce7e812510356de57872f37753cb92de5258cb24578d2c327
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-76.0.3809.25.tar.xz
+    source-checksum: sha512/03f0d7ab5e127a319c393373ad456b4ee7307fce8dd9ab84ea51012b93e200583a3e4ab7a48414d23823af08f09bd1240a990509ba18a3f5a21ee522e1bc45f0
     after: [chromium-build, gtk3-locales, launcher]
     build-packages:
       - quilt
@@ -161,7 +161,7 @@ parts:
         cd buildtools/third_party/eu-strip
         ./build.sh
         cd ../../..
-        tools/clang/scripts/update.py --force-local-build --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
+        tools/clang/scripts/build.py --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
       # Build GN

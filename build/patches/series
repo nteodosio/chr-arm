@@ -13,7 +13,6 @@ enable-chromecast-by-default.patch
 define__libc_malloc.patch
 set-rpath-on-chromium-executables.patch
 add-missing-cstddef-include.patch
-fix-ffmpeg-ia32-build.patch
 gn-no-last-commit-position.patch
 clang-build-only-needed-targets.patch
 chromedriver-snap-compatibility.patch
