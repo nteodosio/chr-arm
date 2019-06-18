@@ -53,7 +53,7 @@ fi
 # Ref: https://launchpad.net/bugs/1771162
 FLASHSO=$SNAP_USER_DATA/.local/lib/libpepflashplayer.so
 if [ -e $FLASHSO ]; then
-  FLASHVERSION=$(strings $FLASHSO 2> /dev/null | grep LNX | cut -d ' ' -f 2 | sed -e "s/,/./g")
+  FLASHVERSION=$(grep -a -z LNX $FLASHSO | cut -d ' ' -f 2 | sed -e "s/,/./g")
   FLASH_OPTIONS="--ppapi-flash-path=$FLASHSO --ppapi-flash-version=$FLASHVERSION"
 fi
 
