@@ -1,6 +1,7 @@
 Description: overwrite the binary location of the chromium executable in the
- options passed to chromedriver, if it is set to /usr/bin/chromium-browser
- (because the snap version cannot see the chromium executable there). This is
+ options passed to chromedriver, to ensure the snapped version is used (because
+ a strictly confined chromedriver cannot see chromium at e.g.
+ /usr/bin/chromium-browser, even when that is a wrapper for the snap). This is
  for compatibility with existing chromedriver scripts. Newly written scripts
  should simply not specify a binary location and let chromedriver find it
  automatically.
@@ -17,3 +18,18 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    if (program.empty()) {
      if (!FindChrome(&program))
        return Status(kUnknownError, "cannot find Chrome binary");
+--- a/chrome/test/chromedriver/chrome/chrome_finder.cc
++++ b/chrome/test/chromedriver/chrome/chrome_finder.cc
+@@ -129,6 +129,12 @@ void GetApplicationDirs(std::vector<base
+ #endif
+ 
+ bool FindChrome(base::FilePath* browser_exe) {
++  *browser_exe = base::FilePath("/snap/chromium/current/command-chromium.wrapper");
++  if (base::PathExists(*browser_exe))
++    return true;
++  else
++    browser_exe->clear();
++
+   base::FilePath browser_exes_array[] = {
+ #if defined(OS_WIN)
+       base::FilePath(L"chrome.exe")
