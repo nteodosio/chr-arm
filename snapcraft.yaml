@@ -147,7 +147,6 @@ parts:
       - pulseaudio
       - shared-mime-info
       - ubuntu-settings
-    build-attributes: [ no-system-libraries ]
     override-build: |
       set -eux
 
