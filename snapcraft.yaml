@@ -14,6 +14,7 @@ apps:
     environment:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
+      TMPDIR: $XDG_RUNTIME_DIR
     plugs:
       - camera
       - cups-control
