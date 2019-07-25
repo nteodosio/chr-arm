@@ -45,11 +45,9 @@ Commit-Queue: Abhishek Arya <inferno@chromium.org>
 Cr-Commit-Position: refs/heads/master@{#665020}
 ---
 
-diff --git a/tools/clang/scripts/build.py b/tools/clang/scripts/build.py
-index 7849efd0..1f29fb6 100755
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -443,16 +443,16 @@
+@@ -443,16 +443,16 @@ def main():
        # libraries are needed though, and only libclang_rt (i.e.
        # COMPILER_RT_BUILD_BUILTINS).
        bootstrap_args.extend([
@@ -76,7 +74,7 @@ index 7849efd0..1f29fb6 100755
            ])
      if cc is not None:  bootstrap_args.append('-DCMAKE_C_COMPILER=' + cc)
      if cxx is not None: bootstrap_args.append('-DCMAKE_CXX_COMPILER=' + cxx)
-@@ -480,33 +480,27 @@
+@@ -480,33 +480,27 @@ def main():
  
  
    compiler_rt_args = [
@@ -123,7 +121,7 @@ index 7849efd0..1f29fb6 100755
  
    # LLVM uses C++11 starting in llvm 3.5. On Linux, this means libstdc++4.7+ is
    # needed, on OS X it requires libc++. clang only automatically links to libc++
-@@ -641,7 +635,8 @@
+@@ -641,7 +635,8 @@ def main():
    rt_lib_dst_dir = os.path.join(LLVM_BUILD_DIR, 'lib', 'clang',
                                  RELEASE_VERSION, 'lib', platform)
  
@@ -133,7 +131,7 @@ index 7849efd0..1f29fb6 100755
    if sys.platform == 'win32':
      if os.path.isdir(COMPILER_RT_BUILD_DIR):
        RmTree(COMPILER_RT_BUILD_DIR)
-@@ -651,17 +646,10 @@
+@@ -651,17 +646,10 @@ def main():
        # The bootstrap compiler produces 64-bit binaries by default.
        cflags += ['-m32']
        cxxflags += ['-m32']
@@ -153,7 +151,7 @@ index 7849efd0..1f29fb6 100755
      RunCommand(['cmake'] + compiler_rt_args +
                 [os.path.join(LLVM_DIR, 'llvm')],
                 msvc_arch='x86', env=deployment_env)
-@@ -670,6 +658,9 @@
+@@ -670,6 +658,9 @@ def main():
      # Copy select output to the main tree.
      rt_lib_src_dir = os.path.join(COMPILER_RT_BUILD_DIR, 'lib', 'clang',
                                    RELEASE_VERSION, 'lib', platform)
@@ -163,11 +161,9 @@ index 7849efd0..1f29fb6 100755
      # Static and dynamic libraries:
      CopyDirectoryContents(rt_lib_src_dir, rt_lib_dst_dir)
  
-diff --git a/tools/clang/scripts/package.py b/tools/clang/scripts/package.py
-index 0af8d16..ae8a0fd 100755
 --- a/tools/clang/scripts/package.py
 +++ b/tools/clang/scripts/package.py
-@@ -260,10 +260,12 @@
+@@ -260,10 +260,12 @@ def main():
        'bin/llvm-ar',
  
        # AddressSanitizer C runtime (pure C won't link with *_cxx).
@@ -180,7 +176,7 @@ index 0af8d16..ae8a0fd 100755
        'lib/clang/$V/lib/linux/libclang_rt.asan_cxx-x86_64.a',
        'lib/clang/$V/lib/linux/libclang_rt.asan_cxx-x86_64.a.syms',
  
-@@ -287,6 +289,7 @@
+@@ -287,6 +289,7 @@ def main():
        'lib/clang/$V/lib/linux/libclang_rt.msan_cxx-x86_64.a.syms',
  
        # Profile runtime (used by profiler and code coverage).
@@ -188,7 +184,7 @@ index 0af8d16..ae8a0fd 100755
        'lib/clang/$V/lib/linux/libclang_rt.profile-x86_64.a',
        'lib/clang/$V/lib/linux/libclang_rt.profile-aarch64-android.a',
        'lib/clang/$V/lib/linux/libclang_rt.profile-arm-android.a',
-@@ -300,10 +303,12 @@
+@@ -300,10 +303,12 @@ def main():
        'lib/clang/$V/lib/linux/libclang_rt.tsan_cxx-x86_64.a.syms',
  
        # UndefinedBehaviorSanitizer C runtime (pure C won't link with *_cxx).
@@ -201,7 +197,7 @@ index 0af8d16..ae8a0fd 100755
        'lib/clang/$V/lib/linux/libclang_rt.ubsan_standalone_cxx-x86_64.a',
        'lib/clang/$V/lib/linux/libclang_rt.ubsan_standalone_cxx-x86_64.a.syms',
  
-@@ -317,22 +322,28 @@
+@@ -317,22 +322,28 @@ def main():
    elif sys.platform == 'win32':
      want.extend([
        # AddressSanitizer C runtime (pure C won't link with *_cxx).
@@ -230,7 +226,7 @@ index 0af8d16..ae8a0fd 100755
        'lib/clang/$V/lib/windows/clang_rt.asan_dynamic_runtime_thunk-x86_64.lib',
  
        # Profile runtime (used by profiler and code coverage).
-@@ -340,9 +351,11 @@
+@@ -340,9 +351,11 @@ def main():
        'lib/clang/$V/lib/windows/clang_rt.profile-x86_64.lib',
  
        # UndefinedBehaviorSanitizer C runtime (pure C won't link with *_cxx).
@@ -242,11 +238,9 @@ index 0af8d16..ae8a0fd 100755
        'lib/clang/$V/lib/windows/clang_rt.ubsan_standalone_cxx-x86_64.lib',
      ])
  
-diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
-index 082dc5e..ca65631 100755
 --- a/tools/clang/scripts/update.py
 +++ b/tools/clang/scripts/update.py
-@@ -38,7 +38,7 @@
+@@ -38,7 +38,7 @@ import zipfile
  # Reverting problematic clang rolls is safe, though.
  CLANG_REVISION = '67510fac36d27b2e22c7cd955fc167136b737b93'
  CLANG_SVN_REVISION = '361212'
