@@ -3,8 +3,8 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -261,6 +261,15 @@ def VerifyVersionOfBuiltClangMatchesVERS
-     sys.exit(1)
+@@ -302,6 +302,15 @@ def CopyLibstdcpp(args, build_dir):
+     CopyFile(libstdcpp, os.path.join(build_dir, d))
  
  
 +def DownloadPGOTrainingFile():
@@ -19,7 +19,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -337,6 +346,9 @@ def main():
+@@ -389,6 +398,9 @@ def main():
      print('for general Fuchsia build instructions.')
      return 1
  
@@ -29,7 +29,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    # The gnuwin package also includes curl, which is needed to interact with the
    # github API below.
-@@ -548,8 +560,7 @@ def main():
+@@ -631,8 +643,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'
