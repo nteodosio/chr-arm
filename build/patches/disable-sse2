@@ -309,7 +309,7 @@ debian-bug: http://bugs.debian.org/750361
    auto number_of_values = current_state.number_of_values;
  #endif
    auto fill_to_frame = current_state.fill_to_frame;
-@@ -1614,7 +1614,7 @@ std::tuple<size_t, float, unsigned> Audi
+@@ -1615,7 +1615,7 @@ std::tuple<size_t, float, unsigned> Audi
      for (; write_index < fill_to_frame; ++write_index)
        values[write_index] = target;
    } else {
@@ -318,7 +318,7 @@ debian-bug: http://bugs.debian.org/750361
      if (fill_to_frame > write_index) {
        // Resolve recursion by expanding constants to achieve a 4-step
        // loop unrolling.
-@@ -1748,7 +1748,7 @@ std::tuple<size_t, float, unsigned> Audi
+@@ -1749,7 +1749,7 @@ std::tuple<size_t, float, unsigned> Audi
    // Oversampled curve data can be provided if sharp discontinuities are
    // desired.
    unsigned k = 0;
