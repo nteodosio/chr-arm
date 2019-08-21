@@ -19,7 +19,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -370,6 +379,9 @@ def main():
+@@ -379,6 +388,9 @@ def main():
      print('for general Fuchsia build instructions.')
      return 1
  
@@ -29,7 +29,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    # The gnuwin package also includes curl, which is needed to interact with the
    # github API below.
-@@ -614,8 +626,7 @@ def main():
+@@ -623,8 +635,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'

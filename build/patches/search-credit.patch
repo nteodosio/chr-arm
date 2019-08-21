@@ -3,7 +3,7 @@ Author: Chad Miller <chad.miller@canonical.com>
 
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
-@@ -52,7 +52,7 @@
+@@ -48,7 +48,7 @@
        "name": "\u767e\u5ea6",
        "keyword": "baidu.com",
        "favicon_url": "https://www.baidu.com/favicon.ico",
@@ -12,7 +12,7 @@ Author: Chad Miller <chad.miller@canonical.com>
        "alternate_urls": [
          "https://www.baidu.com/s?ie={inputEncoding}&wd={searchTerms}",
          "https://www.baidu.com/s?ie={inputEncoding}&word={searchTerms}",
-@@ -99,7 +99,7 @@
+@@ -95,7 +95,7 @@
        "name": "DuckDuckGo",
        "keyword": "duckduckgo.com",
        "favicon_url": "https://duckduckgo.com/favicon.ico",
