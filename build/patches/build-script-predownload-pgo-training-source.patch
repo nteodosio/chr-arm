@@ -1,0 +1,41 @@
+Description: Download the PGO training file earlier in the build sequence, because Launchpad builders have a timeout for how long they are allowed to access the internet (through a proxy) starting from the start of the build.
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/tools/clang/scripts/build.py
++++ b/tools/clang/scripts/build.py
+@@ -302,6 +302,15 @@ def CopyLibstdcpp(args, build_dir):
+     CopyFile(libstdcpp, os.path.join(build_dir, d))
+ 
+ 
++def DownloadPGOTrainingFile():
++  curdir = os.getcwd()
++  os.chdir(THIRD_PARTY_DIR)
++  training_source = 'pgo_training-1.ii'
++  with open(training_source, 'w') as f:
++    DownloadUrl(CDS_URL + '/' + training_source, f)
++  os.chdir(curdir)
++
++
+ def gn_arg(v):
+   if v == 'True':
+     return True
+@@ -389,6 +398,9 @@ def main():
+     print('for general Fuchsia build instructions.')
+     return 1
+ 
++  if args.pgo:
++    DownloadPGOTrainingFile()
++
+ 
+   # The gnuwin package also includes curl, which is needed to interact with the
+   # github API below.
+@@ -637,8 +649,7 @@ def main():
+     # from PGO as well. Perhaps the training could be done asynchronously by
+     # dedicated buildbots that upload profiles to the cloud.
+     training_source = 'pgo_training-1.ii'
+-    with open(training_source, 'w') as f:
+-      DownloadUrl(CDS_URL + '/' + training_source, f)
++    shutil.copy(os.path.join(THIRD_PARTY_DIR, training_source), os.getcwd())
+     train_cmd = [os.path.join(LLVM_INSTRUMENTED_DIR, 'bin', 'clang++'),
+                 '-target', 'x86_64-unknown-unknown', '-O2', '-g', '-std=c++14',
+                  '-fno-exceptions', '-fno-rtti', '-w', '-c', training_source]
