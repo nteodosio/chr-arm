@@ -1,5 +1,5 @@
---- a/build/config/allocator.gni
-+++ b/build/config/allocator.gni
+--- a/base/allocator/allocator.gni
++++ b/base/allocator/allocator.gni
 @@ -9,7 +9,7 @@ if (is_android || is_mac || is_ios || is
      is_msan || is_win || is_fuchsia || (is_linux && target_cpu == "arm64")) {
    _default_allocator = "none"
