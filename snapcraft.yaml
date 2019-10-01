@@ -15,6 +15,8 @@ apps:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
     plugs:
+      - audio-playback
+      - audio-record
       - camera
       - cups-control
       - desktop
@@ -25,7 +27,6 @@ apps:
       - network-manager
       - opengl
       - password-manager-service
-      - pulseaudio
       - removable-media
       - screen-inhibit-control
       - u2f-devices
@@ -38,6 +39,8 @@ apps:
       - network-bind
       # + all the plugs required by chromium, so that when chromedriver
       # executes chromium it inherits the correct set of permissions
+      - audio-playback
+      - audio-record
       - camera
       - cups-control
       - desktop
@@ -48,7 +51,6 @@ apps:
       - network-manager
       - opengl
       - password-manager-service
-      - pulseaudio
       - removable-media
       - screen-inhibit-control
       - u2f-devices
