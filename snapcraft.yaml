@@ -78,7 +78,7 @@ plugs:
     default-provider: gtk-common-themes
   chromium-config:
     interface: personal-files
-    read: [$HOME/.config/chromium]
+    read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
 
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
