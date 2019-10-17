@@ -70,4 +70,21 @@ export CHROME_VERSION_EXTRA=snap
 # deb package (https://launchpad.net/bugs/1837746)
 test -f $REALHOME/.chromium-browser.init && . $REALHOME/.chromium-browser.init
 
-exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$CHROMIUM_FLAGS" "$@"
+WANT_TEMP_PROFILE=0
+for arg in "$@"; do
+  shift
+  if [ "$arg" = "--temp-profile" ]; then
+    WANT_TEMP_PROFILE=1
+    continue
+  fi
+  set -- "$@" "$arg"
+done
+
+if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
+  exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$CHROMIUM_FLAGS" "$@"
+else
+  TEMP_PROFILE=$(mktemp -d)
+  trap "rm -rf $TEMP_PROFILE" EXIT
+  # we can't exec here as we need to clean-up the temporary profile
+  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$CHROMIUM_FLAGS" "$@"
+fi
