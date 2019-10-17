@@ -65,4 +65,21 @@ fi
 # Custom version string for chrome://version
 export CHROME_VERSION_EXTRA=snap
 
-exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$@"
+WANT_TEMP_PROFILE=0
+for arg in "$@"; do
+  shift
+  if [ "$arg" = "--temp-profile" ]; then
+    WANT_TEMP_PROFILE=1
+    continue
+  fi
+  set -- "$@" "$arg"
+done
+
+if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
+  exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$@"
+else
+  TEMP_PROFILE=$(mktemp -d)
+  trap "rm -rf $TEMP_PROFILE" EXIT
+  # we can't exec here as we need to clean-up the temporary profile
+  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$@"
+fi
