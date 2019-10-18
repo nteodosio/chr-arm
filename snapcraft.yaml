@@ -80,6 +80,10 @@ plugs:
     interface: personal-files
     read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
 
+layout:
+  /usr/lib/man-db:
+    bind: $SNAP/usr/lib/man-db
+
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
   # the internet (through a proxy) starting from the start of the build.
@@ -115,6 +119,8 @@ parts:
       - gperf
       - subversion
       - cmake
+      - sed
+      - gzip
       - default-jre-headless
       - libxml2-dev
       - libpulse-dev
@@ -206,6 +212,16 @@ parts:
       # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
       chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome-sandbox
 
+      # Generate and install the man page (see the "manpage" part)
+      mkdir -p $SNAPCRAFT_PART_INSTALL/man1
+      sed \
+          -e "s/@@PACKAGE@@/chromium/g" \
+          -e "s/@@MENUNAME@@/chromium/g" \
+          -e "s:\$HOME/.config:\$SNAP_USER_DATA/.config:g" \
+          -e "s:\$HOME/.cache:\$SNAP_USER_COMMON/.cache:g" \
+          chrome/app/resources/manpage.1.in > $SNAPCRAFT_PART_INSTALL/man1/chrome.1
+      gzip -9n $SNAPCRAFT_PART_INSTALL/man1/chrome.1
+
       # Add data-dir mount layout to the snap as a temporary workaround until
       # https://github.com/snapcore/snapd/pull/5395 lands in snapd.
       mkdir -p $SNAPCRAFT_PART_INSTALL/data-dir/icons
@@ -253,8 +269,19 @@ parts:
     organize:
       '*': tests/
 
+  # Stage packages required for the "man" binary, which is invoked when
+  # chromium is called with the "-h" (or "--help") argument
+  # (see https://launchpad.net/bugs/1848083).
+  manpage:
+    plugin: nil
+    stage-packages:
+      - groff-base
+      - libgdbm5
+      - libpipeline1
+      - man-db
+
   shared-mime-info:
-    after: [launcher, chromium]
+    after: [launcher, chromium, manpage]
     plugin: nil
     override-pull: ""
     override-prime: |
@@ -264,7 +291,7 @@ parts:
 
       # Remove unneeded stage files to save space
       cd usr/share
-      rm -rf apport bash-completion bug doc doc-base icons lintian man pam-configs pkgconfig themes upstart zsh
+      rm -rf apport bash-completion bug doc doc-base icons lintian man man-db pam-configs pkgconfig themes upstart zsh
 
   # In Ubuntu compiled locales for GTK are installed by langpacks, not by
   # libgtk-3-common. Fetch all the langpacks and keep only the GTK locales.
