@@ -219,7 +219,8 @@ parts:
           -e "s/@@MENUNAME@@/chromium/g" \
           -e "s:\$HOME/.config:\$SNAP_USER_DATA/.config:g" \
           -e "s:\$HOME/.cache:\$SNAP_USER_COMMON/.cache:g" \
-          chrome/app/resources/manpage.1.in > $SNAPCRAFT_PART_INSTALL/man1/chrome.1
+          $SNAPCRAFT_PART_SRC/chrome/app/resources/manpage.1.in \
+          > $SNAPCRAFT_PART_INSTALL/man1/chrome.1
       gzip -9n $SNAPCRAFT_PART_INSTALL/man1/chrome.1
 
       # Add data-dir mount layout to the snap as a temporary workaround until
