@@ -34,6 +34,8 @@ apps:
       - unity7 # required for xdg-open to work
       - upower-observe
       - x11
+    slots:
+      - mpris
   chromedriver:
     command: usr/lib/chromium-browser/chromedriver
     plugs:
@@ -59,6 +61,8 @@ apps:
       - unity7
       - upower-observe
       - x11
+    slots:
+      - mpris
 
 plugs:
   browser-sandbox:
