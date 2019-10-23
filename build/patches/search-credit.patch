@@ -3,7 +3,7 @@ Author: Chad Miller <chad.miller@canonical.com>
 
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
-@@ -52,7 +52,7 @@
+@@ -48,7 +48,7 @@
        "name": "\u767e\u5ea6",
        "keyword": "baidu.com",
        "favicon_url": "https://www.baidu.com/favicon.ico",
@@ -12,7 +12,7 @@ Author: Chad Miller <chad.miller@canonical.com>
        "alternate_urls": [
          "https://www.baidu.com/s?ie={inputEncoding}&wd={searchTerms}",
          "https://www.baidu.com/s?ie={inputEncoding}&word={searchTerms}",
-@@ -99,7 +99,7 @@
+@@ -95,7 +95,7 @@
        "name": "DuckDuckGo",
        "keyword": "duckduckgo.com",
        "favicon_url": "https://duckduckgo.com/favicon.ico",
@@ -23,7 +23,7 @@ Author: Chad Miller <chad.miller@canonical.com>
        "type": "SEARCH_ENGINE_DUCKDUCKGO",
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
-@@ -951,6 +951,9 @@ std::string TemplateURLRef::HandleReplac
+@@ -956,6 +956,9 @@ std::string TemplateURLRef::HandleReplac
  
    std::string url = parsed_url_;
  
@@ -33,7 +33,7 @@ Author: Chad Miller <chad.miller@canonical.com>
    // replacements_ is ordered in ascending order, as such we need to iterate
    // from the back.
    for (auto i = replacements_.rbegin(); i != replacements_.rend(); ++i) {
-@@ -1015,6 +1018,7 @@ std::string TemplateURLRef::HandleReplac
+@@ -1020,6 +1023,7 @@ std::string TemplateURLRef::HandleReplac
  
        case GOOGLE_BASE_URL:
          DCHECK(!i->is_post_param);
@@ -41,7 +41,7 @@ Author: Chad Miller <chad.miller@canonical.com>
          HandleReplacement(
              std::string(), search_terms_data.GoogleBaseURLValue(), *i, &url);
          break;
-@@ -1109,7 +1113,8 @@ std::string TemplateURLRef::HandleReplac
+@@ -1114,7 +1118,8 @@ std::string TemplateURLRef::HandleReplac
  
        case GOOGLE_SEARCH_CLIENT: {
          DCHECK(!i->is_post_param);
@@ -51,7 +51,7 @@ Author: Chad Miller <chad.miller@canonical.com>
          if (!client.empty())
            HandleReplacement("client", client, *i, &url);
          break;
-@@ -1238,6 +1243,13 @@ std::string TemplateURLRef::HandleReplac
+@@ -1243,6 +1248,13 @@ std::string TemplateURLRef::HandleReplac
      }
    }
  
