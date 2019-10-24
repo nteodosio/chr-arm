@@ -1,11 +1,12 @@
 #!/bin/sh
 
+REALHOME=$(getent passwd $(id -u) | cut -d ':' -f 6)
+
 # When running the snap for the first time, try and locate an existing chromium
 # config in $HOME/.config/chromium, and import it if it was created by an older
 # version of chromium (the profile data format is not guaranteed to be
 # forward-compatible). This requires the personal-files plug to be connected.
 if [ ! -d "$HOME/.config/chromium" ]; then
-  REALHOME=$(getent passwd $(id -u) | cut -d ':' -f 6)
   CHROMIUM_CONFIG="$REALHOME/.config/chromium"
   if [ -d "$CHROMIUM_CONFIG" ]; then
     PREF_FILE="$CHROMIUM_CONFIG/Default/Preferences"
@@ -72,6 +73,10 @@ export MANPATH=$SNAP
 export GROFF_FONT_PATH=$SNAP/usr/share/groff/current/font
 export GROFF_TMAC_PATH=$SNAP/usr/share/groff/current/tmac
 
+# Source ~/.chromium-browser.init for compatibility with the chromium-browser
+# deb package (https://launchpad.net/bugs/1837746)
+test -f $REALHOME/.chromium-browser.init && . $REALHOME/.chromium-browser.init
+
 WANT_TEMP_PROFILE=0
 for arg in "$@"; do
   shift
@@ -83,10 +88,10 @@ for arg in "$@"; do
 done
 
 if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
-  exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$@"
+  exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$CHROMIUM_FLAGS" "$@"
 else
   TEMP_PROFILE=$(mktemp -d)
   trap "rm -rf $TEMP_PROFILE" EXIT
   # we can't exec here as we need to clean-up the temporary profile
-  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$@"
+  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS "$CHROMIUM_FLAGS" "$@"
 fi
