@@ -82,7 +82,7 @@ plugs:
     default-provider: gtk-common-themes
   chromium-config:
     interface: personal-files
-    read: [$HOME/.config/chromium]
+    read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
 
 layout:
   /usr/lib/man-db:
