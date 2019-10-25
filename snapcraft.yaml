@@ -304,6 +304,16 @@ parts:
       cd usr/share
       rm -rf apport bash-completion bug doc doc-base icons lintian man man-db pam-configs pkgconfig themes upstart zsh
 
+  # Install the keybindings themes (see https://launchpad.net/bugs/1849163)
+  gtk-key-themes:
+    after: [cleanup] # because the cleanup part removes usr/share/themes
+    plugin: nil
+    stage-packages:
+      - libgtk-3-common
+    prime:
+      - usr/share/themes/Default/
+      - usr/share/themes/Emacs/
+
   # In Ubuntu compiled locales for GTK are installed by langpacks, not by
   # libgtk-3-common. Fetch all the langpacks and keep only the GTK locales.
   gtk3-locales:
