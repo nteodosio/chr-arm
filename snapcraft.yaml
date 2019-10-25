@@ -286,7 +286,7 @@ parts:
       - man-db
 
   shared-mime-info:
-    after: [launcher, chromium, manpage]
+    after: [launcher, chromium]
     plugin: nil
     override-pull: ""
     override-prime: |
@@ -294,7 +294,13 @@ parts:
       glib-compile-schemas usr/share/glib-2.0/schemas
       update-mime-database usr/share/mime
 
-      # Remove unneeded stage files to save space
+  # Remove unneeded staged files to save space in the final snap
+  cleanup:
+    after: [launcher, chromium, manpage]
+    plugin: nil
+    override-pull: ""
+    override-prime: |
+      set -eux
       cd usr/share
       rm -rf apport bash-completion bug doc doc-base icons lintian man man-db pam-configs pkgconfig themes upstart zsh
 
