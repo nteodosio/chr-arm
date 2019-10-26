@@ -107,7 +107,7 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-78.0.3904.70.tar.xz
     source-checksum: sha512/95d926ea92a0e744284a4c5fca619e3a067dd0fdfaa7c05b5a069d2a8d1159bf849335e21e5803bd28175c1994bd4ff15337ad0a3063445fab74eef113275545
-    after: [chromium-build, gtk3-locales, launcher]
+    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
       - autoconf
@@ -302,11 +302,10 @@ parts:
     override-prime: |
       set -eux
       cd usr/share
-      rm -rf apport bash-completion bug doc doc-base icons lintian man man-db pam-configs pkgconfig themes upstart zsh
+      rm -rf apport bash-completion bug doc doc-base icons lintian man man-db pam-configs pkgconfig upstart zsh
 
   # Install the keybindings themes (see https://launchpad.net/bugs/1849163)
   gtk-key-themes:
-    after: [cleanup] # because the cleanup part removes usr/share/themes
     plugin: nil
     stage-packages:
       - libgtk-3-common
