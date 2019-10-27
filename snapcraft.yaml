@@ -251,10 +251,6 @@ parts:
     stage-packages:
       - libxkbcommon0
       - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libgtk-3-0
       - libgdk-pixbuf2.0-0
@@ -302,7 +298,7 @@ parts:
     override-prime: |
       set -eux
       cd usr/share
-      rm -rf apport bash-completion bug doc doc-base icons lintian man man-db pam-configs pkgconfig upstart zsh
+      rm -rf apport bash-completion bug doc doc-base lintian man man-db pam-configs pkgconfig upstart zsh
 
   # Install the keybindings themes (see https://launchpad.net/bugs/1849163)
   gtk-key-themes:
