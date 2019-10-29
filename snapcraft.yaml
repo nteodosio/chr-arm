@@ -375,3 +375,15 @@ parts:
       find usr/share/locale-langpack -type f -not -name "gtk30*.mo" -exec rm '{}' \;
       mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share
       cp -R usr/share/locale-langpack $SNAPCRAFT_PART_INSTALL/usr/share/
+
+  # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
+  # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
+  # xdg-open is a wrapper provided by the core snap.
+  xdg-email:
+    plugin: nil
+    override-pull: ""
+    override-prime: |
+      set -eux
+      mkdir -p usr/bin
+      cd usr/bin
+      ln -s /usr/bin/xdg-open xdg-email
