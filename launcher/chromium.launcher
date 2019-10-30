@@ -75,7 +75,12 @@ export GROFF_TMAC_PATH=$SNAP/usr/share/groff/current/tmac
 
 # Source ~/.chromium-browser.init for compatibility with the chromium-browser
 # deb package (https://launchpad.net/bugs/1837746)
-test -f $REALHOME/.chromium-browser.init && . $REALHOME/.chromium-browser.init
+if [ -f $REALHOME/.chromium-browser.init ]; then
+  cat $REALHOME/.chromium-browser.init 2>/dev/null
+  if [ "$?" -eq "0" ]; then
+    . $REALHOME/.chromium-browser.init
+  fi
+fi
 
 WANT_TEMP_PROFILE=0
 for arg in "$@"; do
