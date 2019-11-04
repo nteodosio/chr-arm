@@ -200,8 +200,7 @@ parts:
       mkdir -p $T
       cd $OUT
       cp chrome chromedriver chrome_*.pak headless_lib.pak icudtl.dat \
-          libffmpeg.so natives_blob.bin resources.pak \
-          snapshot_blob.bin v8_context_snapshot.bin \
+          libffmpeg.so resources.pak snapshot_blob.bin v8_context_snapshot.bin \
           $T/
       cp chrome_sandbox $T/chrome-sandbox
       mkdir $T/locales
