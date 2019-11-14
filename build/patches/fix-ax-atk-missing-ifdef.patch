@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/ui/accessibility/platform/ax_platform_node_auralinux.cc
 +++ b/ui/accessibility/platform/ax_platform_node_auralinux.cc
-@@ -3771,11 +3771,13 @@ gfx::Rect AXPlatformNodeAuraLinux::GetEx
+@@ -3745,11 +3745,13 @@ gfx::Rect AXPlatformNodeAuraLinux::GetEx
        extents.Offset(window_origin);
        break;
      }
@@ -17,7 +17,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    return extents;
-@@ -4413,8 +4415,10 @@ gfx::Point AXPlatformNodeAuraLinux::Conv
+@@ -4387,8 +4389,10 @@ gfx::Point AXPlatformNodeAuraLinux::Conv
    switch (atk_coord_type) {
      case ATK_XY_WINDOW:
        return point + GetParentFrameOriginInScreenCoordinates();
