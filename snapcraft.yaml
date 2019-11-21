@@ -1,5 +1,5 @@
 name: chromium
-version: 78.0.3904.108
+adopt-info: chromium
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -161,6 +161,11 @@ parts:
       - pulseaudio
       - shared-mime-info
       - ubuntu-settings
+    override-pull: |
+      set -eux
+      snapcraftctl pull
+      . chrome/VERSION
+      snapcraftctl set-version "$MAJOR.$MINOR.$BUILD.$PATCH"
     override-build: |
       set -eux
 
