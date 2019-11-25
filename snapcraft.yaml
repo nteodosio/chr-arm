@@ -22,6 +22,7 @@ apps:
       - desktop
       - gsettings
       - home
+      - joystick
       - mount-observe
       - network
       - network-manager
@@ -49,6 +50,7 @@ apps:
       - desktop
       - gsettings
       - home
+      - joystick
       - mount-observe
       - network
       - network-manager
