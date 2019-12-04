@@ -114,7 +114,7 @@ parts:
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
-      - curl
+      - wget
       - make
       - g++
       - autoconf
@@ -187,7 +187,7 @@ parts:
         cd third_party/node
         NODE_VERSION=$(grep NODE_VERSION= update_node_binaries | cut -d\" -f2)
         NODE_DIST_BASE_URL=$(grep BASE_URL= update_node_binaries | cut -d\" -f2)
-        curl $NODE_DIST_BASE_URL/$NODE_VERSION/node-$NODE_VERSION.tar.xz | tar -x --xz
+        wget -O - $NODE_DIST_BASE_URL/$NODE_VERSION/node-$NODE_VERSION.tar.xz | tar -x --xz
         cd node-$NODE_VERSION
         ./configure --prefix=
         make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
