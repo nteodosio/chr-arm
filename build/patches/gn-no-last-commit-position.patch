@@ -12,8 +12,8 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    subprocess.check_call(
        ['ninja', '-C', gn_build_dir, 'gn', '-w', 'dupbuild=err'])
    shutil.copy2(os.path.join(gn_build_dir, 'gn'), gn_path)
---- a/tools/gn/tools/gn/gn_main.cc
-+++ b/tools/gn/tools/gn/gn_main.cc
+--- a/tools/gn/src/gn/gn_main.cc
++++ b/tools/gn/src/gn/gn_main.cc
 @@ -16,7 +16,7 @@
  #include "util/msg_loop.h"
  #include "util/sys_info.h"
