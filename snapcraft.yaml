@@ -109,11 +109,14 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-79.0.3945.88.tar.xz
-    source-checksum: sha512/6474da7225beb9c99c01dc234b820924dd2fb3d736f53abbac02556f3bec43acd09aa02224666c4a735417500d10f57265ab130c29cce27124e5a69463cf5e0d
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-80.0.3987.42.tar.xz
+    source-checksum: sha512/9d2d159309b0e93f09e9783f555740fa7ed723eb4484bae8a3e118b74edd6aec6e12b7cd354c80dbfff2515c1a04b8e058f0bc54c839722afb7c44af06f81b2a
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
+      - wget
+      - make
+      - g++
       - autoconf
       - automake
       - ninja-build
@@ -175,6 +178,25 @@ parts:
 
       QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
 
+      # Get the Node.js binaries needed to build chromium's WebUI
+      if [ $(arch) = "i686" ]; then
+        # As of Node.js 10, Linux x86 is in the Experimental Tier
+        # (see https://github.com/nodejs/node/blob/master/BUILDING.md#strategy),
+        # meaning that upstream doesn't distribute binaries,
+        # so we need to build them from source.
+        cd third_party/node
+        NODE_VERSION=$(grep NODE_VERSION= update_node_binaries | cut -d\" -f2)
+        NODE_DIST_BASE_URL=$(grep BASE_URL= update_node_binaries | cut -d\" -f2)
+        wget -O - $NODE_DIST_BASE_URL/$NODE_VERSION/node-$NODE_VERSION.tar.xz | tar -x --xz
+        cd node-$NODE_VERSION
+        ./configure --prefix=
+        make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
+        DESTDIR=$PWD/../linux/node-linux-x64 PREFIX= make install
+        cd ../../..
+      else
+        third_party/node/update_node_binaries
+      fi
+
       # Pre-built binaries are provided for eu-strip and clang on x86-64,
       # for all other architectures they have to be built from source.
       if [ $(arch) = "x86_64" ]; then
@@ -209,8 +231,7 @@ parts:
       mkdir -p $T
       cd $OUT
       cp chrome chromedriver chrome_*.pak headless_lib.pak icudtl.dat \
-          libffmpeg.so natives_blob.bin resources.pak \
-          snapshot_blob.bin v8_context_snapshot.bin \
+          libffmpeg.so resources.pak snapshot_blob.bin v8_context_snapshot.bin \
           $T/
       cp chrome_sandbox $T/chrome-sandbox
       mkdir $T/locales
