@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -699,7 +699,7 @@ def main():
+@@ -708,7 +708,7 @@ def main():
    # Build lld and code coverage tools. This is done separately from the rest of
    # the build because these tools require threading support.
    print('Building thread-enabled tools.')

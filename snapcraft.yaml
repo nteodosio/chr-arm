@@ -109,8 +109,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-81.0.4021.2.tar.xz
-    source-checksum: sha512/807a04c18821057b34162f65365b98d8e82895156bf6ed1f1a53cf1ccffe51c72c2219e2453200f7a03e1c8f7a4ea66d2915cf0a2477a92d3144247a7064206a
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-81.0.4029.4.tar.xz
+    source-checksum: sha512/3ab56ee79336e198c7fd7cb995334ba3cca4a4bfa59fa0a5878d57f83d36c909c6da18f6a72f551bea134eb40308386a0a4f663feb417fddccd712106543e9b3
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
