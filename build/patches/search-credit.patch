@@ -23,7 +23,7 @@ Author: Chad Miller <chad.miller@canonical.com>
        "type": "SEARCH_ENGINE_DUCKDUCKGO",
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
-@@ -956,6 +956,9 @@ std::string TemplateURLRef::HandleReplac
+@@ -954,6 +954,9 @@ std::string TemplateURLRef::HandleReplac
  
    std::string url = parsed_url_;
  
