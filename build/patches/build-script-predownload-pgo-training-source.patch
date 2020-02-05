@@ -27,9 +27,9 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +    DownloadPGOTrainingFile()
 +
  
-   # The gnuwin package also includes curl, which is needed to interact with the
-   # github API below.
-@@ -614,8 +626,7 @@ def main():
+   # Don't buffer stdout, so that print statements are immediately flushed.
+   sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+@@ -621,8 +633,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'

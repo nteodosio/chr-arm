@@ -9,7 +9,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/chrome/test/chromedriver/chrome_launcher.cc
 +++ b/chrome/test/chromedriver/chrome_launcher.cc
-@@ -132,6 +132,8 @@ Status PrepareDesktopCommandLine(const C
+@@ -133,6 +133,8 @@ Status PrepareDesktopCommandLine(const C
                                   std::vector<std::string>* extension_bg_pages,
                                   base::FilePath* user_data_dir) {
    base::FilePath program = capabilities.binary;
@@ -17,10 +17,10 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +    program.clear();
    if (program.empty()) {
      if (!FindChrome(&program))
-       return Status(kUnknownError, "cannot find Chrome binary");
+       return Status(kUnknownError, base::StringPrintf("cannot find %s binary",
 --- a/chrome/test/chromedriver/chrome/chrome_finder.cc
 +++ b/chrome/test/chromedriver/chrome/chrome_finder.cc
-@@ -129,6 +129,12 @@ void GetApplicationDirs(std::vector<base
+@@ -132,6 +132,12 @@ void GetApplicationDirs(std::vector<base
  #endif
  
  bool FindChrome(base::FilePath* browser_exe) {
@@ -30,6 +30,6 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +  else
 +    browser_exe->clear();
 +
+ #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
    base::FilePath browser_exes_array[] = {
- #if defined(OS_WIN)
-       base::FilePath(L"chrome.exe")
+     base::FilePath(chrome::kBrowserProcessExecutablePath),
