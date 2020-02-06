@@ -19,3 +19,4 @@ build-script-predownload-pgo-training-source.patch
 build-script-fix-bootstrap-targets.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
+add-missing-foobar-mojom.patch
