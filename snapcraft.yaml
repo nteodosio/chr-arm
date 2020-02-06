@@ -153,6 +153,7 @@ parts:
       - libxkbcommon-dev
       - libpam0g-dev
       - libffi-dev
+      - libgbm-dev
       - uuid-dev
       - chrpath
       - yasm
@@ -160,6 +161,7 @@ parts:
       - shared-mime-info
       - zlib1g-dev
     stage-packages:
+      - libgbm1
       - libgl1-mesa-glx
       - libgtk-3-0
       - libnss3
