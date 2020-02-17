@@ -30,6 +30,6 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +  else
 +    browser_exe->clear();
 +
- #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
    base::FilePath browser_exes_array[] = {
+ #if defined(OS_WIN) || defined(OS_MACOSX)
      base::FilePath(chrome::kBrowserProcessExecutablePath),
