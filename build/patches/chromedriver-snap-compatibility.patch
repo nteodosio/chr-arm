@@ -9,7 +9,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/chrome/test/chromedriver/chrome_launcher.cc
 +++ b/chrome/test/chromedriver/chrome_launcher.cc
-@@ -133,6 +133,8 @@ Status PrepareDesktopCommandLine(const C
+@@ -134,6 +134,8 @@ Status PrepareDesktopCommandLine(const C
                                   std::vector<std::string>* extension_bg_pages,
                                   base::FilePath* user_data_dir) {
    base::FilePath program = capabilities.binary;
@@ -30,6 +30,6 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +  else
 +    browser_exe->clear();
 +
- #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
    base::FilePath browser_exes_array[] = {
+ #if defined(OS_WIN) || defined(OS_MACOSX)
      base::FilePath(chrome::kBrowserProcessExecutablePath),
