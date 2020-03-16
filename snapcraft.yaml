@@ -213,6 +213,7 @@ parts:
       # Build GN
       export CXX=$PWD/third_party/llvm-build/Release+Asserts/bin/clang++
       export AR=$PWD/third_party/llvm-build/Release+Asserts/bin/llvm-ar
+      cp tools/gn/bootstrap/last_commit_position.h tools/gn/src/
       tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
       # Build chromium
