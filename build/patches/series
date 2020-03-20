@@ -14,6 +14,7 @@ define__libc_malloc.patch
 set-rpath-on-chromium-executables.patch
 add-missing-cstddef-include.patch
 gn-no-last-commit-position.patch
+clang-build-only-needed-targets.patch
 build-script-predownload-pgo-training-source.patch
 build-script-fix-bootstrap-targets.patch
 chromedriver-snap-compatibility.patch
