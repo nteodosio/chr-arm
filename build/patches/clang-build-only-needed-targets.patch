@@ -30,3 +30,14 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    if os.path.exists(LLVM_BUILD_DIR):
      RmTree(LLVM_BUILD_DIR)
    EnsureDirExists(LLVM_BUILD_DIR)
+@@ -760,10 +756,6 @@ def main():
+   CopyLibstdcpp(args, LLVM_BUILD_DIR)
+   RunCommand(['ninja'], msvc_arch='x64')
+ 
+-  if chrome_tools:
+-    # If any Chromium tools were built, install those now.
+-    RunCommand(['ninja', 'cr-install'], msvc_arch='x64')
+-
+   VerifyVersionOfBuiltClangMatchesVERSION()
+ 
+   if sys.platform == 'win32':
