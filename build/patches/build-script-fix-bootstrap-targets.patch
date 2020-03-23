@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -530,9 +530,7 @@ def main():
+@@ -531,9 +531,7 @@ def main():
        projects += ';libcxx;compiler-rt'
  
      bootstrap_targets = 'X86'

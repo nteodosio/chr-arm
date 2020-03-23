@@ -3,41 +3,12 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -422,7 +422,6 @@ def main():
-   WriteStampFile('', FORCE_HEAD_REVISION_FILE)
- 
-   AddCMakeToPath(args)
--  DeleteChromeToolsShim()
- 
- 
-   if args.skip_build:
-@@ -449,7 +448,7 @@ def main():
+@@ -449,7 +449,7 @@ def main():
  
    targets = 'AArch64;ARM;Mips;PowerPC;SystemZ;WebAssembly;X86'
  
 -  projects = 'clang;compiler-rt;lld;chrometools;clang-tools-extra'
-+  projects = 'clang;compiler-rt;lld'
++  projects = 'clang;compiler-rt;lld;chrometools'
  
    if sys.platform == 'darwin':
      # clang needs libc++, else -stdlib=libc++ won't find includes
-@@ -748,9 +747,6 @@ def main():
-     cmake_args += ['-DCOMPILER_RT_ENABLE_IOS=ON',
-                    '-DSANITIZER_MIN_OSX_VERSION=10.7']
- 
--  # TODO(crbug.com/962988): Use -DLLVM_EXTERNAL_PROJECTS instead.
--  CreateChromeToolsShim()
--
-   if os.path.exists(LLVM_BUILD_DIR):
-     RmTree(LLVM_BUILD_DIR)
-   EnsureDirExists(LLVM_BUILD_DIR)
-@@ -760,10 +756,6 @@ def main():
-   CopyLibstdcpp(args, LLVM_BUILD_DIR)
-   RunCommand(['ninja'], msvc_arch='x64')
- 
--  if chrome_tools:
--    # If any Chromium tools were built, install those now.
--    RunCommand(['ninja', 'cr-install'], msvc_arch='x64')
--
-   VerifyVersionOfBuiltClangMatchesVERSION()
- 
-   if sys.platform == 'win32':
