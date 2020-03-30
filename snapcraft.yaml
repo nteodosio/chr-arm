@@ -123,6 +123,7 @@ parts:
       - pkg-config
       - lsb-release
       - python
+      - python-pkg-resources
       - bison
       - flex
       - gawk
