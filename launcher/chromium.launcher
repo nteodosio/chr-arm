@@ -37,6 +37,25 @@ if [ ! -d "$HOME/.config/chromium" ]; then
   fi
 fi
 
+# Notify users when the snap has been refreshed while running.
+# Ref: https://launchpad.net/bugs/1864901
+check_current_symlink() {
+  CURRENT_SNAP_REVISION=$SNAP_REVISION
+  REVISIONS_DIR=$(dirname $SNAP)
+  CURRENT_SYMLINK="$REVISIONS_DIR/current"
+  while true; do
+    NEW_SNAP_REVISION=$(readlink $CURRENT_SYMLINK)
+    if [ "$NEW_SNAP_REVISION" != "$CURRENT_SNAP_REVISION" ]; then
+      CURRENT_SNAP_REVISION=$NEW_SNAP_REVISION
+      notify-send --icon="$SNAP/chromium.png" --app-name="Chromium" \
+        "Chromium has been updated." \
+        "It needs to be restarted for changes to take effect."
+    fi
+    sleep 60
+  done
+}
+check_current_symlink &
+
 # Specify that no encrypted password store (keyring) should be used when the
 # password-manager-service interface is not plugged, because Chromium won't
 # fall back to the basic store (no encryption) if it fails to talk to the
