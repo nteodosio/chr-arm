@@ -111,7 +111,7 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-83.0.4103.7.tar.xz
     source-checksum: sha512/42bc38921ece136cfc24a5b9c15739f336524a5a178e57b11ffebd897b1092354e35da144f9b11d91569f07ed480c3e565e4d6086ca3be84d139633e000a71d6
-    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
+    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, notify-send]
     build-packages:
       - quilt
       - wget
@@ -302,6 +302,13 @@ parts:
     source: launcher
     organize:
       '*': bin/
+
+  notify-send:
+    plugin: nil
+    stage-packages:
+      - libnotify-bin
+    prime:
+      - -usr/share
 
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
