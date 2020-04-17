@@ -109,8 +109,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-81.0.4044.92.tar.xz
-    source-checksum: sha512/2d5817c84ac17e7b4d2e4473df841f53a074528e0ac997345ee68db4a9f8b45d84ef50c1d475608428f49ae40fe5315cda9d501ee22b829156c9e533044fb5af
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-83.0.4103.14.tar.xz
+    source-checksum: sha512/7fa4848a332c2c5cee3b946d82f83e8d1fc561e8c94682400e12dd1cd2df9a53c140f331dfc570d4b968bd54f283c57c61f52cca9f91d627c92b56ff0e23191d
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, notify-send]
     build-packages:
       - quilt
@@ -123,6 +123,7 @@ parts:
       - pkg-config
       - lsb-release
       - python
+      - python-pkg-resources
       - bison
       - flex
       - gawk
@@ -207,12 +208,13 @@ parts:
         cd buildtools/third_party/eu-strip
         ./build.sh
         cd ../../..
-        tools/clang/scripts/build.py --bootstrap --disable-asserts --pgo --lto-lld --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
+        tools/clang/scripts/build.py --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
       # Build GN
       export CXX=$PWD/third_party/llvm-build/Release+Asserts/bin/clang++
       export AR=$PWD/third_party/llvm-build/Release+Asserts/bin/llvm-ar
+      cp tools/gn/bootstrap/last_commit_position.h tools/gn/src/
       tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
       # Build chromium

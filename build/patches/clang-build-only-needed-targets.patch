@@ -3,12 +3,12 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -701,7 +701,7 @@ def main():
-   # Build lld and code coverage tools. This is done separately from the rest of
-   # the build because these tools require threading support.
-   print('Building thread-enabled tools.')
--  tools_with_threading = [ 'dsymutil', 'lld', 'llvm-cov', 'llvm-profdata' ]
-+  tools_with_threading = [ 'lld' ]
-   print('Building the following tools with threading support: %s' %
-         str(tools_with_threading))
+@@ -447,7 +447,7 @@ def main():
  
+   targets = 'AArch64;ARM;Mips;PowerPC;SystemZ;WebAssembly;X86'
+ 
+-  projects = 'clang;compiler-rt;lld;chrometools;clang-tools-extra'
++  projects = 'clang;compiler-rt;lld;chrometools'
+ 
+   if sys.platform == 'darwin':
+     # clang needs libc++, else -stdlib=libc++ won't find includes
