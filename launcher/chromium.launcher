@@ -39,6 +39,7 @@ fi
 
 # Notify users when the snap has been refreshed while running.
 # Ref: https://launchpad.net/bugs/1864901
+PARENT_PID=$$
 check_current_symlink() {
   CURRENT_SNAP_REVISION=$SNAP_REVISION
   REVISIONS_DIR=$(dirname $SNAP)
@@ -52,6 +53,10 @@ check_current_symlink() {
         "It needs to be restarted for changes to take effect."
     fi
     sleep 60
+    kill -0 $PARENT_PID 2> /dev/null
+    if [ "$?" -eq "1" ]; then
+      break
+    fi
   done
 }
 check_current_symlink &
