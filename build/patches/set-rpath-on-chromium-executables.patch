@@ -4,7 +4,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/1718885
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -281,6 +281,8 @@ if (!is_android && !is_mac) {
+@@ -258,6 +258,8 @@ if (!is_android && !is_mac) {
                       rebase_path(version_script, root_build_dir) ]
        }
  
