@@ -11,6 +11,7 @@ apps:
   chromium:
     command: bin/desktop-launch "$SNAP/bin/chromium.launcher"
     desktop: bin/chromium.desktop
+    common-id: chromium-browser.desktop
     environment:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
