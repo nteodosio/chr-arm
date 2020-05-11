@@ -156,6 +156,7 @@ parts:
       - libpam0g-dev
       - libffi-dev
       - libgbm-dev
+      - xcb-proto
       - uuid-dev
       - chrpath
       - yasm
