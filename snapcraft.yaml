@@ -156,6 +156,7 @@ parts:
       - libpam0g-dev
       - libffi-dev
       - libgbm-dev
+      - python-xcbgen
       - xcb-proto
       - uuid-dev
       - chrpath
