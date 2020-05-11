@@ -4,15 +4,15 @@ Bug-Ubuntu: https://launchpad.net/bugs/1718885
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -258,6 +258,8 @@ if (!is_android && !is_mac) {
+@@ -257,6 +257,8 @@ if (!is_android && !is_mac) {
+         ldflags += [ "-Wl,--version-script=" +
                       rebase_path(version_script, root_build_dir) ]
        }
- 
-+      configs += [ "//build/config/gcc:rpath_for_built_shared_libraries" ]
 +
-       if (use_x11) {
-         configs += [
-           "//build/config/linux:x11",
++      configs += [ "//build/config/gcc:rpath_for_built_shared_libraries" ]
+     }
+ 
+     if (is_chromeos || is_win) {
 --- a/tools/v8_context_snapshot/BUILD.gn
 +++ b/tools/v8_context_snapshot/BUILD.gn
 @@ -100,6 +100,10 @@ if (use_v8_context_snapshot) {
