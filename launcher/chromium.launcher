@@ -100,7 +100,7 @@ export GROFF_TMAC_PATH=$SNAP/usr/share/groff/current/tmac
 # Source ~/.chromium-browser.init for compatibility with the chromium-browser
 # deb package (https://launchpad.net/bugs/1837746)
 if [ -f $REALHOME/.chromium-browser.init ]; then
-  cat $REALHOME/.chromium-browser.init 2>/dev/null
+  cat $REALHOME/.chromium-browser.init >/dev/null 2>&1
   if [ "$?" -eq "0" ]; then
     . $REALHOME/.chromium-browser.init
   fi
