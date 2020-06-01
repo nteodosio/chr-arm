@@ -110,8 +110,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-84.0.4147.21.tar.xz
-    source-checksum: sha512/4e5708c9a778272b54d2fa457ae6b793adc38c108b02db75d697d81b686709ab6f06031b905ac56376aeb1371190079f72ce58205ff589334dd78fd9317fbfd4
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-85.0.4158.4.tar.xz
+    source-checksum: sha512/82b1adcce2a5beefb8ed220349b64082c4cd75250ea1d50e4dbd026c3dfba3f82069c5383e86e5172bfd95d4fab1e058401fe213ffd33adb2a6aa93fa6bcab68
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, notify-send]
     build-packages:
       - quilt
