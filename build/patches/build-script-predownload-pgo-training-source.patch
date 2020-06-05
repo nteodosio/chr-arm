@@ -3,9 +3,9 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -356,6 +356,15 @@ def CopyLibstdcpp(args, build_dir):
-   CopyFile(libstdcpp, os.path.join(build_dir, 'lib'))
- 
+@@ -360,6 +360,15 @@ def CopyLibstdcpp(args, build_dir):
+     EnsureDirExists(os.path.join(build_dir, d))
+     CopyFile(libstdcpp, os.path.join(build_dir, d))
  
 +def DownloadPGOTrainingFile():
 +  curdir = os.getcwd()
@@ -19,7 +19,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -425,6 +434,9 @@ def main():
+@@ -429,6 +438,9 @@ def main():
      print('for general Fuchsia build instructions.')
      return 1
  
@@ -29,7 +29,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    # Don't buffer stdout, so that print statements are immediately flushed.
    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
-@@ -693,8 +705,7 @@ def main():
+@@ -702,8 +714,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'
