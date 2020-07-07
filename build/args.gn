@@ -18,6 +18,7 @@ treat_warnings_as_errors = false
 use_allocator = "none"
 use_alsa = true
 use_aura = true
+use_bundled_fontconfig = false
 use_cups = true
 use_dbus = true
 use_gio = true
