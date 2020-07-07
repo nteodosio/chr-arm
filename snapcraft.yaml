@@ -225,6 +225,10 @@ parts:
       OUT=out/Release
       mkdir -p $OUT
       cp $SNAPCRAFT_STAGE/build/args.gn $OUT/
+      if [ $(arch) = "armv7l" ]; then
+        # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
+        echo "arm_use_neon = false" >> $OUT/args.gn
+      fi
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
