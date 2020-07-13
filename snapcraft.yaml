@@ -19,6 +19,7 @@ apps:
     plugs:
       - audio-playback
       - audio-record
+      - bluez # for Web Bluetooth (https://launchpad.net/bugs/1887201)
       - camera
       - cups-control
       - desktop
@@ -49,6 +50,7 @@ apps:
       # executes chromium it inherits the correct set of permissions
       - audio-playback
       - audio-record
+      - bluez
       - camera
       - cups-control
       - desktop
