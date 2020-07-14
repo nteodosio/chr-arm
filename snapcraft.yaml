@@ -115,8 +115,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-83.0.4103.116.tar.xz
-    source-checksum: sha512/dbd92fb04183ec1402401388f70b18b95040083c9ea8bf2ea6b1692fddc375b090968b13afb010ebf412b480b34747eb2c82709adbeb386cccf60b972f23254f
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-84.0.4147.89.tar.xz
+    source-checksum: sha512/cc207a5f09a89e42bc12fd491d5d0ef11c04daaa324aa696d2f8a37679b8f2171d3b265296968c3312e158b0fd2c059e12727a7463d3bd2f640d5bbd43c4f676
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
@@ -161,6 +161,8 @@ parts:
       - libpam0g-dev
       - libffi-dev
       - libgbm-dev
+      - python-xcbgen
+      - xcb-proto
       - uuid-dev
       - chrpath
       - yasm

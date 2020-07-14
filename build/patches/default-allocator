@@ -10,7 +10,7 @@
  
  # The debug CRT on Windows has some debug features that are incompatible with
 @@ -20,7 +20,7 @@ if (is_android || is_mac || is_ios || is
- if ((is_linux || is_android || is_mac ||
+ if ((is_linux || is_android || is_mac || is_ios ||
       (is_win && !is_component_build && !is_debug)) && !is_asan && !is_hwasan &&
      !is_lsan && !is_tsan && !is_msan) {
 -  _default_use_allocator_shim = true

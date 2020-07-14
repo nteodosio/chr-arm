@@ -1,6 +1,5 @@
 title-bar-default-system.patch-v35
 search-credit.patch
-snap_useragent.patch
 #configuration-directory.patch
 disable-sse2
 widevine-enable-version-string.patch

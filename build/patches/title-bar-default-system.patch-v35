@@ -3,7 +3,7 @@ Description: Never default to using the custom title bar. Chromium should
 
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
-@@ -1008,6 +1008,8 @@ bool HasWMSpecProperty(const base::flat_
+@@ -951,6 +951,8 @@ bool HasWMSpecProperty(const base::flat_
  }
  
  bool GetCustomFramePrefDefault() {
