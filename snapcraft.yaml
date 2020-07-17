@@ -6,6 +6,8 @@ description: |
  stable way for all Internet users to experience the web.
 confinement: strict
 base: core18
+assumes:
+  - snapd2.43 # for 'snapctl is-connected', used in chromium.launcher
 
 apps:
   chromium:
