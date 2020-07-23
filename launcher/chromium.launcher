@@ -16,6 +16,10 @@ fi
 # config in $HOME/.config/chromium, and import it if it was created by an older
 # version of chromium (the profile data format is not guaranteed to be
 # forward-compatible). This requires the personal-files plug to be connected.
+# Also, open a new tab in the existing session to inform users that their
+# browser is now packaged as a snap (and the underlying reasons, benefits and
+# limitations). Ref: https://launchpad.net/bugs/1888380
+FIRSTRUN_PAGE=""
 if [ ! -d "$SNAP_USER_COMMON/chromium" ]; then
   CHROMIUM_CONFIG="$REALHOME/.config/chromium"
   if [ -d "$CHROMIUM_CONFIG" ]; then
@@ -42,6 +46,12 @@ if [ ! -d "$SNAP_USER_COMMON/chromium" ]; then
             printf "(required: $SIZE bytes / available: $AVAILABLE_SIZE bytes)\n"
           fi
         fi
+      fi
+      LANG_CODE=$(locale | grep LANG= | cut -d= -f2 | cut -d. -f1 | cut -d_ -f1)
+      FIRSTRUN_PAGE="$SNAP/firstrun/snap-$LANG_CODE.html"
+      if [ ! -f "$FIRSTRUN_PAGE" ]; then
+        # No localized version, fall back to English
+        FIRSTRUN_PAGE="$SNAP/firstrun/snap-en.html"
       fi
     fi
   fi
@@ -97,10 +107,10 @@ for arg in "$@"; do
 done
 
 if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
-  exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS $CHROMIUM_FLAGS "$@"
+  exec "$SNAP/usr/lib/chromium-browser/chrome" --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS $CHROMIUM_FLAGS "$@" "$FIRSTRUN_PAGE"
 else
   TEMP_PROFILE=$(mktemp -d)
   trap "rm -rf $TEMP_PROFILE" EXIT
   # we can't exec here as we need to clean-up the temporary profile
-  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS $CHROMIUM_FLAGS "$@"
+  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --no-default-browser-check --no-first-run --password-store=$PASSWORD_STORE $FLASH_OPTIONS $CHROMIUM_FLAGS "$@" "$FIRSTRUN_PAGE"
 fi
