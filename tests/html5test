@@ -42,7 +42,7 @@ if __name__ == '__main__':
     match = re.search("YOUR BROWSER SCORES (\d+) OUT OF (\d+) POINTS", score)
     assert match is not None
     score = (int(match.group(1)), int(match.group(2)))
-    expected_score = (526, 555)
+    expected_score = (523, 555)
     sys.stderr.flush()
     print("Score: {}/{}".format(score[0], score[1]))
 
@@ -381,7 +381,7 @@ if __name__ == '__main__':
         ("row-3d.webvr", "No"),
         ("row-animation.webanimation", "Yes"),
         ("row-animation.requestAnimationFrame", "Yes"),
-        ("row-offline.applicationCache", "Yes"),
+        ("row-offline.applicationCache", "No"),
         ("row-offline.serviceWorkers", "Yes"),
         ("row-offline.pushMessages", "Yes"),
         ("row-offline.registerProtocolHandler", "Yes"),
