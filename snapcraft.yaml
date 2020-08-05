@@ -138,7 +138,6 @@ parts:
       - git
       - gperf
       - subversion
-      - cmake
       - sed
       - gzip
       - default-jre-headless
@@ -163,6 +162,7 @@ parts:
       - libpam0g-dev
       - libffi-dev
       - libgbm-dev
+      - libssl-dev
       - python-xcbgen
       - xcb-proto
       - uuid-dev
@@ -218,6 +218,17 @@ parts:
         cd buildtools/third_party/eu-strip
         ./build.sh
         cd ../../..
+
+        # Building clang requires a version of cmake newer than what's in
+        # bionic. Fetch it and build it from source.
+        CMAKE_VERSION=3.18.1
+        wget -O - https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION.tar.gz | tar -x -z
+        cd cmake-$CMAKE_VERSION
+        ./bootstrap --prefix=/usr
+        make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT install
+        cd ..
+
+        # Fetch and build clang from source.
         tools/clang/scripts/build.py --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
