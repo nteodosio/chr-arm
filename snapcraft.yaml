@@ -315,6 +315,12 @@ parts:
     organize:
       '*': bin/
 
+  firstrun:
+    plugin: dump
+    source: firstrun
+    organize:
+      '*': firstrun/
+
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
