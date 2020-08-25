@@ -4,7 +4,15 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1714244
 
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc
-@@ -493,6 +493,13 @@ bool PathProvider(int key, base::FilePat
+@@ -4,6 +4,7 @@
+ 
+ #include "chrome/common/chrome_paths.h"
+ 
++#include "base/environment.h"
+ #include "base/files/file_util.h"
+ #include "base/logging.h"
+ #include "base/native_library.h"
+@@ -493,6 +494,13 @@ bool PathProvider(int key, base::FilePat
        break;
  #if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_OPENBSD)
      case chrome::DIR_POLICY_FILES: {
