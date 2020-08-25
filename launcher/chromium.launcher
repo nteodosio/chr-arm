@@ -57,6 +57,23 @@ if [ ! -d "$SNAP_USER_COMMON/chromium" ]; then
   fi
 fi
 
+# Try and import existing policies.
+# Ref: https://launchpad.net/bugs/1714244
+# Ref: https://launchpad.net/bugs/1866732
+SNAP_POLICIES="$SNAP_DATA/policies"
+if [ ! -d "$SNAP_POLICIES" ]; then
+  OLD_POLICIES="/etc/chromium-browser/policies"
+  if [ -d "$OLD_POLICIES" ]; then
+    printf "Importing existing chromium policies from $OLD_POLICIES into $SNAP_POLICIES\n"
+    mkdir -p "$SNAP_POLICIES"
+    TS1=$(date +%s.%3N)
+    cp -R "$OLD_POLICIES/*" "$SNAP_POLICIES/"
+    TS2=$(date +%s.%3N)
+    T=$(printf "$TS1 $TS2" | awk '{printf "%.3f",$2-$1}')
+    printf "Import done in $T s\n"
+  fi
+fi
+
 # Specify that no encrypted password store (keyring) should be used when the
 # password-manager-service interface is not plugged, because Chromium won't
 # fall back to the basic store (no encryption) if it fails to talk to the
