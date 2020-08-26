@@ -57,20 +57,14 @@ if [ ! -d "$SNAP_USER_COMMON/chromium" ]; then
   fi
 fi
 
-# Try and import existing policies.
+# Warn the user if policies are found in more than one place.
 # Ref: https://launchpad.net/bugs/1714244
 # Ref: https://launchpad.net/bugs/1866732
 SNAP_POLICIES="$SNAP_DATA/policies"
-if [ ! -d "$SNAP_POLICIES" ]; then
+if [ -d "$SNAP_POLICIES" ]; then
   OLD_POLICIES="/etc/chromium-browser/policies"
   if [ -d "$OLD_POLICIES" ]; then
-    printf "Importing existing chromium policies from $OLD_POLICIES into $SNAP_POLICIES\n"
-    mkdir -p "$SNAP_POLICIES"
-    TS1=$(date +%s.%3N)
-    cp -R "$OLD_POLICIES/*" "$SNAP_POLICIES/"
-    TS2=$(date +%s.%3N)
-    T=$(printf "$TS1 $TS2" | awk '{printf "%.3f",$2-$1}')
-    printf "Import done in $T s\n"
+    printf "Warning: existing chromium policies in $OLD_POLICIES will be shadowed by new policies found in $SNAP_POLICIES\n"
   fi
 fi
 

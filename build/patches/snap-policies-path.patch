@@ -1,6 +1,9 @@
-Description: read policies from a snap-aware path (typically /var/snap/chromium/current/)
+Description: read policies from a snap-aware path if it exists
+ (typically /var/snap/chromium/current/policies),
+ and fall back to the path used by the chromium-browser deb package if not
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1714244
+Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1866732
 
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc
@@ -12,7 +15,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1714244
  #include "base/files/file_util.h"
  #include "base/logging.h"
  #include "base/native_library.h"
-@@ -493,6 +494,13 @@ bool PathProvider(int key, base::FilePat
+@@ -493,10 +494,18 @@ bool PathProvider(int key, base::FilePat
        break;
  #if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_OPENBSD)
      case chrome::DIR_POLICY_FILES: {
@@ -21,8 +24,14 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1714244
 +      if (env->GetVar("SNAP_DATA", &snap_data)) {
 +        cur = base::FilePath(snap_data);
 +        cur.Append(FILE_PATH_LITERAL("policies"));
-+        break;
++        if (base::PathExists(cur))
++          break;
 +      }
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
        cur = base::FilePath(FILE_PATH_LITERAL("/etc/opt/chrome/policies"));
  #else
+-      cur = base::FilePath(FILE_PATH_LITERAL("/etc/chromium/policies"));
++      cur = base::FilePath(FILE_PATH_LITERAL("/etc/chromium-browser/policies"));
+ #endif
+       break;
+     }
