@@ -259,8 +259,11 @@ parts:
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
-      cp chrome chromedriver chrome_*.pak headless_lib.pak icudtl.dat \
-          libffmpeg.so resources.pak snapshot_blob.bin v8_context_snapshot.bin \
+      cp chrome chromedriver \
+          chrome_*.pak headless_lib.pak resources.pak
+          icudtl.dat \
+          libEGL.so libGLESv2.so libffmpeg.so \
+          snapshot_blob.bin v8_context_snapshot.bin \
           $T/
       cp chrome_sandbox $T/chrome-sandbox
       mkdir $T/locales
