@@ -115,8 +115,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-85.0.4183.83.tar.xz
-    source-checksum: sha512/9b491133ad5a04a9a65d8be2a8102102e6698dc30e9dd310825f9a6648655595656bef1ba2d9d5a6d64c1e0adb755010672986a0de46ce00cd0a5769bff30436
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-86.0.4240.22.tar.xz
+    source-checksum: sha512/ae4243bcd42e20701ac7e45d4fcd301ea6d7190aed961a4ccfc1f57e2dac7e583fbb664ea62f9cf75a556a76804a4488a4e571389d7b09acbe793917f647f6c0
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
@@ -136,7 +136,6 @@ parts:
       - git
       - gperf
       - subversion
-      - cmake
       - sed
       - gzip
       - default-jre-headless
@@ -161,6 +160,7 @@ parts:
       - libpam0g-dev
       - libffi-dev
       - libgbm-dev
+      - libssl-dev
       - python-xcbgen
       - xcb-proto
       - uuid-dev
@@ -216,6 +216,17 @@ parts:
         cd buildtools/third_party/eu-strip
         ./build.sh
         cd ../../..
+
+        # Building clang requires a version of cmake newer than what's in
+        # bionic. Fetch it and build it from source.
+        CMAKE_VERSION=3.18.1
+        wget -O - https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION.tar.gz | tar -x -z
+        cd cmake-$CMAKE_VERSION
+        ./bootstrap --prefix=/usr
+        make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT install
+        cd ..
+
+        # Fetch and build clang from source.
         tools/clang/scripts/build.py --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 

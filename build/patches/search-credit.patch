@@ -23,7 +23,7 @@ Author: Chad Miller <chad.miller@canonical.com>
        "type": "SEARCH_ENGINE_DUCKDUCKGO",
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
-@@ -961,6 +961,9 @@ std::string TemplateURLRef::HandleReplac
+@@ -962,6 +962,9 @@ std::string TemplateURLRef::HandleReplac
  
    std::string url = parsed_url_;
  
@@ -33,7 +33,7 @@ Author: Chad Miller <chad.miller@canonical.com>
    // replacements_ is ordered in ascending order, as such we need to iterate
    // from the back.
    for (auto i = replacements_.rbegin(); i != replacements_.rend(); ++i) {
-@@ -1033,6 +1036,7 @@ std::string TemplateURLRef::HandleReplac
+@@ -1034,6 +1037,7 @@ std::string TemplateURLRef::HandleReplac
  
        case GOOGLE_BASE_URL:
          DCHECK(!i->is_post_param);

@@ -1,6 +1,6 @@
 --- a/base/allocator/allocator.gni
 +++ b/base/allocator/allocator.gni
-@@ -11,7 +11,7 @@ if (is_android || is_mac || is_ios || is
+@@ -11,7 +11,7 @@ if (is_android || is_apple || is_asan ||
      (is_cast_audio_only && target_cpu == "arm")) {
    _default_allocator = "none"
  } else {
@@ -9,8 +9,8 @@
  }
  
  # The debug CRT on Windows has some debug features that are incompatible with
-@@ -20,7 +20,7 @@ if (is_android || is_mac || is_ios || is
- if ((is_linux || is_android || is_mac || is_ios ||
+@@ -20,7 +20,7 @@ if (is_android || is_apple || is_asan ||
+ if ((is_linux || is_chromeos || is_android || is_apple ||
       (is_win && !is_component_build && !is_debug)) && !is_asan && !is_hwasan &&
      !is_lsan && !is_tsan && !is_msan) {
 -  _default_use_allocator_shim = true
