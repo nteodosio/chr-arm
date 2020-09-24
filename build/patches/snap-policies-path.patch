@@ -15,23 +15,29 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1866732
  #include "base/files/file_util.h"
  #include "base/logging.h"
  #include "base/native_library.h"
-@@ -488,10 +489,18 @@ bool PathProvider(int key, base::FilePat
+@@ -488,10 +489,24 @@ bool PathProvider(int key, base::FilePat
        break;
  #if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_OPENBSD)
      case chrome::DIR_POLICY_FILES: {
++      LOG(INFO) << "SNAP: Querying value of chrome::DIR_POLICY_FILES";
 +      std::unique_ptr<base::Environment> env(base::Environment::Create());
 +      std::string snap_data;
 +      if (env->GetVar("SNAP_DATA", &snap_data)) {
++        LOG(INFO) << "SNAP: Value of $SNAP_DATA: " << snap_data;
 +        cur = base::FilePath(snap_data);
 +        cur.Append(FILE_PATH_LITERAL("policies"));
++        LOG(INFO) << "SNAP: policies directory: " << cur.value() << " (exists? " << base::PathExists(cur) << ")";
 +        if (base::PathExists(cur))
 +          break;
++      } else {
++        LOG(INFO) << "SNAP: Value of $SNAP_DATA unknown";
 +      }
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
        cur = base::FilePath(FILE_PATH_LITERAL("/etc/opt/chrome/policies"));
  #else
 -      cur = base::FilePath(FILE_PATH_LITERAL("/etc/chromium/policies"));
 +      cur = base::FilePath(FILE_PATH_LITERAL("/etc/chromium-browser/policies"));
++      LOG(INFO) << "SNAP: policies directory: " << cur.value() << " (exists? " << base::PathExists(cur) << ")";
  #endif
        break;
      }
