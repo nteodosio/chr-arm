@@ -118,8 +118,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-84.0.4147.135.tar.xz
-    source-checksum: sha512/38549bb80ef53db7f6cc4236e313da97b60b95debad219017d773cbc930d9692c66a8ad588e86953d839b7bb28d655dd7a80f736bcacf0a6d93793731fd979fd
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-85.0.4183.121.tar.xz
+    source-checksum: sha512/9d61a0782c012fe36467a10f008962d45f4eaa065f6812276d847f7563056124c9fd21d8376dda8ab64e4c3b793da0593bac9d39988bbd60221828084b534945
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
@@ -249,8 +249,11 @@ parts:
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
-      cp chrome chromedriver chrome_*.pak headless_lib.pak icudtl.dat \
-          libffmpeg.so resources.pak snapshot_blob.bin v8_context_snapshot.bin \
+      cp chrome chromedriver \
+          chrome_*.pak headless_lib.pak resources.pak \
+          icudtl.dat \
+          libEGL.so libGLESv2.so libffmpeg.so \
+          snapshot_blob.bin v8_context_snapshot.bin \
           $T/
       cp chrome_sandbox $T/chrome-sandbox
       mkdir $T/locales
