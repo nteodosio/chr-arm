@@ -94,6 +94,9 @@ plugs:
   chromium-config:
     interface: personal-files
     read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
+  chromium-policies:
+    interface: system-files
+    read: [/etc/chromium-browser/policies]
 
 layout:
   /usr/lib/man-db:
