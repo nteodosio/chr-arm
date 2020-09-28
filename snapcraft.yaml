@@ -38,6 +38,7 @@ apps:
       - raw-usb # for WebUSB (https://launchpad.net/bugs/1780678)
       - removable-media
       - screen-inhibit-control
+      - system-packages-doc
       - u2f-devices
       - unity7 # required for xdg-open to work
       - upower-observe
@@ -68,6 +69,7 @@ apps:
       - raw-usb
       - removable-media
       - screen-inhibit-control
+      - system-packages-doc
       - u2f-devices
       - unity7
       - upower-observe
