@@ -192,6 +192,9 @@ parts:
 
       QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
 
+      # Download profile data for profile-guided optimization
+      PATH=$PATH:$PWD/third_party/depot_tools ./tools/update_pgo_profiles.py --target=linux update --gs-url-base=chromium-optimization-profiles/pgo_profiles
+
       # Get the Node.js binaries needed to build chromium's WebUI
       if [ $(arch) = "i686" ]; then
         # As of Node.js 10, Linux x86 is in the Experimental Tier
