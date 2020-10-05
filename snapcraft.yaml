@@ -118,8 +118,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-87.0.4270.0.tar.xz
-    source-checksum: sha512/76cbf88b1390c2e64d6615e29763f00493b94beff5836c240833840b1b50fa782c137ebc66a81a6940f35052895bdc0098fefca5e6cc46f56dbc2b8b2184ca6f
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-87.0.4278.0.tar.xz
+    source-checksum: sha512/32ce81904659e07b63ced9ff0bbf9a1a61f6a201701e8154674d7107d0e62173c544fa4724bd1326e47209db44f65a7b29ae5c3832e59863126a7714f2947e0f
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
