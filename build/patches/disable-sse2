@@ -142,8 +142,8 @@ debian-bug: http://bugs.debian.org/750361
  #include <Accelerate/Accelerate.h>
  #endif
  
--#if defined(ARCH_CPU_X86_FAMILY) && !defined(OS_MACOSX)
-+#if defined(ARCH_CPU_X86_64) && !defined(OS_MACOSX)
+-#if defined(ARCH_CPU_X86_FAMILY) && !defined(OS_MAC)
++#if defined(ARCH_CPU_X86_64) && !defined(OS_MAC)
  #include <emmintrin.h>
  #endif
  
@@ -191,8 +191,8 @@ debian-bug: http://bugs.debian.org/750361
    // vectors are not implemented by all implementations.
    DCHECK_EQ(-1, filter_stride);
    DCHECK(prepared_filter);
--#if defined(ARCH_CPU_X86_FAMILY) && !defined(OS_MACOSX)
-+#if defined(ARCH_CPU_X86_64) && !defined(OS_MACOSX)
+-#if defined(ARCH_CPU_X86_FAMILY) && !defined(OS_MAC)
++#if defined(ARCH_CPU_X86_64) && !defined(OS_MAC)
    x86::PrepareFilterForConv(filter_p, filter_stride, filter_size,
                              prepared_filter);
  #endif

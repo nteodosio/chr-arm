@@ -15,9 +15,9 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1866732
  #include "base/files/file_util.h"
  #include "base/logging.h"
  #include "base/native_library.h"
-@@ -488,10 +489,18 @@ bool PathProvider(int key, base::FilePat
+@@ -492,10 +493,18 @@ bool PathProvider(int key, base::FilePat
        break;
- #if defined(OS_POSIX) && !defined(OS_MACOSX) && !defined(OS_OPENBSD)
+ #if defined(OS_POSIX) && !defined(OS_MAC) && !defined(OS_OPENBSD)
      case chrome::DIR_POLICY_FILES: {
 +      std::unique_ptr<base::Environment> env(base::Environment::Create());
 +      std::string snap_data;
