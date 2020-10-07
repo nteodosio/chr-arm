@@ -8,7 +8,6 @@ confinement: strict
 base: core18
 assumes:
   - snapd2.43 # for 'snapctl is-connected', used in chromium.launcher
-compression: lzo
 
 apps:
   chromium:
@@ -96,6 +95,9 @@ plugs:
   chromium-config:
     interface: personal-files
     read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
+  chromium-policies:
+    interface: system-files
+    read: [/etc/chromium-browser/policies]
 
 layout:
   /usr/lib/man-db:
@@ -334,6 +336,12 @@ parts:
     source: launcher
     organize:
       '*': bin/
+
+  firstrun:
+    plugin: dump
+    source: firstrun
+    organize:
+      '*': firstrun/
 
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
