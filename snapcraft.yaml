@@ -8,7 +8,6 @@ confinement: strict
 base: core18
 assumes:
   - snapd2.43 # for 'snapctl is-connected', used in chromium.launcher
-compression: lzo
 
 apps:
   chromium:
