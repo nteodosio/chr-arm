@@ -95,7 +95,7 @@ plugs:
   chromium-config:
     interface: personal-files
     read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
-  chromium-policies:
+  etc-chromium-browser-policies:
     interface: system-files
     read: [/etc/chromium-browser/policies]
 
