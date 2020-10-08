@@ -120,8 +120,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-87.0.4278.0.tar.xz
-    source-checksum: sha512/32ce81904659e07b63ced9ff0bbf9a1a61f6a201701e8154674d7107d0e62173c544fa4724bd1326e47209db44f65a7b29ae5c3832e59863126a7714f2947e0f
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-87.0.4280.11.tar.xz
+    source-checksum: sha512/abd12258ea465ed7d28dd55c02eeb04bde614c2b67529edd409064979e3a6e2e9fe417c7a496d2a260bda90bf4cb9a49e2db1b5b318f6a749e86c7025922890e
     after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
     build-packages:
       - quilt
@@ -193,9 +193,6 @@ parts:
       set -eux
 
       QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
-
-      # Download profile data for profile-guided optimization
-      PATH=$PATH:$PWD/third_party/depot_tools ./tools/update_pgo_profiles.py --target=linux update --gs-url-base=chromium-optimization-profiles/pgo_profiles
 
       # Get the Node.js binaries needed to build chromium's WebUI
       if [ $(arch) = "i686" ]; then
