@@ -4,7 +4,6 @@ snap-policies-path.patch
 disable-sse2
 widevine-enable-version-string.patch
 widevine-other-locations
-default-allocator
 enable-chromecast-by-default.patch
 define__libc_malloc.patch
 set-rpath-on-chromium-executables.patch
