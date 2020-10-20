@@ -194,6 +194,11 @@ parts:
 
       QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
 
+      # Fetch the dirmd executable from Google's servers
+      # (it is not included in the source tarball).
+      ./third_party/depot_tools/dirmd help
+      [ -x ./third_party/depot_tools/.cipd_bin/dirmd ]
+
       # Get the Node.js binaries needed to build chromium's WebUI
       if [ $(arch) = "i686" ]; then
         # As of Node.js 10, Linux x86 is in the Experimental Tier
@@ -215,17 +220,12 @@ parts:
 
       # Pre-built binaries are provided for eu-strip and clang on x86-64,
       # for all other architectures they have to be built from source.
-      # Other tools (such as dirmd) have to be fetched from Google's servers.
       if [ $(arch) = "x86_64" ]; then
         tools/clang/scripts/update.py
       else
         cd buildtools/third_party/eu-strip
         ./build.sh
         cd ../../..
-
-        # Fetch the dirmd executable.
-        ./third_party/depot_tools/dirmd help
-        [ -x ./third_party/depot_tools/.cipd_bin/dirmd ]
 
         # Building clang requires a version of cmake newer than what's in
         # bionic. Fetch it and build it from source.
