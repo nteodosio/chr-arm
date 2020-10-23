@@ -10,7 +10,6 @@ fieldtrial_testing_like_official_build = true
 is_component_build = false
 is_component_ffmpeg = true
 is_debug = false
-is_desktop_linux = true
 is_official_build = true
 blink_symbol_level = 0
 symbol_level = 0
