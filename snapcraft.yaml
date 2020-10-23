@@ -166,6 +166,7 @@ parts:
       - libffi-dev
       - libgbm-dev
       - libssl-dev
+      - libva-dev
       - python-xcbgen
       - xcb-proto
       - uuid-dev
