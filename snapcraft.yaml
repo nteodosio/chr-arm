@@ -153,8 +153,6 @@ parts:
       - uuid-dev
       - chrpath
       - yasm
-      - libglib2.0-bin
-      - shared-mime-info
       - zlib1g-dev
     stage-packages:
       - libnss3
@@ -313,15 +311,6 @@ parts:
       - -usr/share/man
       - -usr/share/man-db
       - -var
-
-  shared-mime-info:
-    after: [launcher, chromium]
-    plugin: nil
-    override-pull: ""
-    override-prime: |
-      set -eux
-      glib-compile-schemas usr/share/glib-2.0/schemas
-      update-mime-database usr/share/mime
 
   # Install the keybindings themes (see https://launchpad.net/bugs/1849163)
   gtk-key-themes:
