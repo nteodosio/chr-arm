@@ -19,7 +19,6 @@ from selenium.webdriver.support import expected_conditions as EC
 
 if __name__ == '__main__':
     options = webdriver.chrome.options.Options()
-    options.binary_location = "/snap/chromium/current/command-chromium.wrapper"
     options.add_argument("headless")
     driver_path = "/snap/bin/chromium.chromedriver"
     driver = webdriver.Chrome(executable_path=driver_path, options=options)

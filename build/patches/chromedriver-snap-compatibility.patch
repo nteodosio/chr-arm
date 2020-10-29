@@ -18,18 +18,3 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    if (program.empty()) {
      if (!FindChrome(&program))
        return Status(kUnknownError, base::StringPrintf("cannot find %s binary",
---- a/chrome/test/chromedriver/chrome/chrome_finder.cc
-+++ b/chrome/test/chromedriver/chrome/chrome_finder.cc
-@@ -135,6 +135,12 @@ void GetApplicationDirs(std::vector<base
- #endif
- 
- bool FindChrome(base::FilePath* browser_exe) {
-+  *browser_exe = base::FilePath("/snap/chromium/current/command-chromium.wrapper");
-+  if (base::PathExists(*browser_exe))
-+    return true;
-+  else
-+    browser_exe->clear();
-+
-   base::FilePath browser_exes_array[] = {
- #if defined(OS_WIN) || defined(OS_MAC)
-     base::FilePath(chrome::kBrowserProcessExecutablePath),
