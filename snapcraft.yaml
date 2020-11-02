@@ -123,7 +123,7 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-88.0.4298.4.tar.xz
     source-checksum: sha512/6581da68d8201ea9d9478c58ab7547102f5b08b3575c798d1250e6810bf830d4c18fd3d9df69de0fc08b9e190fe9557fb3a673b85e7276b8eeaa642149a55386
-    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
+    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, libva]
     build-packages:
       - quilt
       - wget
@@ -167,7 +167,6 @@ parts:
       - libffi-dev
       - libgbm-dev
       - libssl-dev
-      - libva-dev
       - python-xcbgen
       - xcb-proto
       - uuid-dev
@@ -256,6 +255,7 @@ parts:
         # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
         echo "arm_use_neon = false" >> $OUT/args.gn
       fi
+      export PKG_CONFIG_PATH=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
@@ -460,3 +460,40 @@ parts:
       mkdir -p usr/bin
       cd usr/bin
       ln -s /usr/bin/xdg-open xdg-email
+
+  # Build and install a more recent version of the VA-API library than what is
+  # available in 18.04, because newer drivers depend on a newer version of the
+  # ABI.
+  libva:
+    source: https://github.com/intel/libva/releases/download/2.9.0/libva-2.9.0.tar.bz2
+    source-checksum: sha1/3e20605243096b4e935e1ef6ac7797efbacc44f6
+    plugin: meson
+    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
+    build-packages:
+      - gcc
+      - libc6-dev
+      - libdrm-dev
+      - libgl1-mesa-dev
+      - libwayland-dev
+      - libx11-dev
+      - libxext-dev
+      - libxfixes-dev
+      - pkg-config
+    stage-packages:
+      - libdrm2
+      - libgl1
+      - libglvnd0
+      - libglx0
+      - libwayland-client0
+      - libx11-6
+      - libxau6
+      - libxcb1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
+    prime:
+      - -etc
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+      - -usr/share
+
