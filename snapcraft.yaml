@@ -193,7 +193,7 @@ parts:
     override-build: |
       set -eux
 
-      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
+      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/chromium-patches quilt push -a
 
       # Fetch the dirmd executable from Google's servers
       # (it is not included in the source tarball).
