@@ -467,6 +467,7 @@ parts:
   libva:
     source: https://github.com/intel/libva/releases/download/2.9.0/libva-2.9.0.tar.bz2
     source-checksum: sha1/3e20605243096b4e935e1ef6ac7797efbacc44f6
+    after: [chromium-build]
     plugin: meson
     meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
     build-packages:
