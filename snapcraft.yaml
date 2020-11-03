@@ -479,6 +479,7 @@ parts:
       - libxext-dev
       - libxfixes-dev
       - pkg-config
+      - quilt
     stage-packages:
       - libdrm2
       - libgl1
@@ -496,4 +497,7 @@ parts:
       - -usr/include
       - -usr/lib/*/pkgconfig
       - -usr/share
-
+    override-build: |
+      set -eux
+      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/libva-patches quilt push -a
+      snapcraftctl build
