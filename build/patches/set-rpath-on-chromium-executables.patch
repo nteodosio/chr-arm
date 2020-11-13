@@ -15,7 +15,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/1718885
      if (is_chromeos || is_win) {
 --- a/tools/v8_context_snapshot/BUILD.gn
 +++ b/tools/v8_context_snapshot/BUILD.gn
-@@ -109,6 +109,10 @@ if (use_v8_context_snapshot) {
+@@ -112,6 +112,10 @@ if (use_v8_context_snapshot) {
        "//v8",
      ]
  
