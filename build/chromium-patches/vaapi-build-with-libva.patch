@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/media/gpu/vaapi/BUILD.gn
 +++ b/media/gpu/vaapi/BUILD.gn
-@@ -23,6 +23,7 @@ generate_stubs("libva_stubs") {
+@@ -24,6 +24,7 @@ generate_stubs("libva_stubs") {
  
    output_name = "va_stubs"
    deps = [ "//base" ]
