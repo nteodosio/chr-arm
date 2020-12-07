@@ -121,9 +121,18 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-87.0.4280.66.tar.xz
-    source-checksum: sha512/8bf31b012166fb1fd35107020608cf77e6a31038a583423541c64aaf1c91bca0767ca111dcb4dd0f57c9c19c347375bde6b6488c56e309bd2871998c26b8b32a
-    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-88.0.4324.27.tar.xz
+    source-checksum: sha512/ff93c442d6ce99df27581644e3975a8a315302ea01579f6d29df5932fdb1116297e837ff84235dadba506072975842b86e61d7c6ee6f2d2598d8bbe6f6baee02
+    after:
+      - chromium-build
+      - gtk3-locales
+      - launcher
+      - manpage
+      - gtk-key-themes
+      - libva
+      - mesa-va-drivers
+      - intel-vaapi-driver
+      - intel-media-driver
     build-packages:
       - quilt
       - wget
@@ -193,7 +202,12 @@ parts:
     override-build: |
       set -eux
 
-      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/patches quilt push -a
+      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/chromium-patches quilt push -a
+
+      # Fetch the dirmd executable from Google's servers
+      # (it is not included in the source tarball).
+      ./third_party/depot_tools/dirmd help
+      [ -x ./third_party/depot_tools/.cipd_bin/dirmd ]
 
       # Get the Node.js binaries needed to build chromium's WebUI
       if [ $(arch) = "i686" ]; then
@@ -250,6 +264,7 @@ parts:
         # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
         echo "arm_use_neon = false" >> $OUT/args.gn
       fi
+      export PKG_CONFIG_PATH=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
@@ -454,3 +469,125 @@ parts:
       mkdir -p usr/bin
       cd usr/bin
       ln -s /usr/bin/xdg-open xdg-email
+
+  # Build and install a more recent version of the VA-API library than what is
+  # available in 18.04, because newer drivers depend on a newer version of the
+  # ABI.
+  libva:
+    source: https://github.com/intel/libva/releases/download/2.9.0/libva-2.9.0.tar.bz2
+    source-checksum: sha1/3e20605243096b4e935e1ef6ac7797efbacc44f6
+    after: [chromium-build]
+    plugin: meson
+    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
+    build-packages:
+      - gcc
+      - libc6-dev
+      - libdrm-dev
+      - libgl1-mesa-dev
+      - libwayland-dev
+      - libx11-dev
+      - libxext-dev
+      - libxfixes-dev
+      - pkg-config
+      - quilt
+    stage-packages:
+      - libdrm2
+      - libgl1
+      - libglvnd0
+      - libglx0
+      - libwayland-client0
+      - libx11-6
+      - libxau6
+      - libxcb1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
+    prime:
+      - -etc
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+      - -usr/share
+    override-build: |
+      set -eux
+      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/libva-patches quilt push -a
+      snapcraftctl build
+
+  # gallium drivers
+  mesa-va-drivers:
+    plugin: nil
+    stage-packages:
+      - mesa-va-drivers
+    prime:
+      - -usr/share
+
+  # i965_drv_video.so
+  intel-vaapi-driver:
+    after: [ libva ]
+    source: https://github.com/intel/intel-vaapi-driver/releases/download/2.4.1/intel-vaapi-driver-2.4.1.tar.bz2
+    source-checksum: sha1/c998e06f13238c6419bb38ede9a13e453312737b
+    plugin: meson
+    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
+    build-packages:
+      - gcc
+      - libdrm-dev
+      - libwayland-bin
+      - libwayland-dev
+      - pkg-config
+    override-build: |
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
+        snapcraftctl build
+      fi
+    stage-packages:
+      - on amd64,i386:
+        - libdrm2
+        - libdrm-intel1
+        - libpciaccess0
+    prime:
+      - -usr/share
+
+  intel-gmmlib:
+    source: https://github.com/intel/gmmlib/archive/intel-gmmlib-20.3.3.tar.gz
+    plugin: cmake
+    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
+    build-packages:
+      - g++
+      - sed
+    override-build: |
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
+        snapcraftctl build
+      fi
+    override-stage: |
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
+        snapcraftctl stage
+        sed -i -e 's|includedir=/usr|includedir=${prefix}|' \
+               -e 's|libdir=/usr|libdir=${prefix}|' \
+               usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig/igdgmm.pc
+      fi
+    prime:
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+
+  # iHD_drv_video.so
+  intel-media-driver:
+    after: [ libva, intel-gmmlib ]
+    source: https://github.com/intel/media-driver/archive/intel-media-20.3.0.tar.gz
+    plugin: cmake
+    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr", "-DCMAKE_CXX_FLAGS='-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'" ]
+    build-packages:
+      - g++
+      - libpciaccess-dev
+    override-build: |
+      if [ $(arch) = "i686" ]; then
+        sed -i -e 's|-m${ARCH}||' \
+               $SNAPCRAFT_PART_SRC/media_driver/cmake/linux/media_compile_flags_linux.cmake
+      fi
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
+        snapcraftctl build
+      fi
+    stage-packages:
+      - on amd64,i386:
+        - libpciaccess0
+    prime:
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+      - -usr/share
