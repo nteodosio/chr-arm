@@ -12,7 +12,8 @@ compression: lzo
 
 apps:
   chromium:
-    command: bin/desktop-launch "$SNAP/bin/chromium.launcher"
+    extensions: [gnome-3-28]
+    command: bin/chromium.launcher
     desktop: bin/chromium.desktop
     common-id: chromium-browser.desktop
     environment:
@@ -25,14 +26,11 @@ apps:
       - bluez # for Web Bluetooth (https://launchpad.net/bugs/1887201)
       - camera
       - cups-control
-      - desktop
-      - gsettings
       - home
       - joystick
       - mount-observe
       - network
       - network-manager
-      - opengl
       - password-manager-service
       - pulseaudio # remove once snapd 2.41 is available everywhere
       - raw-usb # for WebUSB (https://launchpad.net/bugs/1780678)
@@ -42,10 +40,10 @@ apps:
       - u2f-devices
       - unity7 # required for xdg-open to work
       - upower-observe
-      - x11
     slots:
       - mpris
   chromedriver:
+    extensions: [gnome-3-28]
     command: usr/lib/chromium-browser/chromedriver
     plugs:
       - network-bind
@@ -56,14 +54,11 @@ apps:
       - bluez
       - camera
       - cups-control
-      - desktop
-      - gsettings
       - home
       - joystick
       - mount-observe
       - network
       - network-manager
-      - opengl
       - password-manager-service
       - pulseaudio # remove once snapd 2.41 is available everywhere
       - raw-usb
@@ -73,7 +68,6 @@ apps:
       - u2f-devices
       - unity7
       - upower-observe
-      - x11
     slots:
       - mpris
 
@@ -81,18 +75,6 @@ plugs:
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
-  gtk-3-themes:
-    interface: content
-    target: $SNAP/data-dir/themes
-    default-provider: gtk-common-themes
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
-  sound-themes:
-    interface: content
-    target: $SNAP/data-dir/sounds
-    default-provider: gtk-common-themes
   chromium-config:
     interface: personal-files
     read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
@@ -164,12 +146,11 @@ parts:
       - libpci-dev
       - libxtst-dev
       - libxss-dev
-      - libgtk-3-dev
       - libglib2.0-dev
       - libudev-dev
       - libdrm-dev
       - libcap-dev
-      - libgcrypt-dev
+      - libgcrypt20-dev
       - libkrb5-dev
       - libxkbcommon-dev
       - libpam0g-dev
@@ -181,19 +162,10 @@ parts:
       - uuid-dev
       - chrpath
       - yasm
-      - libglib2.0-bin
-      - shared-mime-info
       - zlib1g-dev
     stage-packages:
-      - libgbm1
-      - libgl1-mesa-glx
-      - libgtk-3-0
       - libnss3
-      - libsecret-1-0
       - libxss1
-      - pulseaudio
-      - shared-mime-info
-      - ubuntu-settings
     override-pull: |
       set -eux
       snapcraftctl pull
@@ -308,37 +280,14 @@ parts:
           > $SNAPCRAFT_PART_INSTALL/man1/chrome.1
       gzip -9n $SNAPCRAFT_PART_INSTALL/man1/chrome.1
     prime:
-      - -etc/gss
       - -etc/init.d
-      - -etc/sensors.d
-      - -etc/ucf.conf
       - -etc/xdg
       - -usr/include
-      - -usr/lib/tmpfiles.d
-      - -usr/share/apport
-      - -usr/share/bash-completion
-      - -usr/share/bug
       - -usr/share/doc
-      - -usr/share/doc-base
-      - -usr/share/gettext
-      - -usr/share/gnome-control-center
-      - -usr/share/GConf
-      - -usr/share/icons
       - -usr/share/lintian
       - -usr/share/man
-      - -usr/share/pam-configs
-      - -usr/share/pkgconfig
-      - -usr/share/polkit-1
-      - -usr/share/session-migration
-      - -usr/share/sounds
-      - -usr/share/ubuntu
-      - -usr/share/ubuntu-wayland
-      - -usr/share/upstart
-      - -usr/share/zsh
-      - -var
 
   launcher:
-    after: [desktop-gtk3]
     plugin: dump
     source: launcher
     organize:
@@ -349,50 +298,6 @@ parts:
     source: firstrun
     organize:
       '*': firstrun/
-
-  desktop-gtk3:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: gtk
-    plugin: make
-    make-parameters: ["FLAVOR=gtk3"]
-    build-packages:
-      - build-essential
-      - libgtk-3-dev
-    stage-packages:
-      - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - shared-mime-info
-      - libgtk-3-0
-      - libgdk-pixbuf2.0-0
-      - libglib2.0-bin
-      - libgtk-3-bin
-      - unity-gtk3-module
-      - libappindicator3-1
-      - locales-all
-      - xdg-user-dirs
-      - ibus-gtk3
-      - libibus-1.0-5
-      - fcitx-frontend-gtk3
-    prime:
-      - -etc/gss
-      - -etc/presage.xml
-      - -etc/ucf.conf
-      - -etc/X11
-      - -usr/lib/glib-networking
-      - -usr/lib/systemd
-      - -usr/share/apport
-      - -usr/share/bash-completion
-      - -usr/share/doc
-      - -usr/share/doc-base
-      - -usr/share/gettext
-      - -usr/share/GConf
-      - -usr/share/icons
-      - -usr/share/lintian
-      - -usr/share/man
-      - -usr/share/pkgconfig
-      - -usr/share/presage
-      - -usr/share/upstart
-      - -var
 
   tests:
     plugin: dump
@@ -421,15 +326,6 @@ parts:
       - -usr/share/man
       - -usr/share/man-db
       - -var
-
-  shared-mime-info:
-    after: [launcher, chromium]
-    plugin: nil
-    override-pull: ""
-    override-prime: |
-      set -eux
-      glib-compile-schemas usr/share/glib-2.0/schemas
-      update-mime-database usr/share/mime
 
   # Install the keybindings themes (see https://launchpad.net/bugs/1849163)
   gtk-key-themes:
