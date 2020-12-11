@@ -386,18 +386,6 @@ parts:
       - libxfixes-dev
       - pkg-config
       - quilt
-    stage-packages:
-      - libdrm2
-      - libgl1
-      - libglvnd0
-      - libglx0
-      - libwayland-client0
-      - libx11-6
-      - libxau6
-      - libxcb1
-      - libxdmcp6
-      - libxext6
-      - libxfixes3
     prime:
       - -etc
       - -usr/include
@@ -414,7 +402,7 @@ parts:
     stage-packages:
       - mesa-va-drivers
     prime:
-      - -usr/share
+      - usr/lib/x86_64-linux-gnu/dri/*_drv_video.so
 
   # i965_drv_video.so
   intel-vaapi-driver:
