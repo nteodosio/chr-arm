@@ -458,6 +458,8 @@ parts:
     plugin: cmake
     configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr", "-DCMAKE_CXX_FLAGS='-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'" ]
     build-packages:
+      - binutils
+      - findutils
       - g++
       - libpciaccess-dev
     override-build: |
@@ -467,6 +469,7 @@ parts:
       fi
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
+        find $SNAPCRAFT_PART_INSTALL -name iHD_drv_video.so -print | xargs strip
       fi
     stage-packages:
       - on amd64,i386:
