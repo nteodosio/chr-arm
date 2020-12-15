@@ -374,7 +374,7 @@ parts:
     source-checksum: sha1/3e20605243096b4e935e1ef6ac7797efbacc44f6
     after: [chromium-build]
     plugin: meson
-    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
+    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release", "-Dstrip=true"]
     build-packages:
       - gcc
       - libc6-dev
@@ -439,6 +439,7 @@ parts:
     override-build: |
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
+        find $SNAPCRAFT_PART_INSTALL -name libigdgmm.so -print | xargs strip
       fi
     override-stage: |
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
@@ -470,6 +471,7 @@ parts:
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
         find $SNAPCRAFT_PART_INSTALL -name iHD_drv_video.so -print | xargs strip
+        find $SNAPCRAFT_PART_INSTALL -name libigfxcmrt.so -print | xargs strip
       fi
     stage-packages:
       - on amd64,i386:
