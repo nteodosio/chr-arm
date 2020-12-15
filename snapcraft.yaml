@@ -241,15 +241,13 @@ parts:
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
       # Strip debug symbols off the chrome binaries and related libraries
-      cd $OUT
       python build/gn_run_binary.py ./buildtools/third_party/eu-strip/bin/eu-strip \
-          chrome \
-          chromedriver \
-          chrome_sandbox \
-          libEGL.so \
-          libGLESv2.so \
-          libffmpeg.so
-      cd -
+          $OUT/chrome \
+          $OUT/chromedriver \
+          $OUT/chrome_sandbox \
+          $OUT/libEGL.so \
+          $OUT/libGLESv2.so \
+          $OUT/libffmpeg.so
 
       # Install to $SNAPCRAFT_PART_INSTALL
       mkdir -p $SNAPCRAFT_PART_INSTALL
