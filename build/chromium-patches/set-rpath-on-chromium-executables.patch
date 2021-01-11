@@ -4,7 +4,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/1718885
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -282,6 +282,8 @@ if (!is_android && !is_mac) {
+@@ -285,6 +285,8 @@ if (!is_android && !is_mac) {
          ldflags += [ "-Wl,--version-script=" +
                       rebase_path(version_script, root_build_dir) ]
        }
