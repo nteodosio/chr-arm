@@ -35,6 +35,5 @@ rtc_use_h264 = true
 is_cfi = false
 target_os = "linux"
 current_os = "linux"
-optimize_webui = false
 proprietary_codecs = true
 ffmpeg_branding = "Chrome"
