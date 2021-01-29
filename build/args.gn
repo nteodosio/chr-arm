@@ -1,6 +1,7 @@
 google_api_key = "AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o"
 google_default_client_id = "424119844901-tilod0e1nm0dt85e1evrdfp3cc3ec01d.apps.googleusercontent.com"
 google_default_client_secret = "WCCejhqORuxKG272GAWxsPIU"
+build_with_tflite_lib = false
 enable_hangout_services_extension = true
 enable_mdns = true
 enable_nacl = false
