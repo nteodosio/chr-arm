@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/media/gpu/vaapi/BUILD.gn
 +++ b/media/gpu/vaapi/BUILD.gn
-@@ -24,6 +24,7 @@ generate_stubs("libva_stubs") {
+@@ -27,6 +27,7 @@ generate_stubs("libva_stubs") {
  
    output_name = "va_stubs"
    deps = [ "//base" ]
@@ -44,7 +44,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    if (is_win) {
 --- a/content/gpu/BUILD.gn
 +++ b/content/gpu/BUILD.gn
-@@ -45,6 +45,10 @@ target(link_target_type, "gpu_sources")
+@@ -46,6 +46,10 @@ target(link_target_type, "gpu_sources")
  
    configs += [ "//content:content_implementation" ]
  
