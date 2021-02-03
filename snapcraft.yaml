@@ -240,14 +240,8 @@ parts:
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
-      # Strip debug symbols off the chrome binaries and related libraries
-      python build/gn_run_binary.py ./buildtools/third_party/eu-strip/bin/eu-strip \
-          $OUT/chrome \
-          $OUT/chromedriver \
-          $OUT/chrome_sandbox \
-          $OUT/libEGL.so \
-          $OUT/libGLESv2.so \
-          $OUT/libffmpeg.so
+      # Strip debug symbols off the chrome binary
+      python build/gn_run_binary.py ./buildtools/third_party/eu-strip/bin/eu-strip $OUT/chrome
 
       # Install to $SNAPCRAFT_PART_INSTALL
       mkdir -p $SNAPCRAFT_PART_INSTALL
