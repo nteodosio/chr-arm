@@ -219,7 +219,9 @@ parts:
         cd ..
 
         # Fetch and build clang from source.
-        tools/clang/scripts/build.py --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
+        tools/clang/scripts/build.py --skip-build
+        QUILT_PATCHES=$SNAPCRAFT_STAGE/build/llvm-patches quilt push -a
+        tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
       # Build GN
