@@ -174,7 +174,7 @@ parts:
     override-build: |
       set -eux
 
-      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/chromium-patches quilt push -a
+      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/chromium-patches QUILT_PC=.pc.chromium-patches quilt push -a
 
       # Fetch the dirmd executable from Google's servers
       # (it is not included in the source tarball).
@@ -219,7 +219,9 @@ parts:
         cd ..
 
         # Fetch and build clang from source.
-        tools/clang/scripts/build.py --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
+        tools/clang/scripts/build.py --skip-build --without-android --without-fuchsia
+        QUILT_PATCHES=$SNAPCRAFT_STAGE/build/llvm-patches QUILT_PC=.pc.llvm-patches quilt push -a
+        tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
       # Build GN
