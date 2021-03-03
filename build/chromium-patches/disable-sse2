@@ -4,7 +4,7 @@ debian-bug: http://bugs.debian.org/750361
 
 --- a/media/base/sinc_resampler.cc
 +++ b/media/base/sinc_resampler.cc
-@@ -82,7 +82,7 @@
+@@ -83,7 +83,7 @@
  #include "build/build_config.h"
  #include "cc/base/math_util.h"
  
@@ -13,7 +13,7 @@ debian-bug: http://bugs.debian.org/750361
  #include <xmmintrin.h>
  #define CONVOLVE_FUNC Convolve_SSE
  #elif defined(ARCH_CPU_ARM_FAMILY) && defined(USE_NEON)
-@@ -341,7 +341,7 @@ float SincResampler::Convolve_C(const fl
+@@ -344,7 +344,7 @@ float SincResampler::Convolve_C(const fl
        kernel_interpolation_factor * sum2);
  }
  
