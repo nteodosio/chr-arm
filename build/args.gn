@@ -1,5 +1,4 @@
 google_api_key = "AIzaSyDGQzx0c0ptZVDriLi9Wblo2voeLnmPq-o"
-build_with_tflite_lib = false
 enable_hangout_services_extension = true
 enable_mdns = true
 enable_nacl = false
