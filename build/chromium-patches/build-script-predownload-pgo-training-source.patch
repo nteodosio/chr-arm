@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -400,6 +400,15 @@ def CopyLibstdcpp(args, build_dir):
+@@ -399,6 +399,15 @@ def CopyLibstdcpp(args, build_dir):
        CopyFile(libstdcpp, libpath)
  
  
@@ -19,7 +19,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -472,6 +481,9 @@ def main():
+@@ -475,6 +484,9 @@ def main():
      print('for general Fuchsia build instructions.')
      return 1
  
@@ -29,7 +29,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    # Don't buffer stdout, so that print statements are immediately flushed.
    # LLVM tests print output without newlines, so with buffering they won't be
-@@ -763,8 +775,7 @@ def main():
+@@ -770,8 +782,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'
