@@ -15,3 +15,4 @@ build-script-fix-bootstrap-targets.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
 vaapi-build-with-libva.patch
+libaom-armhf-build-cpudetect.patch
