@@ -6,7 +6,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc
-@@ -338,8 +338,13 @@ bool PathProvider(int key, base::FilePat
+@@ -316,8 +316,13 @@ bool PathProvider(int key, base::FilePat
        break;
  
  #if (defined(OS_LINUX) || defined(OS_CHROMEOS)) && \
@@ -21,7 +21,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
        if (!GetComponentDirectory(&cur))
          return false;
  #if !BUILDFLAG(IS_CHROMEOS_ASH)
-@@ -349,7 +354,7 @@ bool PathProvider(int key, base::FilePat
+@@ -327,7 +332,7 @@ bool PathProvider(int key, base::FilePat
  #endif  // !BUILDFLAG(IS_CHROMEOS_ASH)
        break;
  #endif  // (defined(OS_LINUX) || defined(OS_CHROMEOS)) &&

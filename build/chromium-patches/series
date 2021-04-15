@@ -1,7 +1,6 @@
 title-bar-default-system.patch-v35
 search-credit.patch
 snap-policies-path.patch
-disable-sse2
 widevine-enable-version-string.patch
 widevine-other-locations
 enable-chromecast-by-default.patch
@@ -15,3 +14,4 @@ build-script-fix-bootstrap-targets.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
 vaapi-build-with-libva.patch
+libaom-armhf-build-cpudetect.patch
