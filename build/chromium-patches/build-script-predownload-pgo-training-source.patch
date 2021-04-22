@@ -19,17 +19,17 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -478,6 +487,9 @@ def main():
-     print('for general Fuchsia build instructions.')
-     return 1
+@@ -533,6 +542,9 @@ def main():
+   AddCMakeToPath(args)
+   DeleteChromeToolsShim()
  
 +  if args.pgo:
 +    DownloadPGOTrainingFile()
 +
  
-   # Don't buffer stdout, so that print statements are immediately flushed.
-   # LLVM tests print output without newlines, so with buffering they won't be
-@@ -772,8 +784,7 @@ def main():
+   if args.skip_build:
+     return 0
+@@ -777,8 +789,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'
