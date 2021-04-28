@@ -34,7 +34,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  source_set("video_frame_mapper") {
 --- a/media/gpu/BUILD.gn
 +++ b/media/gpu/BUILD.gn
-@@ -165,6 +165,7 @@ component("gpu") {
+@@ -168,6 +168,7 @@ component("gpu") {
        "//media/gpu/vaapi",
        "//media/gpu/vaapi:common",
      ]

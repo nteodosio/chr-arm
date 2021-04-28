@@ -103,8 +103,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-90.0.4430.72.tar.xz
-    source-checksum: sha512/b07943ac1535cce0d02046b6e79eb01809bfae95ad6eea3bc7d209ff41d54278ca6575462ea372f3014b434e4f1dc8e529aa752a77ec519659abd089e21506e3
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-91.0.4472.19.tar.xz
+    source-checksum: sha512/50f83970b7137a42a7742e756d0df2468a50147d2801bc35debcacfa956897725d91df5ffcbfa73ad668ba31d897c7b95d75e3005544c398c695b5731d275f9b
     after:
       - chromium-build
       - gtk3-locales
@@ -136,6 +136,7 @@ parts:
       - sed
       - gzip
       - default-jre-headless
+      - libcurl4-openssl-dev
       - libxml2-dev
       - libpulse-dev
       - libcups2-dev
