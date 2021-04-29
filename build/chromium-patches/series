@@ -16,3 +16,4 @@ node-update-binaries-arch-specific.patch
 vaapi-build-with-libva.patch
 libaom-armhf-build-cpudetect.patch
 closure-compiler-use-system-wide-java.patch
+disable-crashpad.patch
