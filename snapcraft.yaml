@@ -239,6 +239,8 @@ parts:
         # Do not use lld (the LLVM linker) on 32-bits architectures
         # (i386 and armhf) because it OOMs when linking the chrome binary
         echo "use_lld = false" >> $OUT/args.gn
+        # Do not build with ThinLTO either, because it requires lld
+        echo "use_thin_lto = false" >> $OUT/args.gn
       fi
       if [ $(arch) = "armv7l" ]; then
         # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
