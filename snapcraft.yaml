@@ -85,6 +85,8 @@ plugs:
 layout:
   /usr/lib/man-db:
     bind: $SNAP/usr/lib/man-db
+  /usr/share/libdrm:
+    bind: $SNAP/gnome-platform/usr/share/libdrm
 
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
