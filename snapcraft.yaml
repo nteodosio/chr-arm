@@ -105,8 +105,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-90.0.4430.212.tar.xz
-    source-checksum: sha512/7cd300d22725e3457b9e3347fb34d6f5728c91aa178d6960d4243bc80122c446890c2276334a01f9c81a43479339e9e266c3bbb040081a22c521b3c4250850f5
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-91.0.4472.77.tar.xz
+    source-checksum: sha512/06113c3627c1ccd390f078a52e0eaaf9c1d7178d568d6d2e37c96e1eb09fc0e872ac2b2d7ebe55e4da87eebee4965816bbba2f6ea53047f86cd5d0ad1d260a25
     after:
       - chromium-build
       - gtk3-locales
@@ -138,6 +138,7 @@ parts:
       - sed
       - gzip
       - default-jre-headless
+      - libcurl4-openssl-dev
       - libxml2-dev
       - libpulse-dev
       - libcups2-dev
@@ -236,6 +237,13 @@ parts:
       OUT=out/Release
       mkdir -p $OUT
       cp $SNAPCRAFT_STAGE/build/args.gn $OUT/
+      if [ $(arch) = "i686" -o $(arch) = "armv7l" ]; then
+        # Do not use lld (the LLVM linker) on 32-bits architectures
+        # (i386 and armhf) because it OOMs when linking the chrome binary
+        echo "use_lld = false" >> $OUT/args.gn
+        # Do not build with ThinLTO either, because it requires lld
+        echo "use_thin_lto = false" >> $OUT/args.gn
+      fi
       if [ $(arch) = "armv7l" ]; then
         # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
         echo "arm_use_neon = false" >> $OUT/args.gn

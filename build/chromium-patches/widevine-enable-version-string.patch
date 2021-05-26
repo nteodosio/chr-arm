@@ -13,7 +13,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  #endif  // WIDEVINE_CDM_VERSION_H_
 --- a/chrome/common/chrome_content_client.cc
 +++ b/chrome/common/chrome_content_client.cc
-@@ -228,7 +228,7 @@ std::unique_ptr<content::CdmInfo> Create
+@@ -229,7 +229,7 @@ std::unique_ptr<content::CdmInfo> Create
          // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)) && (defined(OS_LINUX) ||
          // defined(OS_CHROMEOS))
  
