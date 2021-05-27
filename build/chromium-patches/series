@@ -18,3 +18,4 @@ vaapi-build-with-libva.patch
 libaom-armhf-build-cpudetect.patch
 closure-compiler-use-system-wide-java.patch
 disable-crashpad.patch
+partition-allocator-missing-ioctl.patch
