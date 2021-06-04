@@ -1,0 +1,15 @@
+Description: disable crashpad, which isn't shipped in the snap
+Bug: https://launchpad.net/bugs/1926590
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/chrome/app/chrome_main.cc
++++ b/chrome/app/chrome_main.cc
+@@ -141,7 +141,7 @@ int ChromeMain(int argc, const char** ar
+ #endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) ||
+         // defined(OS_WIN)
+ 
+-#if defined(OS_LINUX)
++#if 0
+   // TODO(https://crbug.com/1176772): Remove when Chrome Linux is fully migrated
+   // to Crashpad.
+   base::CommandLine::ForCurrentProcess()->AppendSwitch(
