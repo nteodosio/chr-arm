@@ -13,7 +13,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  #endif  // WIDEVINE_CDM_VERSION_H_
 --- a/chrome/common/media/cdm_registration.cc
 +++ b/chrome/common/media/cdm_registration.cc
-@@ -90,7 +90,7 @@ std::unique_ptr<content::CdmInfo> Create
+@@ -88,7 +88,7 @@ std::unique_ptr<content::CdmInfo> Create
          // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)) && (defined(OS_LINUX) ||
          // defined(OS_CHROMEOS))
  
@@ -22,7 +22,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
      (defined(OS_LINUX) || defined(OS_CHROMEOS))
  // On Linux/ChromeOS we have to preload the CDM since it uses the zygote
  // sandbox. On Windows and Mac, the bundled CDM is handled by the component
-@@ -167,7 +167,7 @@ content::CdmInfo* GetBundledWidevine() {
+@@ -165,7 +165,7 @@ content::CdmInfo* GetBundledWidevine() {
        }());
    return s_cdm_info->get();
  }
@@ -31,7 +31,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
          // defined(OS_CHROMEOS))
  
  #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && \
-@@ -206,7 +206,7 @@ void AddSoftwareSecureWidevine(std::vect
+@@ -204,7 +204,7 @@ void AddSoftwareSecureWidevine(std::vect
    // case both versions will be the same and point to the same directory, so
    // it doesn't matter which one is loaded.
    content::CdmInfo* bundled_widevine = nullptr;
