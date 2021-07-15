@@ -20,6 +20,7 @@ apps:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
       CHROME_CONFIG_HOME: $SNAP_USER_COMMON
+      GTK_USE_PORTAL: 1
     plugs:
       - audio-playback
       - audio-record
@@ -105,8 +106,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-93.0.4557.4.tar.xz
-    source-checksum: sha512/b5b214d639becdfdb4a6bd2ee04c9556ee4eca0e436ed6580c8e6d9e5a37476ae1fa208eef741aa8d8535f30f1e751041aaf02fff57dbd685341d7b5866a81cc
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-93.0.4573.0.tar.xz
+    source-checksum: sha512/7443ade555fb03f7a48e949df2a9d8b14ab8e8075b68ec5e7773dfdcbf9f326e99667e99db404a3bbf52230a29c022b3e8cc5841703e3c9cdaceea77277a9dbe
     after:
       - chromium-build
       - gtk3-locales
