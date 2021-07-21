@@ -11,8 +11,11 @@ gn-no-last-commit-position.patch
 clang-build-only-needed-targets.patch
 build-script-predownload-pgo-training-source.patch
 build-script-fix-bootstrap-targets.patch
+build-script-unset-default-target-triple.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
 vaapi-build-with-libva.patch
 libaom-armhf-build-cpudetect.patch
 closure-compiler-use-system-wide-java.patch
+disable-crashpad.patch
+partition-allocator-missing-ioctl.patch

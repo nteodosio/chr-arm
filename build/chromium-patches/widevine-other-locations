@@ -6,27 +6,19 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc
-@@ -316,8 +316,13 @@ bool PathProvider(int key, base::FilePat
-       break;
+@@ -314,6 +314,15 @@ bool PathProvider(int key, base::FilePat
  
- #if (defined(OS_LINUX) || defined(OS_CHROMEOS)) && \
--    BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-+    BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+ #if BUILDFLAG(ENABLE_WIDEVINE)
      case chrome::DIR_BUNDLED_WIDEVINE_CDM:
 +      base::PathService::Get(base::DIR_HOME, &cur);
 +      cur = cur.Append(FILE_PATH_LITERAL(".local/lib"))
 +               .AppendASCII(kWidevineCdmBaseDirectory);
 +      if (base::PathExists(cur))
 +        break;
++      cur = base::FilePath(FILE_PATH_LITERAL("/opt/google/chrome"))
++               .AppendASCII(kWidevineCdmBaseDirectory);
++      if (base::PathExists(cur))
++        break;
        if (!GetComponentDirectory(&cur))
          return false;
  #if !BUILDFLAG(IS_CHROMEOS_ASH)
-@@ -327,7 +332,7 @@ bool PathProvider(int key, base::FilePat
- #endif  // !BUILDFLAG(IS_CHROMEOS_ASH)
-       break;
- #endif  // (defined(OS_LINUX) || defined(OS_CHROMEOS)) &&
--        // BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-+        // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
- 
- #if (defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)) && \
-     BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
