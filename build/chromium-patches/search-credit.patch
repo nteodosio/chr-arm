@@ -51,7 +51,7 @@ Author: Chad Miller <chad.miller@canonical.com>
          if (!client.empty())
            HandleReplacement("client", client, *i, &url);
          break;
-@@ -1303,6 +1308,13 @@ std::string TemplateURLRef::HandleReplac
+@@ -1300,6 +1305,13 @@ std::string TemplateURLRef::HandleReplac
      }
    }
  
