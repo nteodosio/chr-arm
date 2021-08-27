@@ -4,9 +4,9 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/chrome/app/chrome_main.cc
 +++ b/chrome/app/chrome_main.cc
-@@ -141,7 +141,7 @@ int ChromeMain(int argc, const char** ar
- #endif  // defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_MAC) ||
+@@ -153,7 +153,7 @@ int ChromeMain(int argc, const char** ar
          // defined(OS_WIN)
+   }
  
 -#if defined(OS_LINUX)
 +#if 0
