@@ -4,9 +4,9 @@ Bug-Ubuntu: https://launchpad.net/bugs/1718885
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -291,6 +291,8 @@ if (!is_android && !is_mac) {
-         ldflags += [ "-Wl,--version-script=" +
-                      rebase_path(version_script, root_build_dir) ]
+@@ -292,6 +292,8 @@ if (!is_android && !is_mac) {
+       if (is_chromeos_lacros) {
+         deps += [ "//chromeos/crosapi/mojom" ]
        }
 +
 +      configs += [ "//build/config/gcc:rpath_for_built_shared_libraries" ]
