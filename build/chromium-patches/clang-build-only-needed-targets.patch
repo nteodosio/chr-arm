@@ -3,12 +3,12 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -566,7 +566,7 @@ def main():
+@@ -543,7 +543,7 @@ def main():
  
    targets = 'AArch64;ARM;Mips;PowerPC;SystemZ;WebAssembly;X86'
  
--  projects = 'clang;compiler-rt;lld;chrometools;clang-tools-extra'
-+  projects = 'clang;compiler-rt;lld;chrometools'
+-  projects = 'clang;compiler-rt;lld;clang-tools-extra'
++  projects = 'clang;compiler-rt;lld'
  
    if sys.platform == 'darwin':
      # clang needs libc++, else -stdlib=libc++ won't find includes
