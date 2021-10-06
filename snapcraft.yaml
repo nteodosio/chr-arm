@@ -106,8 +106,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-95.0.4638.17.tar.xz
-    source-checksum: sha512/1e730e2855343d86d30a21e2d2cd7687b72f247e9e443c26f91aca3326bb70bacf525f23eea4b047ed441a6134774c1b0d931c601ff8125df226a1caff5989b7
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-95.0.4638.32.tar.xz
+    source-checksum: sha512/b00502da09acf4fce71887e7bef1e95d56f4c2b43f2caa39d51efa444741ac460460ff3ae55174acfacd78e3f2d152a6b690b17a784078ed97ed801793e08a91
     after:
       - chromium-build
       - gtk3-locales
