@@ -433,11 +433,6 @@ parts:
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
       fi
-    stage-packages:
-      - on amd64,i386:
-        - libdrm2
-        - libdrm-intel1
-        - libpciaccess0
     prime:
       - -usr/share
 
@@ -474,7 +469,6 @@ parts:
       - binutils
       - findutils
       - g++
-      - libpciaccess-dev
     override-build: |
       if [ $(arch) = "i686" ]; then
         sed -i -e 's|-m${ARCH}||' \
@@ -485,9 +479,6 @@ parts:
         find $SNAPCRAFT_PART_INSTALL -name iHD_drv_video.so -print | xargs strip
         find $SNAPCRAFT_PART_INSTALL -name libigfxcmrt.so -print | xargs strip
       fi
-    stage-packages:
-      - on amd64,i386:
-        - libpciaccess0
     prime:
       - -usr/include
       - -usr/lib/*/pkgconfig
