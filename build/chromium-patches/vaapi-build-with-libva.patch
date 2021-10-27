@@ -21,7 +21,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    if (use_v4l2_codec) {
-@@ -120,6 +121,10 @@ source_set("fourcc") {
+@@ -121,6 +122,10 @@ source_set("fourcc") {
      "//media/gpu:buildflags",
      "//media/gpu:common",
    ]
@@ -34,7 +34,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  source_set("video_frame_mapper") {
 --- a/media/gpu/BUILD.gn
 +++ b/media/gpu/BUILD.gn
-@@ -168,6 +168,7 @@ component("gpu") {
+@@ -169,6 +169,7 @@ component("gpu") {
        "//media/gpu/vaapi",
        "//media/gpu/vaapi:common",
      ]

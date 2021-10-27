@@ -4,7 +4,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/third_party/libaom/BUILD.gn
 +++ b/third_party/libaom/BUILD.gn
-@@ -221,6 +221,9 @@ if (enable_libaom) {
+@@ -222,6 +222,9 @@ if (enable_libaom) {
      sources += aom_dsp_common_sources
      sources += aom_dsp_decoder_sources
      sources += aom_mem_sources
