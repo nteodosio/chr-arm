@@ -18,3 +18,4 @@ libaom-armhf-build-cpudetect.patch
 closure-compiler-use-system-wide-java.patch
 disable-crashpad.patch
 partition-allocator-missing-ioctl.patch
+webrtc-fix-ambiguous-operator.patch
