@@ -4,6 +4,7 @@ enable_mdns = true
 enable_nacl = false
 enable_wayland_server = false
 enable_widevine = true
+rtc_use_pipewire = true
 disable_fieldtrial_testing_config=true
 is_component_build = false
 is_component_ffmpeg = true
