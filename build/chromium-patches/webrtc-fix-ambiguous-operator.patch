@@ -44,6 +44,17 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    if (!video_receiver_info.decoder_implementation_name.empty()) {
      inbound_video->decoder_implementation =
          video_receiver_info.decoder_implementation_name;
+@@ -550,8 +550,8 @@ void SetOutboundRTPStreamStatsFromVideoS
+     RTCOutboundRTPStreamStats* outbound_video) {
+   SetOutboundRTPStreamStatsFromMediaSenderInfo(video_sender_info,
+                                                outbound_video);
+-  outbound_video->media_type = "video";
+-  outbound_video->kind = "video";
++  outbound_video->media_type = std::string("video");
++  outbound_video->kind = std::string("video");
+   if (video_sender_info.codec_payload_type) {
+     outbound_video->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
+         mid, /*inbound=*/false, *video_sender_info.codec_payload_type);
 @@ -596,7 +596,7 @@ void SetOutboundRTPStreamStatsFromVideoS
    // TODO(https://crbug.com/webrtc/10529): When info's `content_info` is
    // optional, support the "unspecified" value.
