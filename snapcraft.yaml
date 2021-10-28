@@ -21,6 +21,9 @@ apps:
       CHROME_DESKTOP: chromium.desktop
       CHROME_CONFIG_HOME: $SNAP_USER_COMMON
       GTK_USE_PORTAL: 1
+      SPA_PLUGIN_DIR: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/spa-0.2
+      PIPEWIRE_CONFIG_NAME: $SNAP/usr/share/pipewire/pipewire.conf
+      PIPEWIRE_MODULE_DIR: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pipewire-0.3
     plugs:
       - audio-playback
       - audio-record
@@ -118,6 +121,7 @@ parts:
       - mesa-va-drivers
       - intel-vaapi-driver
       - intel-media-driver
+      - pipewire
     build-packages:
       - quilt
       - wget
@@ -483,3 +487,31 @@ parts:
       - -usr/include
       - -usr/lib/*/pkgconfig
       - -usr/share
+
+  # PipeWire
+  pipewire:
+    source: https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/0.3.32/pipewire-0.3.32.tar.gz
+    plugin: meson
+    meson-parameters:
+      - --prefix=/usr
+      - --buildtype=release
+      - --strip
+      - -Dalsa=disabled
+      - -Dpipewire-alsa=disabled
+      - -Djack=disabled
+      - -Dpipewire-jack=disabled
+      - -Dsession-managers=[]
+    build-packages:
+      - pkg-config
+      - libdbus-1-dev
+      - libpulse-dev
+    override-build: |
+      # Cherry-pick upstream commits to enable building on 18.04
+      COMMITS="9160a12 a4b8bd6 4c16670"
+      for hash in $COMMITS; do wget -O - https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/$hash.patch | patch -p1; done
+      snapcraftctl build
+    prime:
+      - usr/lib/*/pipewire-*
+      - usr/lib/*/spa-*
+      - usr/lib/*/libpipewire*.so*
+      - usr/share/pipewire
