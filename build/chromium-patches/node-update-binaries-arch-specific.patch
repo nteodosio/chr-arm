@@ -3,11 +3,12 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/third_party/node/update_node_binaries
 +++ b/third_party/node/update_node_binaries
-@@ -86,9 +86,15 @@ update_win() {
+@@ -87,10 +87,15 @@ update_win() {
  rm -f "SHASUMS256.txt"
  wget "https://nodejs.org/dist/${NODE_VERSION}/SHASUMS256.txt"
  
 -update_unix "darwin-x64" "mac"
+-update_unix "darwin-arm64" "mac"
 -update_unix "linux-x64" "linux"
 -update_win
 +if [ $(arch) = "x86_64" ]; then
