@@ -21,6 +21,9 @@ apps:
       CHROME_DESKTOP: chromium.desktop
       CHROME_CONFIG_HOME: $SNAP_USER_COMMON
       GTK_USE_PORTAL: 1
+      SPA_PLUGIN_DIR: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/spa-0.2
+      PIPEWIRE_CONFIG_NAME: $SNAP/usr/share/pipewire/pipewire.conf
+      PIPEWIRE_MODULE_DIR: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pipewire-0.3
     plugs:
       - audio-playback
       - audio-record
@@ -106,8 +109,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-95.0.4638.69.tar.xz
-    source-checksum: sha512/e8845a3add5f784342c51c530ed4fbf144f8ab16701d9dd6a2eedbd255167f39c26cf400d22f246ef5ad4afbb6a6133e17d767711587dd4bae18e3b5a997f95e
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-96.0.4664.45.tar.xz
+    source-checksum: sha512/0b1ccaf95697c14cb080dcb22e8584817ddcd98e704d081bc4f35a22dcfc8cca82dcabc4b82ad89ed0cd64752d226f389941bfab33b615e3948e2f778b9d9028
     after:
       - chromium-build
       - gtk3-locales
@@ -118,6 +121,7 @@ parts:
       - mesa-va-drivers
       - intel-vaapi-driver
       - intel-media-driver
+      - pipewire
     build-packages:
       - quilt
       - wget
@@ -483,3 +487,31 @@ parts:
       - -usr/include
       - -usr/lib/*/pkgconfig
       - -usr/share
+
+  # PipeWire
+  pipewire:
+    source: https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/0.3.32/pipewire-0.3.32.tar.gz
+    plugin: meson
+    meson-parameters:
+      - --prefix=/usr
+      - --buildtype=release
+      - --strip
+      - -Dalsa=disabled
+      - -Dpipewire-alsa=disabled
+      - -Djack=disabled
+      - -Dpipewire-jack=disabled
+      - -Dsession-managers=[]
+    build-packages:
+      - pkg-config
+      - libdbus-1-dev
+      - libpulse-dev
+    override-build: |
+      # Cherry-pick upstream commits to enable building on 18.04
+      COMMITS="9160a12 a4b8bd6 4c16670"
+      for hash in $COMMITS; do wget -O - https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/$hash.patch | patch -p1; done
+      snapcraftctl build
+    prime:
+      - usr/lib/*/pipewire-*
+      - usr/lib/*/spa-*
+      - usr/lib/*/libpipewire*.so*
+      - usr/share/pipewire
