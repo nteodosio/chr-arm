@@ -1,0 +1,84 @@
+Description: fix compilation errors (on arm64 only) of the type
+  error: use of overloaded operator '[]' is ambiguous (with operand types 'ui::TemplateReplacements' (aka 'map<const basic_string<char, char_traits<char>, allocator<char>>, basic_string<char, char_traits<char>, allocator<char>>>') and 'const char [14]')
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/ui/base/webui/web_ui_util.cc
++++ b/ui/base/webui/web_ui_util.cc
+@@ -38,9 +38,9 @@ namespace webui {
+ namespace {
+ std::string GetWebUiCssTextDefaults(const std::string& css_template) {
+   ui::TemplateReplacements placeholders;
+-  placeholders["textDirection"] = GetTextDirection();
+-  placeholders["fontFamily"] = GetFontFamily();
+-  placeholders["fontSize"] = GetFontSize();
++  placeholders[std::string("textDirection")] = GetTextDirection();
++  placeholders[std::string("fontFamily")] = GetFontFamily();
++  placeholders[std::string("fontSize")] = GetFontSize();
+   return ui::ReplaceTemplateExpressions(css_template, placeholders);
+ }
+ }  // namespace
+@@ -190,10 +190,10 @@ void SetLoadTimeDataDefaults(const std::
+ 
+ void SetLoadTimeDataDefaults(const std::string& app_locale,
+                              ui::TemplateReplacements* replacements) {
+-  (*replacements)["fontfamily"] = GetFontFamily();
+-  (*replacements)["fontsize"] = GetFontSize();
+-  (*replacements)["language"] = l10n_util::GetLanguage(app_locale);
+-  (*replacements)["textdirection"] = GetTextDirection();
++  (*replacements)[std::string("fontfamily")] = GetFontFamily();
++  (*replacements)[std::string("fontsize")] = GetFontSize();
++  (*replacements)[std::string("language")] = l10n_util::GetLanguage(app_locale);
++  (*replacements)[std::string("textdirection")] = GetTextDirection();
+ }
+ 
+ std::string GetWebUiCssTextDefaults() {
+--- a/components/dom_distiller/core/viewer.cc
++++ b/components/dom_distiller/core/viewer.cc
+@@ -119,33 +119,33 @@ std::string ReplaceHtmlTemplateValues(co
+   // using ReplaceTemplateExpressions. Do this step first because
+   // ReplaceStringPlaceholders, below, considers $i18n to be an error.
+   ui::TemplateReplacements i18n_replacements;
+-  i18n_replacements["title"] =
++  i18n_replacements[std::string("title")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_LOADING_TITLE);
+-  i18n_replacements["customizeAppearance"] =
++  i18n_replacements[std::string("customizeAppearance")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_CUSTOMIZE_APPEARANCE);
+-  i18n_replacements["fontStyle"] =
++  i18n_replacements[std::string("fontStyle")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_FONT_STYLE);
+-  i18n_replacements["sansSerifFont"] =
++  i18n_replacements[std::string("sansSerifFont")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_SANS_SERIF_FONT);
+-  i18n_replacements["serifFont"] =
++  i18n_replacements[std::string("serifFont")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_SERIF_FONT);
+-  i18n_replacements["monospaceFont"] =
++  i18n_replacements[std::string("monospaceFont")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_MONOSPACE_FONT);
+-  i18n_replacements["pageColor"] =
++  i18n_replacements[std::string("pageColor")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_PAGE_COLOR);
+-  i18n_replacements["light"] =
++  i18n_replacements[std::string("light")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_PAGE_COLOR_LIGHT);
+-  i18n_replacements["sepia"] =
++  i18n_replacements[std::string("sepia")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_PAGE_COLOR_SEPIA);
+-  i18n_replacements["dark"] =
++  i18n_replacements[std::string("dark")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_PAGE_COLOR_DARK);
+-  i18n_replacements["fontSize"] =
++  i18n_replacements[std::string("fontSize")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_FONT_SIZE);
+-  i18n_replacements["small"] =
++  i18n_replacements[std::string("small")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_FONT_SIZE_SMALL);
+-  i18n_replacements["large"] =
++  i18n_replacements[std::string("large")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_FONT_SIZE_LARGE);
+-  i18n_replacements["close"] =
++  i18n_replacements[std::string("close")] =
+       l10n_util::GetStringUTF8(IDS_DOM_DISTILLER_VIEWER_CLOSE);
+ 
+   html_template =
