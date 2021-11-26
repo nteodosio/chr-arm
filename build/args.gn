@@ -36,3 +36,4 @@ target_os = "linux"
 current_os = "linux"
 proprietary_codecs = true
 ffmpeg_branding = "Chrome"
+pkg_config = "/snap/gnome-3-38-2004/current/usr/bin/pkg-config"

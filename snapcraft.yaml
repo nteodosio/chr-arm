@@ -5,14 +5,14 @@ description: |
  An open-source browser project that aims to build a safer, faster, and more
  stable way for all Internet users to experience the web.
 confinement: strict
-base: core18
+base: core20
 assumes:
   - snapd2.43 # for 'snapctl is-connected', used in chromium.launcher
 compression: lzo
 
 apps:
   chromium:
-    extensions: [gnome-3-28]
+    extensions: [gnome-3-38]
     command: bin/chromium.launcher
     desktop: bin/chromium.desktop
     common-id: chromium-browser.desktop
@@ -47,7 +47,7 @@ apps:
     slots:
       - mpris
   chromedriver:
-    extensions: [gnome-3-28]
+    extensions: [gnome-3-38]
     command: usr/lib/chromium-browser/chromedriver
     plugs:
       - network-bind
@@ -113,64 +113,43 @@ parts:
     source-checksum: sha512/e3df54602a9f8e1c81f81a9aca9807af249d0115ba4b28be7d86b76f0dfb95f6acd288333d743ce8dc6cf87f695d25682ef84afa32260a740236a7006c2bf797
     after:
       - chromium-build
-      - gtk3-locales
       - launcher
       - manpage
-      - gtk-key-themes
-      - libva
-      - mesa-va-drivers
-      - intel-vaapi-driver
-      - intel-media-driver
       - pipewire
+      - va-drivers
     build-packages:
-      - quilt
-      - wget
-      - make
+      - chrpath
+      - default-jre-headless
+      - elfutils
       - g++
-      - autoconf
-      - automake
-      - ninja-build
-      - pkg-config
-      - lsb-release
-      - python
-      - python-pkg-resources
-      - bison
-      - flex
-      - gawk
       - git
       - gperf
-      - subversion
-      - sed
       - gzip
-      - default-jre-headless
-      - libcurl4-openssl-dev
-      - libxml2-dev
-      - libpulse-dev
-      - libcups2-dev
       - libasound2-dev
-      - libnss3-dev
-      - mesa-common-dev
-      - libgles2-mesa-dev
-      - libpci-dev
-      - libxtst-dev
-      - libxss-dev
-      - libglib2.0-dev
-      - libudev-dev
-      - libdrm-dev
       - libcap-dev
-      - libgcrypt20-dev
+      - libcups2-dev
+      - libcurl4-openssl-dev
+      - libicu-dev
       - libkrb5-dev
-      - libxkbcommon-dev
+      - libnss3-dev
       - libpam0g-dev
-      - libffi-dev
-      - libgbm-dev
+      - libpci-dev
       - libssl-dev
-      - python-xcbgen
+      - libva-dev
+      - libxshmfence-dev
+      - libxss-dev
+      - lsb-release
+      - make
+      - mesa-common-dev
+      - ninja-build
+      - python3-pkg-resources
+      - python3-xcbgen
+      - quilt
+      - sed
+      - subversion
+      - wget
       - xcb-proto
-      - uuid-dev
-      - chrpath
       - yasm
-      - zlib1g-dev
     stage-packages:
       - libnss3
       - libxss1
@@ -190,35 +169,15 @@ parts:
       [ -x ./third_party/depot_tools/.cipd_bin/dirmd ]
 
       # Get the Node.js binaries needed to build chromium's WebUI
-      if [ $(arch) = "i686" ]; then
-        # As of Node.js 10, Linux x86 is in the Experimental Tier
-        # (see https://github.com/nodejs/node/blob/master/BUILDING.md#strategy),
-        # meaning that upstream doesn't distribute binaries,
-        # so we need to build them from source.
-        cd third_party/node
-        NODE_VERSION=$(grep NODE_VERSION= update_node_binaries | cut -d\" -f2)
-        NODE_DIST_BASE_URL=$(grep BASE_URL= update_node_binaries | cut -d\" -f2)
-        wget -O - $NODE_DIST_BASE_URL/$NODE_VERSION/node-$NODE_VERSION.tar.xz | tar -x --xz
-        cd node-$NODE_VERSION
-        ./configure --prefix=
-        make -j$SNAPCRAFT_PARALLEL_BUILD_COUNT
-        DESTDIR=$PWD/../linux/node-linux-x64 PREFIX= make install
-        cd ../../..
-      else
-        third_party/node/update_node_binaries
-      fi
+      third_party/node/update_node_binaries
 
-      # Pre-built binaries are provided for eu-strip and clang on x86-64,
+      # Pre-built binaries are provided for clang on x86-64,
       # for all other architectures they have to be built from source.
-      if [ $(arch) = "x86_64" ]; then
-        tools/clang/scripts/update.py
+      if [ $SNAPCRAFT_TARGET_ARCH = "amd64" ]; then
+        python3 tools/clang/scripts/update.py
       else
-        cd buildtools/third_party/eu-strip
-        ./build.sh
-        cd ../../..
-
         # Building clang requires a version of cmake newer than what's in
-        # bionic. Fetch it and build it from source.
+        # focal. Fetch it and build it from source.
         CMAKE_VERSION=3.18.1
         wget -O - https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION.tar.gz | tar -x -z
         cd cmake-$CMAKE_VERSION
@@ -227,38 +186,37 @@ parts:
         cd ..
 
         # Fetch and build clang from source.
-        tools/clang/scripts/build.py --skip-build --without-android --without-fuchsia
+        python3 tools/clang/scripts/build.py --skip-build --without-android --without-fuchsia
         QUILT_PATCHES=$SNAPCRAFT_STAGE/build/llvm-patches QUILT_PC=.pc.llvm-patches quilt push -a
-        tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
+        python3 tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
       # Build GN
       export CXX=$PWD/third_party/llvm-build/Release+Asserts/bin/clang++
       export AR=$PWD/third_party/llvm-build/Release+Asserts/bin/llvm-ar
       cp tools/gn/bootstrap/last_commit_position.h tools/gn/src/
-      tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
+      python3 tools/gn/bootstrap/bootstrap.py --skip-generate-buildfiles
 
       # Build chromium
       OUT=out/Release
       mkdir -p $OUT
       cp $SNAPCRAFT_STAGE/build/args.gn $OUT/
-      if [ $(arch) = "i686" -o $(arch) = "armv7l" ]; then
+      if [ $SNAPCRAFT_TARGET_ARCH = "armhf" ]; then
         # Do not use lld (the LLVM linker) on 32-bits architectures
-        # (i386 and armhf) because it OOMs when linking the chrome binary
+        # (armhf) because it OOMs when linking the chrome binary
         echo "use_lld = false" >> $OUT/args.gn
         # Do not build with ThinLTO either, because it requires lld
         echo "use_thin_lto = false" >> $OUT/args.gn
       fi
-      if [ $(arch) = "armv7l" ]; then
+      if [ $SNAPCRAFT_TARGET_ARCH = "armhf" ]; then
         # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
         echo "arm_use_neon = false" >> $OUT/args.gn
       fi
-      export PKG_CONFIG_PATH=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
       # Strip debug symbols off the chrome binary
-      python build/gn_run_binary.py ./buildtools/third_party/eu-strip/bin/eu-strip $OUT/chrome
+      eu-strip $OUT/chrome
 
       # Install to $SNAPCRAFT_PART_INSTALL
       mkdir -p $SNAPCRAFT_PART_INSTALL
@@ -328,7 +286,7 @@ parts:
     plugin: nil
     stage-packages:
       - groff-base
-      - libgdbm5
+      - libgdbm6
       - libpipeline1
       - man-db
     prime:
@@ -343,33 +301,6 @@ parts:
       - -usr/share/man-db
       - -var
 
-  # Install the keybindings themes (see https://launchpad.net/bugs/1849163)
-  gtk-key-themes:
-    plugin: nil
-    stage-packages:
-      - libgtk-3-common
-    prime:
-      - usr/share/themes/Default/
-      - usr/share/themes/Emacs/
-
-  # In Ubuntu compiled locales for GTK are installed by langpacks, not by
-  # libgtk-3-common. Fetch all the langpacks and keep only the GTK locales.
-  gtk3-locales:
-    plugin: nil
-    source: empty # work around a snapcraft 2.x bug
-    build-packages:
-      - apt
-      - dpkg
-    override-pull: |
-      set -eux
-      apt download "language-pack-gnome-*-base"
-    override-build: |
-      set -eux
-      for deb in *.deb; do dpkg-deb -x $deb .; done
-      find usr/share/locale-langpack -type f -not -name "gtk30*.mo" -exec rm '{}' \;
-      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share
-      cp -R usr/share/locale-langpack $SNAPCRAFT_PART_INSTALL/usr/share/
-
   # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
   # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
   # xdg-open is a wrapper provided by the core snap.
@@ -382,111 +313,16 @@ parts:
       cd usr/bin
       ln -s /usr/bin/xdg-open xdg-email
 
-  # Build and install a more recent version of the VA-API library than what is
-  # available in 18.04, because newer drivers depend on a newer version of the
-  # ABI.
-  libva:
-    source: https://github.com/intel/libva/releases/download/2.9.0/libva-2.9.0.tar.bz2
-    source-checksum: sha1/3e20605243096b4e935e1ef6ac7797efbacc44f6
-    after: [chromium-build]
-    plugin: meson
-    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release", "-Dstrip=true"]
-    build-packages:
-      - gcc
-      - libc6-dev
-      - libdrm-dev
-      - libgl1-mesa-dev
-      - libwayland-dev
-      - libx11-dev
-      - libxext-dev
-      - libxfixes-dev
-      - pkg-config
-      - quilt
-    prime:
-      - -etc
-      - -usr/include
-      - -usr/lib/*/pkgconfig
-      - -usr/share
-    override-build: |
-      set -eux
-      QUILT_PATCHES=$SNAPCRAFT_STAGE/build/libva-patches quilt push -a
-      snapcraftctl build
-
-  # gallium drivers
-  mesa-va-drivers:
+  # VA-API drivers for HW-accelerated video decoding
+  va-drivers:
     plugin: nil
     stage-packages:
       - mesa-va-drivers
-    prime:
-      - usr/lib/x86_64-linux-gnu/dri/*_drv_video.so
-
-  # i965_drv_video.so
-  intel-vaapi-driver:
-    after: [ libva ]
-    source: https://github.com/intel/intel-vaapi-driver/releases/download/2.4.1/intel-vaapi-driver-2.4.1.tar.bz2
-    source-checksum: sha1/c998e06f13238c6419bb38ede9a13e453312737b
-    plugin: meson
-    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
-    build-packages:
-      - gcc
-      - libdrm-dev
-      - libwayland-bin
-      - libwayland-dev
-      - pkg-config
-    override-build: |
-      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
-        snapcraftctl build
-      fi
-    prime:
-      - -usr/share
-
-  intel-gmmlib:
-    source: https://github.com/intel/gmmlib/archive/intel-gmmlib-20.3.3.tar.gz
-    plugin: cmake
-    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
-    build-packages:
-      - g++
-      - sed
-    override-build: |
-      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
-        snapcraftctl build
-        find $SNAPCRAFT_PART_INSTALL -name libigdgmm.so -print | xargs strip
-      fi
-    override-stage: |
-      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
-        snapcraftctl stage
-        sed -i -e 's|includedir=/usr|includedir=${prefix}|' \
-               -e 's|libdir=/usr|libdir=${prefix}|' \
-               usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig/igdgmm.pc
-      fi
-    prime:
-      - -usr/include
-      - -usr/lib/*/pkgconfig
-
-  # iHD_drv_video.so
-  intel-media-driver:
-    after: [ libva, intel-gmmlib ]
-    source: https://github.com/intel/media-driver/archive/intel-media-20.3.0.tar.gz
-    plugin: cmake
-    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr", "-DCMAKE_CXX_FLAGS='-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'" ]
-    build-packages:
-      - binutils
-      - findutils
-      - g++
-    override-build: |
-      if [ $(arch) = "i686" ]; then
-        sed -i -e 's|-m${ARCH}||' \
-               $SNAPCRAFT_PART_SRC/media_driver/cmake/linux/media_compile_flags_linux.cmake
-      fi
-      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
-        snapcraftctl build
-        find $SNAPCRAFT_PART_INSTALL -name iHD_drv_video.so -print | xargs strip
-        find $SNAPCRAFT_PART_INSTALL -name libigfxcmrt.so -print | xargs strip
-      fi
-    prime:
-      - -usr/include
-      - -usr/lib/*/pkgconfig
-      - -usr/share
+      - on amd64:
+        - i965-va-driver
+        - intel-media-va-driver
+    stage:
+      - usr/lib/*/dri/*_video.so
 
   # PipeWire
   pipewire:
@@ -501,15 +337,6 @@ parts:
       - -Djack=disabled
       - -Dpipewire-jack=disabled
       - -Dsession-managers=[]
-    build-packages:
-      - pkg-config
-      - libdbus-1-dev
-      - libpulse-dev
-    override-build: |
-      # Cherry-pick upstream commits to enable building on 18.04
-      COMMITS="9160a12 a4b8bd6 4c16670"
-      for hash in $COMMITS; do wget -O - https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/$hash.patch | patch -p1; done
-      snapcraftctl build
     prime:
       - usr/lib/*/pipewire-*
       - usr/lib/*/spa-*
