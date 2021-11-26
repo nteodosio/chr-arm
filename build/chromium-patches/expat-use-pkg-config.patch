@@ -1,0 +1,33 @@
+Description: Have gn use pkg-config to make other components depend on expat,
+ so that it is able to find it in non-standard locations,
+ such as where the gnome-3-38-2004-sdk snap exposes it.
+Forwarded: not-yet
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/third_party/expat/BUILD.gn
++++ b/third_party/expat/BUILD.gn
+@@ -5,13 +5,24 @@
+ import("//build/config/chromecast_build.gni")
+ import("//testing/libfuzzer/fuzzer_test.gni")
+ 
++if (is_linux) {
++  import("//build/config/linux/pkg_config.gni")
++  pkg_config("system-expat") {
++    packages = [ "expat" ]
++  }
++}
++
+ # On Linux, we implicitly already depend on expat via fontconfig;
+ # let's not pull it in twice.
+ # Chromecast doesn't ship expat as a system library.
+ # Libfuzzer and AFL need to build library from sources.
+ if ((is_linux || is_chromeos) && !is_chromecast && !use_fuzzing_engine) {
+   config("expat_config") {
++    if (is_linux) {
++      configs = [ ":system-expat" ]
++    } else {
+     libs = [ "expat" ]
++    }
+   }
+ 
+   group("expat") {

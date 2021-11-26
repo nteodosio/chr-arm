@@ -1,0 +1,41 @@
+Description: Have gn use pkg-config to make dawn depend on x11-xcb,
+ so that it is able to find it in non-standard locations,
+ such as where the gnome-3-38-2004-sdk snap exposes it.
+Forwarded: not-yet
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/third_party/dawn/src/dawn_native/BUILD.gn
++++ b/third_party/dawn/src/dawn_native/BUILD.gn
+@@ -80,6 +80,13 @@ config("dawn_native_internal") {
+   if (is_mac && mac_deployment_target == "10.10.0") {
+     cflags_objcc = [ "-Wno-unguarded-availability" ]
+   }
++
++  if (is_linux) {
++    import("//build/config/linux/pkg_config.gni")
++    pkg_config("x11-xcb") {
++      packages = [ "x11-xcb" ]
++    }
++  }
+ }
+ 
+ config("dawn_native_weak_framework") {
+@@ -343,6 +350,7 @@ source_set("dawn_native_sources") {
+       "XlibXcbFunctions.cpp",
+       "XlibXcbFunctions.h",
+     ]
++    configs += [ ":x11-xcb" ]
+   }
+ 
+   # Only win32 app needs to link with user32.lib
+@@ -723,6 +731,10 @@ dawn_component("dawn_native") {
+     ":dawn_native_vulkan_rpath",
+   ]
+ 
++  if (dawn_use_x11) {
++    configs += [ ":x11-xcb" ]
++  }
++
+   if (dawn_enable_d3d12) {
+     sources += [ "d3d12/D3D12Backend.cpp" ]
+   }
