@@ -1,0 +1,30 @@
+Description: Have gn use pkg-config to make angle depend on xi,
+ so that it is able to find it in non-standard locations,
+ such as where the gnome-3-38-2004-sdk snap exposes it.
+Forwarded: not-yet
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/third_party/angle/BUILD.gn
++++ b/third_party/angle/BUILD.gn
+@@ -746,6 +746,13 @@ config("angle_backend_config") {
+   }
+ }
+ 
++if (is_linux && angle_use_x11) {
++  import("//build/config/linux/pkg_config.gni")
++  pkg_config("xi") {
++    packages = [ "xi" ]
++  }
++}
++
+ config("libANGLE_config") {
+   cflags = []
+   defines = []
+@@ -770,6 +777,7 @@ config("libANGLE_config") {
+ 
+   if (angle_use_x11) {
+     defines += [ "ANGLE_USE_X11" ]
++    configs = [ ":xi" ]
+   }
+ 
+   if (angle_enable_overlay) {

@@ -1,0 +1,22 @@
+Description: Work around clang failing to resolve libc++ include directives
+ when the command line includes include paths from the gnome-3-38-2004-sdk snap.
+Bug: https://gitlab.gnome.org/Community/Ubuntu/gnome-sdk/-/issues/8
+Forwarded: not-needed
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/build/config/linux/pkg_config.gni
++++ b/build/config/linux/pkg_config.gni
+@@ -110,7 +110,13 @@ template("pkg_config") {
+         include_relativized = rebase_path(include, root_build_dir)
+         cflags += [ "-isystem$include_relativized" ]
+       } else {
++        split = []
++        split = string_split(include, "/")
++        if (split[0] == "" && split[1] == "snap") {
++            cflags += [ "-idirafter$include" ]
++        } else {
+         cflags += [ "-I$include" ]
++        }
+       }
+     }
+ 
