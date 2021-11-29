@@ -118,14 +118,10 @@ parts:
       - pipewire
       - va-drivers
     build-packages:
-      - autoconf
-      - automake
-      - bison
       - chrpath
       - default-jre-headless
-      - flex
+      - elfutils
       - g++
-      - gawk
       - git
       - gperf
       - gzip
@@ -174,15 +170,11 @@ parts:
       # Get the Node.js binaries needed to build chromium's WebUI
       third_party/node/update_node_binaries
 
-      # Pre-built binaries are provided for eu-strip and clang on x86-64,
+      # Pre-built binaries are provided for clang on x86-64,
       # for all other architectures they have to be built from source.
       if [ $SNAPCRAFT_TARGET_ARCH = "amd64" ]; then
         python3 tools/clang/scripts/update.py
       else
-        cd buildtools/third_party/eu-strip
-        ./build.sh
-        cd ../../..
-
         # Building clang requires a version of cmake newer than what's in
         # bionic. Fetch it and build it from source.
         CMAKE_VERSION=3.18.1
@@ -223,7 +215,7 @@ parts:
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
       # Strip debug symbols off the chrome binary
-      python3 build/gn_run_binary.py ./buildtools/third_party/eu-strip/bin/eu-strip $OUT/chrome
+      eu-strip $OUT/chrome
 
       # Install to $SNAPCRAFT_PART_INSTALL
       mkdir -p $SNAPCRAFT_PART_INSTALL
