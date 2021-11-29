@@ -176,7 +176,7 @@ parts:
         python3 tools/clang/scripts/update.py
       else
         # Building clang requires a version of cmake newer than what's in
-        # bionic. Fetch it and build it from source.
+        # focal. Fetch it and build it from source.
         CMAKE_VERSION=3.18.1
         wget -O - https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION.tar.gz | tar -x -z
         cd cmake-$CMAKE_VERSION
