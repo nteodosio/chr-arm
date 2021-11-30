@@ -44,6 +44,17 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    if (!video_receiver_info.decoder_implementation_name.empty()) {
      inbound_video->decoder_implementation =
          video_receiver_info.decoder_implementation_name;
+@@ -534,8 +534,8 @@ void SetOutboundRTPStreamStatsFromVoiceS
+     RTCOutboundRTPStreamStats* outbound_audio) {
+   SetOutboundRTPStreamStatsFromMediaSenderInfo(voice_sender_info,
+                                                outbound_audio);
+-  outbound_audio->media_type = "audio";
+-  outbound_audio->kind = "audio";
++  outbound_audio->media_type = std::string("audio");
++  outbound_audio->kind = std::string("audio");
+   if (voice_sender_info.codec_payload_type) {
+     outbound_audio->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
+         mid, /*inbound=*/false, *voice_sender_info.codec_payload_type);
 @@ -550,8 +550,8 @@ void SetOutboundRTPStreamStatsFromVideoS
      RTCOutboundRTPStreamStats* outbound_video) {
    SetOutboundRTPStreamStatsFromMediaSenderInfo(video_sender_info,
@@ -55,6 +66,17 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    if (video_sender_info.codec_payload_type) {
      outbound_video->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
          mid, /*inbound=*/false, *video_sender_info.codec_payload_type);
+@@ -586,8 +586,8 @@ void SetOutboundRTPStreamStatsFromVideoS
+       static_cast<double>(video_sender_info.total_packet_send_delay_ms) /
+       rtc::kNumMillisecsPerSec;
+   outbound_video->quality_limitation_reason =
+-      QualityLimitationReasonToRTCQualityLimitationReason(
+-          video_sender_info.quality_limitation_reason);
++      std::string(QualityLimitationReasonToRTCQualityLimitationReason(
++          video_sender_info.quality_limitation_reason));
+   outbound_video->quality_limitation_durations =
+       QualityLimitationDurationToRTCQualityLimitationDuration(
+           video_sender_info.quality_limitation_durations_ms);
 @@ -596,7 +596,7 @@ void SetOutboundRTPStreamStatsFromVideoS
    // TODO(https://crbug.com/webrtc/10529): When info's `content_info` is
    // optional, support the "unspecified" value.
@@ -73,6 +95,15 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    remote_inbound->packets_lost = report_block.packets_lost;
    remote_inbound->fraction_lost =
        static_cast<double>(report_block.fraction_lost) / (1 << 8);
+@@ -741,7 +741,7 @@ const std::string& ProduceIceCandidateSt
+     candidate_stats->port = static_cast<int32_t>(candidate.address().port());
+     candidate_stats->protocol = candidate.protocol();
+     candidate_stats->candidate_type =
+-        CandidateTypeToRTCIceCandidateType(candidate.type());
++        std::string(CandidateTypeToRTCIceCandidateType(candidate.type()));
+     candidate_stats->priority = static_cast<int32_t>(candidate.priority());
+ 
+     stats = candidate_stats.get();
 @@ -1504,7 +1504,7 @@ void RTCStatsCollector::ProduceDataChann
      data_channel_stats->label = std::move(stats.label);
      data_channel_stats->protocol = std::move(stats.protocol);
@@ -100,3 +131,12 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
        transport_stats->selected_candidate_pair_changes =
            channel_stats.ice_transport_stats.selected_candidate_pair_changes;
        for (const cricket::ConnectionInfo& info :
+@@ -2052,7 +2052,7 @@ void RTCStatsCollector::ProduceTransport
+       if (channel_stats.ssl_version_bytes) {
+         char bytes[5];
+         snprintf(bytes, sizeof(bytes), "%04X", channel_stats.ssl_version_bytes);
+-        transport_stats->tls_version = bytes;
++        transport_stats->tls_version = std::string(bytes);
+       }
+       if (channel_stats.ssl_cipher_suite != rtc::kTlsNullWithNullNull &&
+           rtc::SSLStreamAdapter::SslCipherSuiteToName(
