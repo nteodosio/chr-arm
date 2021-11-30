@@ -22,3 +22,4 @@ pkg-config-rewrite-include-paths.patch
 dawn-use-pkg-config.patch
 expat-use-pkg-config.patch
 angle-use-pkg-config.patch
+use-system-wide-eu-strip.patch
