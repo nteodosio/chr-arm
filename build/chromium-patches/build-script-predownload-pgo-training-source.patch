@@ -29,7 +29,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    if args.skip_build:
      return 0
-@@ -783,8 +795,7 @@ def main():
+@@ -785,8 +797,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'
