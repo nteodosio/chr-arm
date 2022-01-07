@@ -21,7 +21,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    if (use_v4l2_codec) {
-@@ -121,6 +122,10 @@ source_set("fourcc") {
+@@ -122,6 +123,10 @@ source_set("fourcc") {
      "//media/gpu:buildflags",
      "//media/gpu:common",
    ]
