@@ -1,0 +1,16 @@
+Description: specify an Accept-Encoding header to avoid to ensure the response contains the expected Content-Length header
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Bug: https://bugs.chromium.org/p/chromium/issues/detail?id=1267363
+
+--- a/tools/clang/scripts/update.py
++++ b/tools/clang/scripts/update.py
+@@ -96,7 +96,8 @@ def DownloadUrl(url, output_file):
+     try:
+       sys.stdout.write('Downloading %s ' % url)
+       sys.stdout.flush()
+-      response = urllib.request.urlopen(url)
++      request = urllib.request.Request(url, headers={'accept-encoding': 'deflate, gzip'})
++      response = urllib.request.urlopen(request)
+       total_size = int(response.info().get('Content-Length').strip())
+       bytes_done = 0
+       dots_printed = 0
