@@ -20,3 +20,4 @@ closure-compiler-use-system-wide-java.patch
 disable-crashpad.patch
 partition-allocator-missing-ioctl.patch
 webrtc-fix-ambiguous-operator.patch
+gn-no-std-equal_to.patch
