@@ -73,7 +73,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    remote_inbound->packets_lost = report_block.packets_lost;
    remote_inbound->fraction_lost =
        static_cast<double>(report_block.fraction_lost) / (1 << 8);
-@@ -1510,7 +1510,7 @@ void RTCStatsCollector::ProduceDataChann
+@@ -1511,7 +1511,7 @@ void RTCStatsCollector::ProduceDataChann
      data_channel_stats->label = std::move(stats.label);
      data_channel_stats->protocol = std::move(stats.protocol);
      data_channel_stats->data_channel_identifier = stats.id;
@@ -82,7 +82,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
      data_channel_stats->messages_sent = stats.messages_sent;
      data_channel_stats->bytes_sent = stats.bytes_sent;
      data_channel_stats->messages_received = stats.messages_received;
-@@ -1551,7 +1551,7 @@ void RTCStatsCollector::ProduceIceCandid
+@@ -1552,7 +1552,7 @@ void RTCStatsCollector::ProduceIceCandid
          candidate_pair_stats->remote_candidate_id = ProduceIceCandidateStats(
              timestamp_us, info.remote_candidate, false, transport_id, report);
          candidate_pair_stats->state =
@@ -91,7 +91,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
          candidate_pair_stats->priority = info.priority;
          candidate_pair_stats->nominated = info.nominated;
          // TODO(hbos): This writable is different than the spec. It goes to
-@@ -2031,7 +2031,7 @@ void RTCStatsCollector::ProduceTransport
+@@ -2034,7 +2034,7 @@ void RTCStatsCollector::ProduceTransport
        transport_stats->bytes_received = 0;
        transport_stats->packets_received = 0;
        transport_stats->dtls_state =

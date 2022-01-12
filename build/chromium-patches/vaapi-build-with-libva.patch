@@ -13,7 +13,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  source_set("vaapi") {
 --- a/media/gpu/chromeos/BUILD.gn
 +++ b/media/gpu/chromeos/BUILD.gn
-@@ -35,6 +35,7 @@ source_set("chromeos") {
+@@ -36,6 +36,7 @@ source_set("chromeos") {
        "//media/gpu/vaapi",
        "//media/gpu/vaapi:common",
      ]
@@ -21,7 +21,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    if (use_v4l2_codec) {
-@@ -122,6 +123,10 @@ source_set("fourcc") {
+@@ -125,6 +126,10 @@ source_set("fourcc") {
      "//media/gpu:buildflags",
      "//media/gpu:common",
    ]
