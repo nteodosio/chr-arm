@@ -20,7 +20,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  config("dawn_native_weak_framework") {
-@@ -340,6 +347,7 @@ source_set("dawn_native_sources") {
+@@ -339,6 +346,7 @@ source_set("dawn_native_sources") {
        "XlibXcbFunctions.cpp",
        "XlibXcbFunctions.h",
      ]
@@ -28,7 +28,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    # Only win32 app needs to link with user32.lib
-@@ -719,6 +727,10 @@ dawn_component("dawn_native") {
+@@ -718,6 +726,10 @@ dawn_component("dawn_native") {
      ":dawn_native_vulkan_rpath",
    ]
  
