@@ -11,7 +11,6 @@ clang-build-only-needed-targets.patch
 build-script-predownload-pgo-training-source.patch
 build-script-fix-bootstrap-targets.patch
 build-script-unset-default-target-triple.patch
-build-script-set-accept-encoding.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
 libaom-armhf-build-cpudetect.patch

@@ -14,21 +14,21 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 --- a/chrome/common/media/cdm_registration.cc
 +++ b/chrome/common/media/cdm_registration.cc
 @@ -91,7 +91,7 @@ std::unique_ptr<content::CdmInfo> Create
-         // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)) && (defined(OS_LINUX) ||
-         // defined(OS_CHROMEOS))
+         // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)) && (BUILDFLAG(IS_LINUX) ||
+         // BUILDFLAG(IS_CHROMEOS))
  
 -#if BUILDFLAG(BUNDLE_WIDEVINE_CDM) && \
 +#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && \
-     (defined(OS_LINUX) || defined(OS_CHROMEOS))
+     (BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS))
  // On Linux/ChromeOS we have to preload the CDM since it uses the zygote
  // sandbox. On Windows and Mac, the bundled CDM is handled by the component
 @@ -168,7 +168,7 @@ content::CdmInfo* GetBundledWidevine() {
        }());
    return s_cdm_info->get();
  }
--#endif  // BUILDFLAG(BUNDLE_WIDEVINE_CDM) && (defined(OS_LINUX) ||
-+#endif  // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && (defined(OS_LINUX) ||
-         // defined(OS_CHROMEOS))
+-#endif  // BUILDFLAG(BUNDLE_WIDEVINE_CDM) && (BUILDFLAG(IS_LINUX) ||
++#endif  // BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && (BUILDFLAG(IS_LINUX) ||
+         // BUILDFLAG(IS_CHROMEOS))
  
  #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && \
 @@ -207,7 +207,7 @@ void AddSoftwareSecureWidevine(std::vect

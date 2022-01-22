@@ -5,7 +5,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/base/process/memory_linux.cc
 +++ b/base/process/memory_linux.cc
-@@ -35,6 +35,13 @@ void ReleaseReservationOrTerminate() {
+@@ -30,6 +30,13 @@ void ReleaseReservationOrTerminate() {
  
  }  // namespace
  

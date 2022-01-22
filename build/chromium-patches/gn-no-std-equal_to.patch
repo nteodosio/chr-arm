@@ -4,7 +4,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/gn/src/gn/unique_vector.h
 +++ b/tools/gn/src/gn/unique_vector.h
-@@ -43,6 +43,12 @@ struct UniqueVectorNode {
+@@ -44,6 +44,12 @@ struct UniqueVectorNode {
  
  using UniqueVectorHashTableBase = HashTableBase<UniqueVectorNode>;
  
@@ -17,7 +17,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  // A common HashSet implementation used by all UniqueVector instantiations.
  class UniqueVectorHashSet : public UniqueVectorHashTableBase {
   public:
-@@ -55,7 +61,7 @@ class UniqueVectorHashSet : public Uniqu
+@@ -56,7 +62,7 @@ class UniqueVectorHashSet : public Uniqu
    // |vector| is containing vector for existing items.
    //
    // Returns a non-null mutable Node pointer.
@@ -26,7 +26,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    Node* Lookup(size_t hash, const T& item, const std::vector<T>& vector) const {
      uint32_t hash32 = Node::ToHash32(hash);
      return BaseType::NodeLookup(hash32, [&](const Node* node) {
-@@ -78,7 +84,7 @@ class UniqueVectorHashSet : public Uniqu
+@@ -79,7 +85,7 @@ class UniqueVectorHashSet : public Uniqu
  // into.
  template <typename T,
            typename Hash = std::hash<T>,
