@@ -3,7 +3,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -543,7 +543,7 @@ def main():
+@@ -631,7 +631,7 @@ def main():
  
    targets = 'AArch64;ARM;Mips;PowerPC;SystemZ;WebAssembly;X86'
  

@@ -8,12 +8,12 @@ Forwarded: not-needed
 
 --- a/build/linux/strip_binary.gni
 +++ b/build/linux/strip_binary.gni
-@@ -32,7 +32,7 @@ template("strip_binary") {
+@@ -44,7 +44,7 @@ template("strip_binary") {
      ]
      args = [
        "--eu-strip-binary-path",
 -      rebase_path(eu_strip_binary, root_build_dir),
 +      "/usr/bin/eu-strip",
        "--symbol-output",
-       rebase_path(invoker.symbol_output, root_build_dir),
+       rebase_path(symbol_output, root_build_dir),
        "--stripped-binary-output",
