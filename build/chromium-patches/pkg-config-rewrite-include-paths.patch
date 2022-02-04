@@ -6,7 +6,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/build/config/linux/pkg_config.gni
 +++ b/build/config/linux/pkg_config.gni
-@@ -110,7 +110,13 @@ template("pkg_config") {
+@@ -111,7 +111,13 @@ template("pkg_config") {
          include_relativized = rebase_path(include, root_build_dir)
          cflags += [ "-isystem$include_relativized" ]
        } else {
