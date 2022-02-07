@@ -225,11 +225,11 @@ parts:
       mkdir -p $T
       cd $OUT
       cp chrome chromedriver \
-          chrome_*.pak headless_lib.pak resources.pak \
+          chrome_*.pak resources.pak \
           icudtl.dat \
           libEGL.so libGLESv2.so libffmpeg.so \
           libvk_swiftshader.so libvulkan.so.1 vk_swiftshader_icd.json \
-          snapshot_blob.bin v8_context_snapshot.bin \
+          v8_context_snapshot.bin \
           $T/
       cp chrome_sandbox $T/chrome-sandbox
       mkdir $T/locales
