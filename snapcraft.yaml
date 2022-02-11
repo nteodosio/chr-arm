@@ -212,6 +212,16 @@ parts:
         # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
         echo "arm_use_neon = false" >> $OUT/args.gn
       fi
+
+      # Temporary workaround to ensure that version 2.4.107 of libdrm from
+      # focal-updates is used instead of version 2.4.105 from the gnome
+      # platform snap, until it is rebuilt with the updated version. This is
+      # because dri.pc (from mesa-common-dev) comes from the archive, not from
+      # the gnome platform snap.
+      cd /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
+      ln -s libdrm.pc libdrm-uninstalled.pc
+      cd -
+
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
