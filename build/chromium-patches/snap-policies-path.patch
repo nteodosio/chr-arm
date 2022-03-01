@@ -17,7 +17,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1866732
  #include "base/native_library.h"
 @@ -413,10 +414,18 @@ bool PathProvider(int key, base::FilePat
        break;
- #if defined(OS_POSIX) && !defined(OS_MAC) && !defined(OS_OPENBSD)
+ #if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_OPENBSD)
      case chrome::DIR_POLICY_FILES: {
 +      std::unique_ptr<base::Environment> env(base::Environment::Create());
 +      std::string snap_data;
