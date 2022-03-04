@@ -21,4 +21,4 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +        break;
        if (!GetComponentDirectory(&cur))
          return false;
- #if !BUILDFLAG(IS_CHROMEOS_ASH)
+       cur = cur.AppendASCII(kWidevineCdmBaseDirectory);

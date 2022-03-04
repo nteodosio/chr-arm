@@ -4,9 +4,9 @@ Description: Have gn use pkg-config to make dawn depend on x11-xcb,
 Forwarded: not-yet
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
---- a/third_party/dawn/src/dawn_native/BUILD.gn
-+++ b/third_party/dawn/src/dawn_native/BUILD.gn
-@@ -80,6 +80,13 @@ config("dawn_native_internal") {
+--- a/third_party/dawn/src/dawn/native/BUILD.gn
++++ b/third_party/dawn/src/dawn/native/BUILD.gn
+@@ -80,6 +80,13 @@ config("internal") {
    if (is_mac && mac_deployment_target == "10.10.0") {
      cflags_objcc = [ "-Wno-unguarded-availability" ]
    }
@@ -19,8 +19,8 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +  }
  }
  
- config("dawn_native_weak_framework") {
-@@ -343,6 +350,7 @@ source_set("dawn_native_sources") {
+ config("weak_framework") {
+@@ -340,6 +347,7 @@ source_set("sources") {
        "XlibXcbFunctions.cpp",
        "XlibXcbFunctions.h",
      ]
@@ -28,8 +28,8 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    # Only win32 app needs to link with user32.lib
-@@ -723,6 +731,10 @@ dawn_component("dawn_native") {
-     ":dawn_native_vulkan_rpath",
+@@ -715,6 +723,10 @@ dawn_component("native") {
+     ":vulkan_rpath",
    ]
  
 +  if (dawn_use_x11) {
