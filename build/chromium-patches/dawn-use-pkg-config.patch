@@ -20,7 +20,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  config("weak_framework") {
-@@ -340,6 +347,7 @@ source_set("sources") {
+@@ -342,6 +349,7 @@ source_set("sources") {
        "XlibXcbFunctions.cpp",
        "XlibXcbFunctions.h",
      ]
@@ -28,7 +28,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    # Only win32 app needs to link with user32.lib
-@@ -715,6 +723,10 @@ dawn_component("native") {
+@@ -717,6 +725,10 @@ dawn_component("native") {
      ":vulkan_rpath",
    ]
  

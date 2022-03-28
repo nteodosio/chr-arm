@@ -3,8 +3,8 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -482,6 +482,15 @@ def CopyLibstdcpp(args, build_dir):
-       CopyFile(libstdcpp, libpath)
+@@ -459,6 +459,15 @@ def CopyLibstdcpp(args, build_dir):
+   CopyFile(libstdcpp, os.path.join(build_dir, 'lib'))
  
  
 +def DownloadPGOTrainingFile():
@@ -19,7 +19,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -620,6 +629,9 @@ def main():
+@@ -597,6 +606,9 @@ def main():
    AddCMakeToPath(args)
    DeleteChromeToolsShim()
  
@@ -29,7 +29,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  
    if args.skip_build:
      return 0
-@@ -888,8 +900,7 @@ def main():
+@@ -862,8 +874,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'
