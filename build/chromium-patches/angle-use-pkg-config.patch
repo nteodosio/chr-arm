@@ -6,7 +6,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/third_party/angle/BUILD.gn
 +++ b/third_party/angle/BUILD.gn
-@@ -789,6 +789,13 @@ config("angle_backend_config") {
+@@ -788,6 +788,13 @@ config("angle_backend_config") {
    }
  }
  
@@ -20,7 +20,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  config("libANGLE_config") {
    cflags = []
    defines = []
-@@ -813,6 +820,7 @@ config("libANGLE_config") {
+@@ -812,6 +819,7 @@ config("libANGLE_config") {
  
    if (angle_use_x11) {
      defines += [ "ANGLE_USE_X11" ]
