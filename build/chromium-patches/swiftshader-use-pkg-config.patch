@@ -44,7 +44,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  swiftshader_source_set("swiftshader_libvulkan_headers") {
-@@ -211,6 +218,10 @@ swiftshader_shared_library("swiftshader_
+@@ -214,6 +221,10 @@ swiftshader_shared_library("swiftshader_
    public_deps = [
      ":swiftshader_libvulkan_headers",
    ]
