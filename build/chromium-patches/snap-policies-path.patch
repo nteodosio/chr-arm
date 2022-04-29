@@ -15,7 +15,7 @@ Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1866732
  #include "base/files/file_util.h"
  #include "base/logging.h"
  #include "base/native_library.h"
-@@ -431,10 +432,18 @@ bool PathProvider(int key, base::FilePat
+@@ -427,10 +428,18 @@ bool PathProvider(int key, base::FilePat
        break;
  #if BUILDFLAG(IS_POSIX) && !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_OPENBSD)
      case chrome::DIR_POLICY_FILES: {

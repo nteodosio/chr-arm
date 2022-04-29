@@ -122,7 +122,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
          candidate_pair_stats->priority = info.priority;
          candidate_pair_stats->nominated = info.nominated;
          // TODO(hbos): This writable is different than the spec. It goes to
-@@ -2091,7 +2091,7 @@ void RTCStatsCollector::ProduceTransport
+@@ -2095,7 +2095,7 @@ void RTCStatsCollector::ProduceTransport
        transport_stats->bytes_received =
            channel_stats.ice_transport_stats.bytes_received;
        transport_stats->dtls_state =
@@ -131,7 +131,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
        transport_stats->selected_candidate_pair_changes =
            channel_stats.ice_transport_stats.selected_candidate_pair_changes;
        for (const cricket::ConnectionInfo& info :
-@@ -2113,7 +2113,7 @@ void RTCStatsCollector::ProduceTransport
+@@ -2117,7 +2117,7 @@ void RTCStatsCollector::ProduceTransport
        if (channel_stats.ssl_version_bytes) {
          char bytes[5];
          snprintf(bytes, sizeof(bytes), "%04X", channel_stats.ssl_version_bytes);

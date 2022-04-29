@@ -4,9 +4,9 @@ Bug-Ubuntu: https://launchpad.net/bugs/1718885
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -315,6 +315,8 @@ if (!is_android && !is_mac) {
-       if (is_chromeos_lacros) {
-         deps += [ "//chromeos/crosapi/mojom" ]
+@@ -320,6 +320,8 @@ if (!is_android && !is_mac) {
+           "//chromeos/startup",
+         ]
        }
 +
 +      configs += [ "//build/config/gcc:rpath_for_built_shared_libraries" ]
