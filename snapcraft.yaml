@@ -17,7 +17,6 @@ apps:
     desktop: bin/chromium.desktop
     common-id: chromium-browser.desktop
     environment:
-      DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
       CHROME_CONFIG_HOME: $SNAP_USER_COMMON
       GTK_USE_PORTAL: 1
