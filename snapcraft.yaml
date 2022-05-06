@@ -186,7 +186,6 @@ parts:
 
         # Fetch and build clang from source.
         python3 tools/clang/scripts/build.py --skip-build --without-android --without-fuchsia
-        QUILT_PATCHES=$SNAPCRAFT_STAGE/build/llvm-patches QUILT_PC=.pc.llvm-patches quilt push -a
         python3 tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
       fi
 
