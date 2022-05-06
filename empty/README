@@ -1,1 +1,0 @@
-Empty source directory to work around a snapcraft 2.x bug where parts using the nil plugin are implicitly considered to have source: ".".
