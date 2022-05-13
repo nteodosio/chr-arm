@@ -4,7 +4,7 @@ Bug-Ubuntu: https://launchpad.net/bugs/1718885
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -320,6 +320,8 @@ if (!is_android && !is_mac) {
+@@ -322,6 +322,8 @@ if (!is_android && !is_mac) {
            "//chromeos/startup",
          ]
        }
