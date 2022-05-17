@@ -1,6 +1,7 @@
 Description: Provide an implementation of std::equal_to, unavailable in the version of the stdlib in bionic,
   required since https://gn.googlesource.com/gn/+/387b368dfe63fec317f8e609d90c634807f2764e.
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/tools/gn/src/gn/unique_vector.h
 +++ b/tools/gn/src/gn/unique_vector.h

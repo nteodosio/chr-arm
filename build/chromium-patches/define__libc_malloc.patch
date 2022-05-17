@@ -2,6 +2,7 @@ Description: Partially revert 6f23ef1 to fix build failure
  ../../base/process/memory_linux.cc:106:13: error: use of undeclared identifier '__libc_malloc'
 Origin: https://chromium.googlesource.com/chromium/src/+/6f23ef1f7305a75c2db96afde705bddcddde1f05
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/base/process/memory_linux.cc
 +++ b/base/process/memory_linux.cc

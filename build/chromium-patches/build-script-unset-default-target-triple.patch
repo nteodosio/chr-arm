@@ -4,6 +4,7 @@ Description: do not hardcode LLVM_DEFAULT_TARGET_TRIPLE,
   This partially reverts https://chromium.googlesource.com/chromium/src/+/2960c2b,
   which was meant to affect Mac only anyway.
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py

@@ -1,5 +1,6 @@
 Description: Add armhf and arm64 to the bootstrap targets, to allow building an instrumented compiler on those platforms too
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py

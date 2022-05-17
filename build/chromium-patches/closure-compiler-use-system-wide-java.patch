@@ -1,5 +1,6 @@
 Description: use the system-wide java binary because the source tarball doesn't contain a copy of it
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/third_party/closure_compiler/compiler.py
 +++ b/third_party/closure_compiler/compiler.py

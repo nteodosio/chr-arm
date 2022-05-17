@@ -1,6 +1,7 @@
 Description: enable widevine and set its version string to "undefined"
 Author: Michael Gilbert <mgilbert@debian.org>
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/third_party/widevine/cdm/widevine_cdm_version.h
 +++ b/third_party/widevine/cdm/widevine_cdm_version.h
