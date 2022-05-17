@@ -17,7 +17,6 @@ libaom-armhf-build-cpudetect.patch
 closure-compiler-use-system-wide-java.patch
 disable-crashpad.patch
 webrtc-fix-ambiguous-operator.patch
-gn-no-std-equal_to.patch
 pkg-config-rewrite-include-paths.patch
 dawn-use-pkg-config.patch
 expat-use-pkg-config.patch
