@@ -1,5 +1,6 @@
 Description: Make the script that fetches the Node.js release tarball architecture-aware
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/third_party/node/update_node_binaries
 +++ b/third_party/node/update_node_binaries

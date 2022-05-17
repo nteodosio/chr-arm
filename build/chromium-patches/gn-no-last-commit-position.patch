@@ -1,5 +1,6 @@
 Description: When building from a source tarball (as opposed to a git checkout) there is no last commit position
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/tools/gn/bootstrap/bootstrap.py
 +++ b/tools/gn/bootstrap/bootstrap.py

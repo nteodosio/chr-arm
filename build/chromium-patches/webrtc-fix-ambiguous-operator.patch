@@ -1,6 +1,7 @@
 Description: fix compilation errors (on arm64 only) of the type
   error: use of overloaded operator '=' is ambiguous (with operand types 'RTCStatsMember<std::string>' (aka 'RTCStatsMember<basic_string<char, char_traits<char>, allocator<char>>>') and 'const char *')
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/third_party/webrtc/pc/rtc_stats_collector.cc
 +++ b/third_party/webrtc/pc/rtc_stats_collector.cc
