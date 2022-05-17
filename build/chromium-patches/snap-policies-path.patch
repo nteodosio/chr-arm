@@ -4,6 +4,7 @@ Description: read policies from a snap-aware path if it exists
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1714244
 Bug: https://bugs.launchpad.net/ubuntu/+source/chromium-browser/+bug/1866732
+Forwarded: not-needed
 
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc

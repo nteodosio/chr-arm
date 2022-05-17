@@ -1,5 +1,6 @@
 Description: Download the PGO training file earlier in the build sequence, because Launchpad builders have a timeout for how long they are allowed to access the internet (through a proxy) starting from the start of the build.
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py

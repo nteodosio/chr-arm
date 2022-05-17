@@ -1,5 +1,6 @@
 Description: Add a couple of pydeps files that are missing from the source tarball
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- /dev/null
 +++ b/third_party/blink/tools/merge_web_test_results.pydeps

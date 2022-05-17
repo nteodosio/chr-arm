@@ -1,6 +1,7 @@
 Description: disable crashpad, which isn't shipped in the snap
 Bug: https://launchpad.net/bugs/1926590
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/chrome/app/chrome_main.cc
 +++ b/chrome/app/chrome_main.cc

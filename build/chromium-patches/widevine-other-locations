@@ -3,6 +3,7 @@ Description: try an alternative location for the Widevine CDM library
  The manifest lives at the top level, whereas libwidevinecdm.so is inside
  a platform specific directory, see media::GetPlatformSpecificDirectory(…).
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/chrome/common/chrome_paths.cc
 +++ b/chrome/common/chrome_paths.cc

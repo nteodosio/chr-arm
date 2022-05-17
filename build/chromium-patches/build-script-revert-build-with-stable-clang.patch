@@ -1,5 +1,6 @@
 Description: Partially revert https://chromium.googlesource.com/chromium/src/+/029d4b6 because we're not building from a git checkout, so DownloadPinnedClang() cannot work
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
