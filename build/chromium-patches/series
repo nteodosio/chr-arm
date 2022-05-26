@@ -12,6 +12,7 @@ build-script-predownload-pgo-training-source.patch
 build-script-fix-bootstrap-targets.patch
 build-script-unset-default-target-triple.patch
 build-script-revert-build-with-stable-clang.patch
+build-script-limit-compile-jobs.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
 libaom-armhf-build-cpudetect.patch
