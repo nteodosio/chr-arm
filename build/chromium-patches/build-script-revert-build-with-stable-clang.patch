@@ -4,25 +4,33 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -674,15 +674,9 @@ def main():
- 
-   if sys.platform.startswith('linux'):
-     MaybeDownloadHostGcc(args)
+@@ -688,7 +688,6 @@ def main():
+     cc = args.host_cc
+     cxx = args.host_cxx
+   else:
 -    DownloadPinnedClang()
--    cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang')
--    cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang++')
--    # Use the libraries in the specified gcc installation for building.
--    cflags.append('--gcc-toolchain=' + args.gcc_toolchain)
--    cxxflags.append('--gcc-toolchain=' + args.gcc_toolchain)
-+    cc = os.path.join(args.gcc_toolchain, 'bin', 'gcc')
-+    cxx = os.path.join(args.gcc_toolchain, 'bin', 'g++')
-     base_cmake_args += [
--        # The host clang has lld.
--        '-DLLVM_ENABLE_LLD=ON',
-         '-DLLVM_STATIC_LINK_CXX_STDLIB=ON',
-         # Force compiler-rt tests to use our gcc toolchain
-         # because the one on the host may be too old.
-@@ -812,6 +806,14 @@ def main():
+     if sys.platform == 'win32':
+       cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
+       cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
+@@ -699,14 +698,14 @@ def main():
+       cxx = cxx.replace('\\', '/')
+       lld = lld.replace('\\', '/')
+     else:
+-      cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang')
+-      cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang++')
++      cc = os.path.join(args.gcc_toolchain, 'bin', 'gcc')
++      cxx = os.path.join(args.gcc_toolchain, 'bin', 'g++')
+ 
+     if sys.platform != 'darwin':
+       # The host clang has lld, but self-hosting with lld is still slightly
+       # broken on mac.
+       # TODO: check if this works now.
+-      base_cmake_args.append('-DLLVM_ENABLE_LLD=ON')
++      pass
+ 
+     if sys.platform.startswith('linux'):
+       MaybeDownloadHostGcc(args)
+@@ -843,6 +842,14 @@ def main():
      else:
        cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')
        cxx = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang++')

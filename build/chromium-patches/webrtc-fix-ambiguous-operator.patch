@@ -36,7 +36,7 @@ Forwarded: not-needed
    if (video_receiver_info.codec_payload_type) {
      inbound_video->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
          mid, /*inbound=*/true, *video_receiver_info.codec_payload_type);
-@@ -576,7 +576,7 @@ void SetInboundRTPStreamStatsFromVideoRe
+@@ -581,7 +581,7 @@ void SetInboundRTPStreamStatsFromVideoRe
    // TODO(bugs.webrtc.org/10529): When info's `content_info` is optional
    // support the "unspecified" value.
    if (video_receiver_info.content_type == VideoContentType::SCREENSHARE)
@@ -45,7 +45,7 @@ Forwarded: not-needed
    if (!video_receiver_info.decoder_implementation_name.empty()) {
      inbound_video->decoder_implementation =
          video_receiver_info.decoder_implementation_name;
-@@ -608,8 +608,8 @@ void SetOutboundRTPStreamStatsFromVoiceS
+@@ -613,8 +613,8 @@ void SetOutboundRTPStreamStatsFromVoiceS
      RTCOutboundRTPStreamStats* outbound_audio) {
    SetOutboundRTPStreamStatsFromMediaSenderInfo(voice_sender_info,
                                                 outbound_audio);
@@ -56,7 +56,7 @@ Forwarded: not-needed
    if (voice_sender_info.target_bitrate > 0) {
      outbound_audio->target_bitrate = voice_sender_info.target_bitrate;
    }
-@@ -627,8 +627,8 @@ void SetOutboundRTPStreamStatsFromVideoS
+@@ -632,8 +632,8 @@ void SetOutboundRTPStreamStatsFromVideoS
      RTCOutboundRTPStreamStats* outbound_video) {
    SetOutboundRTPStreamStatsFromMediaSenderInfo(video_sender_info,
                                                 outbound_video);
@@ -67,7 +67,7 @@ Forwarded: not-needed
    if (video_sender_info.codec_payload_type) {
      outbound_video->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
          mid, /*inbound=*/false, *video_sender_info.codec_payload_type);
-@@ -663,8 +663,8 @@ void SetOutboundRTPStreamStatsFromVideoS
+@@ -668,8 +668,8 @@ void SetOutboundRTPStreamStatsFromVideoS
        static_cast<double>(video_sender_info.total_packet_send_delay_ms) /
        rtc::kNumMillisecsPerSec;
    outbound_video->quality_limitation_reason =
@@ -78,7 +78,7 @@ Forwarded: not-needed
    outbound_video->quality_limitation_durations =
        QualityLimitationDurationToRTCQualityLimitationDuration(
            video_sender_info.quality_limitation_durations_ms);
-@@ -673,7 +673,7 @@ void SetOutboundRTPStreamStatsFromVideoS
+@@ -678,7 +678,7 @@ void SetOutboundRTPStreamStatsFromVideoS
    // TODO(https://crbug.com/webrtc/10529): When info's `content_info` is
    // optional, support the "unspecified" value.
    if (video_sender_info.content_type == VideoContentType::SCREENSHARE)
@@ -87,7 +87,7 @@ Forwarded: not-needed
    if (!video_sender_info.encoder_implementation_name.empty()) {
      outbound_video->encoder_implementation =
          video_sender_info.encoder_implementation_name;
-@@ -699,7 +699,7 @@ ProduceRemoteInboundRtpStreamStatsFromRe
+@@ -704,7 +704,7 @@ ProduceRemoteInboundRtpStreamStatsFromRe
        /*timestamp=*/report_block_data.report_block_timestamp_utc_us());
    remote_inbound->ssrc = report_block.source_ssrc;
    remote_inbound->kind =
@@ -96,7 +96,7 @@ Forwarded: not-needed
    remote_inbound->packets_lost = report_block.packets_lost;
    remote_inbound->fraction_lost =
        static_cast<double>(report_block.fraction_lost) / (1 << 8);
-@@ -839,7 +839,7 @@ const std::string& ProduceIceCandidateSt
+@@ -844,7 +844,7 @@ const std::string& ProduceIceCandidateSt
      candidate_stats->port = static_cast<int32_t>(candidate.address().port());
      candidate_stats->protocol = candidate.protocol();
      candidate_stats->candidate_type =
@@ -105,7 +105,7 @@ Forwarded: not-needed
      candidate_stats->priority = static_cast<int32_t>(candidate.priority());
  
      stats = candidate_stats.get();
-@@ -1602,7 +1602,7 @@ void RTCStatsCollector::ProduceDataChann
+@@ -1607,7 +1607,7 @@ void RTCStatsCollector::ProduceDataChann
      data_channel_stats->label = std::move(stats.label);
      data_channel_stats->protocol = std::move(stats.protocol);
      data_channel_stats->data_channel_identifier = stats.id;
@@ -114,7 +114,7 @@ Forwarded: not-needed
      data_channel_stats->messages_sent = stats.messages_sent;
      data_channel_stats->bytes_sent = stats.bytes_sent;
      data_channel_stats->messages_received = stats.messages_received;
-@@ -1643,7 +1643,7 @@ void RTCStatsCollector::ProduceIceCandid
+@@ -1648,7 +1648,7 @@ void RTCStatsCollector::ProduceIceCandid
          candidate_pair_stats->remote_candidate_id = ProduceIceCandidateStats(
              timestamp_us, info.remote_candidate, false, transport_id, report);
          candidate_pair_stats->state =
@@ -123,7 +123,7 @@ Forwarded: not-needed
          candidate_pair_stats->priority = info.priority;
          candidate_pair_stats->nominated = info.nominated;
          // TODO(hbos): This writable is different than the spec. It goes to
-@@ -2133,7 +2133,7 @@ void RTCStatsCollector::ProduceTransport
+@@ -2138,7 +2138,7 @@ void RTCStatsCollector::ProduceTransport
        transport_stats->bytes_received =
            channel_stats.ice_transport_stats.bytes_received;
        transport_stats->dtls_state =
@@ -132,7 +132,7 @@ Forwarded: not-needed
        transport_stats->selected_candidate_pair_changes =
            channel_stats.ice_transport_stats.selected_candidate_pair_changes;
        transport_stats->ice_role =
-@@ -2161,7 +2161,7 @@ void RTCStatsCollector::ProduceTransport
+@@ -2166,7 +2166,7 @@ void RTCStatsCollector::ProduceTransport
        if (channel_stats.ssl_version_bytes) {
          char bytes[5];
          snprintf(bytes, sizeof(bytes), "%04X", channel_stats.ssl_version_bytes);
