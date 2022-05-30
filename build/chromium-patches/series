@@ -24,4 +24,3 @@ expat-use-pkg-config.patch
 angle-use-pkg-config.patch
 swiftshader-use-pkg-config.patch
 use-system-wide-eu-strip.patch
-add-missing-blink-pydeps-files.patch
