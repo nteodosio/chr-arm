@@ -7,7 +7,7 @@ description: |
 confinement: strict
 base: core20
 assumes:
-  - snapd2.43 # for 'snapctl is-connected', used in chromium.launcher
+  - snapd2.55 # >=2.55 needed for the cups interface
 compression: lzo
 
 apps:
@@ -28,7 +28,7 @@ apps:
       - audio-record
       - bluez # for Web Bluetooth (https://launchpad.net/bugs/1887201)
       - camera
-      - cups-control
+      - cups
       - home
       - joystick
       - mount-observe
@@ -56,7 +56,7 @@ apps:
       - audio-record
       - bluez
       - camera
-      - cups-control
+      - cups
       - home
       - joystick
       - mount-observe
@@ -75,6 +75,13 @@ apps:
       - mpris
 
 plugs:
+  # This is not used or needed for anything other than to trigger automatic
+  # installation of the cups snap via "default-provider: cups"
+  foo-install-cups:
+    interface: content
+    content: foo
+    default-provider: cups
+    target: $SNAP_DATA/foo
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
