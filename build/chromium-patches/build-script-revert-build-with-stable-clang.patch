@@ -22,7 +22,7 @@ Forwarded: not-needed
          '-DLLVM_STATIC_LINK_CXX_STDLIB=ON',
          # Force compiler-rt tests to use our gcc toolchain
          # because the one on the host may be too old.
-@@ -816,6 +810,14 @@ def main():
+@@ -812,6 +806,14 @@ def main():
      else:
        cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')
        cxx = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang++')

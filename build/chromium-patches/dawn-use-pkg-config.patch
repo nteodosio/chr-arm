@@ -6,9 +6,9 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/third_party/dawn/src/dawn/native/BUILD.gn
 +++ b/third_party/dawn/src/dawn/native/BUILD.gn
-@@ -80,6 +80,13 @@ config("internal") {
-   if (is_mac && mac_deployment_target == "10.10.0") {
-     cflags_objcc = [ "-Wno-unguarded-availability" ]
+@@ -77,6 +77,13 @@ config("vulkan_rpath") {
+       "@executable_path/",
+     ]
    }
 +
 +  if (is_linux) {
@@ -19,8 +19,8 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 +  }
  }
  
- config("weak_framework") {
-@@ -348,6 +355,7 @@ source_set("sources") {
+ # Config that adds include directory for vulkan-tools.
+@@ -331,6 +338,7 @@ source_set("sources") {
        "XlibXcbFunctions.cpp",
        "XlibXcbFunctions.h",
      ]
@@ -28,7 +28,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    # Only win32 app needs to link with user32.lib
-@@ -727,6 +735,10 @@ dawn_component("native") {
+@@ -712,6 +720,10 @@ dawn_component("native") {
      ":vulkan_rpath",
    ]
  
