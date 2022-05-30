@@ -1,0 +1,39 @@
+Description: Partially revert https://chromium.googlesource.com/chromium/src/+/029d4b6 because we're not building from a git checkout, so DownloadPinnedClang() cannot work
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Forwarded: not-needed
+
+--- a/tools/clang/scripts/build.py
++++ b/tools/clang/scripts/build.py
+@@ -674,15 +674,9 @@ def main():
+ 
+   if sys.platform.startswith('linux'):
+     MaybeDownloadHostGcc(args)
+-    DownloadPinnedClang()
+-    cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang')
+-    cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang++')
+-    # Use the libraries in the specified gcc installation for building.
+-    cflags.append('--gcc-toolchain=' + args.gcc_toolchain)
+-    cxxflags.append('--gcc-toolchain=' + args.gcc_toolchain)
++    cc = os.path.join(args.gcc_toolchain, 'bin', 'gcc')
++    cxx = os.path.join(args.gcc_toolchain, 'bin', 'g++')
+     base_cmake_args += [
+-        # The host clang has lld.
+-        '-DLLVM_ENABLE_LLD=ON',
+         '-DLLVM_STATIC_LINK_CXX_STDLIB=ON',
+         # Force compiler-rt tests to use our gcc toolchain
+         # because the one on the host may be too old.
+@@ -816,6 +810,14 @@ def main():
+     else:
+       cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')
+       cxx = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang++')
++    if sys.platform.startswith('linux'):
++      base_cmake_args.append('-DLLVM_ENABLE_LLD=ON')
++
++    if args.gcc_toolchain:
++      # Tell the bootstrap compiler where to find the standard library headers
++      # and shared object files.
++      cflags.append('--gcc-toolchain=' + args.gcc_toolchain)
++      cxxflags.append('--gcc-toolchain=' + args.gcc_toolchain)
+ 
+     print('Bootstrap compiler installed.')
+ 
