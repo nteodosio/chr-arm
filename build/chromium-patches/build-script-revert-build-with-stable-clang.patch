@@ -12,7 +12,7 @@ Forwarded: not-needed
      if sys.platform == 'win32':
        cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
        cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
-@@ -699,14 +698,14 @@ def main():
+@@ -699,20 +698,18 @@ def main():
        cxx = cxx.replace('\\', '/')
        lld = lld.replace('\\', '/')
      else:
@@ -30,7 +30,13 @@ Forwarded: not-needed
  
      if sys.platform.startswith('linux'):
        MaybeDownloadHostGcc(args)
-@@ -843,6 +842,14 @@ def main():
+       # Use the libraries in the specified gcc installation for building.
+-      cflags.append('--gcc-toolchain=' + args.gcc_toolchain)
+-      cxxflags.append('--gcc-toolchain=' + args.gcc_toolchain)
+       base_cmake_args += [
+           '-DLLVM_STATIC_LINK_CXX_STDLIB=ON',
+           # Force compiler-rt tests to use our gcc toolchain
+@@ -843,6 +840,14 @@ def main():
      else:
        cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')
        cxx = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang++')
