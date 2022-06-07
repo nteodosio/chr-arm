@@ -30,9 +30,9 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
 --- a/third_party/swiftshader/src/Vulkan/BUILD.gn
 +++ b/third_party/swiftshader/src/Vulkan/BUILD.gn
-@@ -58,6 +58,13 @@ config("swiftshader_libvulkan_private_co
-      "SWIFTSHADER_ENABLE_ASTC",  # TODO(b/150130101)
+@@ -59,6 +59,13 @@ config("swiftshader_libvulkan_private_co
       "SWIFTSHADER_LEGACY_PRECISION=true",  # TODO(chromium:1299047)
+      "SWIFTSHADER_ZERO_INITIALIZE_DEVICE_MEMORY",
    ]
 +
 +  if (is_linux) {
@@ -44,7 +44,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  swiftshader_source_set("swiftshader_libvulkan_headers") {
-@@ -214,6 +221,10 @@ swiftshader_shared_library("swiftshader_
+@@ -215,6 +222,10 @@ swiftshader_shared_library("swiftshader_
    public_deps = [
      ":swiftshader_libvulkan_headers",
    ]
