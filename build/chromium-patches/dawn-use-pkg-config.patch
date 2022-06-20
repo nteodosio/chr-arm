@@ -28,7 +28,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    # Only win32 app needs to link with user32.lib
-@@ -725,6 +733,10 @@ dawn_component("native") {
+@@ -727,6 +735,10 @@ dawn_component("native") {
      ":vulkan_rpath",
    ]
  
