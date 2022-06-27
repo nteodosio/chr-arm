@@ -7,7 +7,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -750,6 +750,10 @@ def main():
+@@ -784,6 +784,10 @@ def main():
          # Ignore args.disable_asserts for the bootstrap compiler.
          '-DLLVM_ENABLE_ASSERTIONS=ON',
      ]
