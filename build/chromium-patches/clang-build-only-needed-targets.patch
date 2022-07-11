@@ -8,8 +8,8 @@ Forwarded: not-needed
  
    targets = 'AArch64;ARM;Mips;PowerPC;RISCV;SystemZ;WebAssembly;X86'
  
--  projects = 'clang;compiler-rt;lld;clang-tools-extra'
-+  projects = 'clang;compiler-rt;lld'
+-  projects = 'clang;lld;clang-tools-extra'
++  projects = 'clang;lld'
+   runtimes = 'compiler-rt'
  
    if sys.platform == 'darwin':
-     # clang needs libc++, else -stdlib=libc++ won't find includes

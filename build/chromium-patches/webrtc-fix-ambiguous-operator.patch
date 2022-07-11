@@ -5,10 +5,11 @@ Forwarded: not-needed
 
 --- a/third_party/webrtc/pc/rtc_stats_collector.cc
 +++ b/third_party/webrtc/pc/rtc_stats_collector.cc
-@@ -423,8 +423,8 @@ std::unique_ptr<RTCInboundRTPStreamStats
+@@ -423,9 +423,9 @@ std::unique_ptr<RTCInboundRTPStreamStats
        timestamp_us);
    SetInboundRTPStreamStatsFromMediaReceiverInfo(voice_receiver_info,
                                                  inbound_audio.get());
+   inbound_audio->mid = mid;
 -  inbound_audio->media_type = "audio";
 -  inbound_audio->kind = "audio";
 +  inbound_audio->media_type = std::string("audio");
@@ -25,10 +26,11 @@ Forwarded: not-needed
    stats->transport_id = transport_id;
    stats->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
        mid,
-@@ -525,8 +525,8 @@ void SetInboundRTPStreamStatsFromVideoRe
+@@ -525,9 +525,9 @@ void SetInboundRTPStreamStatsFromVideoRe
      RTCInboundRTPStreamStats* inbound_video) {
    SetInboundRTPStreamStatsFromMediaReceiverInfo(video_receiver_info,
                                                  inbound_video);
+   inbound_video->mid = mid;
 -  inbound_video->media_type = "video";
 -  inbound_video->kind = "video";
 +  inbound_video->media_type = std::string("video");
@@ -45,10 +47,11 @@ Forwarded: not-needed
    if (!video_receiver_info.decoder_implementation_name.empty()) {
      inbound_video->decoder_implementation =
          video_receiver_info.decoder_implementation_name;
-@@ -616,8 +616,8 @@ void SetOutboundRTPStreamStatsFromVoiceS
+@@ -616,9 +616,9 @@ void SetOutboundRTPStreamStatsFromVoiceS
      RTCOutboundRTPStreamStats* outbound_audio) {
    SetOutboundRTPStreamStatsFromMediaSenderInfo(voice_sender_info,
                                                 outbound_audio);
+   outbound_audio->mid = mid;
 -  outbound_audio->media_type = "audio";
 -  outbound_audio->kind = "audio";
 +  outbound_audio->media_type = std::string("audio");
@@ -56,10 +59,11 @@ Forwarded: not-needed
    if (voice_sender_info.target_bitrate > 0) {
      outbound_audio->target_bitrate = voice_sender_info.target_bitrate;
    }
-@@ -635,8 +635,8 @@ void SetOutboundRTPStreamStatsFromVideoS
+@@ -635,9 +635,9 @@ void SetOutboundRTPStreamStatsFromVideoS
      RTCOutboundRTPStreamStats* outbound_video) {
    SetOutboundRTPStreamStatsFromMediaSenderInfo(video_sender_info,
                                                 outbound_video);
+   outbound_video->mid = mid;
 -  outbound_video->media_type = "video";
 -  outbound_video->kind = "video";
 +  outbound_video->media_type = std::string("video");
