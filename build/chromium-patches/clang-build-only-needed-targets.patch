@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -633,7 +633,7 @@ def main():
+@@ -655,7 +655,7 @@ def main():
  
    targets = 'AArch64;ARM;Mips;PowerPC;RISCV;SystemZ;WebAssembly;X86'
  

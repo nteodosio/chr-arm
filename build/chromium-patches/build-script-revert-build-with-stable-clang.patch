@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -688,7 +688,6 @@ def main():
+@@ -718,7 +718,6 @@ def main():
      cc = args.host_cc
      cxx = args.host_cxx
    else:
@@ -12,7 +12,7 @@ Forwarded: not-needed
      if sys.platform == 'win32':
        cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
        cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
-@@ -699,8 +698,8 @@ def main():
+@@ -729,8 +728,8 @@ def main():
        cxx = cxx.replace('\\', '/')
        lld = lld.replace('\\', '/')
      else:
@@ -21,18 +21,18 @@ Forwarded: not-needed
 +      cc = os.path.join(args.gcc_toolchain, 'bin', 'gcc')
 +      cxx = os.path.join(args.gcc_toolchain, 'bin', 'g++')
  
-    if sys.platform.startswith('linux'):
-      MaybeDownloadHostGcc(args)
-@@ -728,7 +728,7 @@ def main():
+     if sys.platform.startswith('linux'):
+       MaybeDownloadHostGcc(args)
+@@ -740,7 +739,7 @@ def main():
      # The host clang has lld, but self-hosting with lld is still slightly
      # broken on mac.
      # TODO: check if this works now.
 -    base_cmake_args.append('-DLLVM_ENABLE_LLD=ON')
 +    pass
-
+ 
    if sys.platform == 'darwin':
      # For libc++, we only want the headers.
-@@ -889,6 +889,14 @@ def main():
+@@ -897,6 +896,14 @@ def main():
      else:
        cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')
        cxx = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang++')
