@@ -20,7 +20,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  # Config that adds include directory for vulkan-tools.
-@@ -331,6 +338,7 @@ source_set("sources") {
+@@ -341,6 +348,7 @@ source_set("sources") {
        "XlibXcbFunctions.cpp",
        "XlibXcbFunctions.h",
      ]
@@ -28,7 +28,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    # Only win32 app needs to link with user32.lib
-@@ -712,6 +720,10 @@ dawn_component("native") {
+@@ -729,6 +737,10 @@ dawn_component("native") {
      ":vulkan_rpath",
    ]
  
