@@ -4,8 +4,8 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -476,6 +476,15 @@ def CopyLibstdcpp(args, build_dir):
-   CopyFile(libstdcpp, os.path.join(build_dir, 'lib'))
+@@ -498,6 +498,15 @@ def compiler_rt_cmake_flags(*, sanitizer
+   return args
  
  
 +def DownloadPGOTrainingFile():
@@ -20,7 +20,7 @@ Forwarded: not-needed
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -616,6 +625,9 @@ def main():
+@@ -638,6 +647,9 @@ def main():
    AddCMakeToPath(args)
    DeleteChromeToolsShim()
  
@@ -30,7 +30,7 @@ Forwarded: not-needed
  
    if args.skip_build:
      return 0
-@@ -890,8 +902,7 @@ def main():
+@@ -946,8 +958,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'

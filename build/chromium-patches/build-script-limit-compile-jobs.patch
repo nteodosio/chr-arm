@@ -7,14 +7,14 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -784,6 +784,10 @@ def main():
-         # Ignore args.disable_asserts for the bootstrap compiler.
-         '-DLLVM_ENABLE_ASSERTIONS=ON',
-     ]
+@@ -865,6 +865,10 @@ def main():
+         '-D' + f
+         for f in compiler_rt_cmake_flags(sanitizers=False, profile=args.pgo)
+     ])
 +    if sys.platform.startswith('linux') and platform.machine() == 'aarch64':
 +      bootstrap_args.extend([
 +          '-DLLVM_PARALLEL_COMPILE_JOBS=2',
 +          ])
      if sys.platform == 'darwin':
-       # On macOS, the bootstrap toolchain needs to have compiler-rt because
-       # dsymutil's link needs libclang_rt.osx.a. Only the x86_64 osx
+       bootstrap_args.extend([
+           '-DCOMPILER_RT_ENABLE_IOS=OFF',
