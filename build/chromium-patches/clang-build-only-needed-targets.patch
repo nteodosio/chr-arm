@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -655,7 +655,7 @@ def main():
+@@ -643,7 +643,7 @@ def main():
  
    targets = 'AArch64;ARM;Mips;PowerPC;RISCV;SystemZ;WebAssembly;X86'
  
@@ -12,4 +12,4 @@ Forwarded: not-needed
 +  projects = 'clang;lld'
    runtimes = 'compiler-rt'
  
-   if sys.platform == 'darwin':
+   base_cmake_args = [
