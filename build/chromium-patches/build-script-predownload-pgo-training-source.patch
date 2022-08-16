@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -490,6 +490,15 @@ def compiler_rt_cmake_flags(*, sanitizer
+@@ -481,6 +481,15 @@ def compiler_rt_cmake_flags(*, sanitizer
    return args
  
  
@@ -20,7 +20,7 @@ Forwarded: not-needed
  def gn_arg(v):
    if v == 'True':
      return True
-@@ -626,6 +635,9 @@ def main():
+@@ -617,6 +626,9 @@ def main():
  
    AddCMakeToPath(args)
  
@@ -30,7 +30,7 @@ Forwarded: not-needed
  
    if args.skip_build:
      return 0
-@@ -924,8 +936,7 @@ def main():
+@@ -908,8 +920,7 @@ def main():
      # from PGO as well. Perhaps the training could be done asynchronously by
      # dedicated buildbots that upload profiles to the cloud.
      training_source = 'pgo_training-1.ii'

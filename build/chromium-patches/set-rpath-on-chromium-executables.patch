@@ -5,7 +5,7 @@ Forwarded: not-needed
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -332,6 +332,8 @@ if (!is_android && !is_mac) {
+@@ -333,6 +333,8 @@ if (!is_android && !is_mac) {
            "//ui/base",
          ]
        }

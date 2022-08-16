@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -712,7 +712,6 @@ def main():
+@@ -696,7 +696,6 @@ def main():
      cc = args.host_cc
      cxx = args.host_cxx
    else:
@@ -12,7 +12,7 @@ Forwarded: not-needed
      if sys.platform == 'win32':
        cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
        cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
-@@ -723,8 +722,8 @@ def main():
+@@ -707,8 +706,8 @@ def main():
        cxx = cxx.replace('\\', '/')
        lld = lld.replace('\\', '/')
      else:
@@ -23,7 +23,7 @@ Forwarded: not-needed
  
      if sys.platform.startswith('linux'):
        MaybeDownloadHostGcc(args)
-@@ -734,7 +733,7 @@ def main():
+@@ -718,7 +717,7 @@ def main():
      # The host clang has lld, but self-hosting with lld is still slightly
      # broken on mac.
      # TODO: check if this works now.
@@ -32,7 +32,7 @@ Forwarded: not-needed
  
    if sys.platform.startswith('linux'):
      # Download sysroots. This uses basically Chromium's sysroots, but with
-@@ -879,6 +878,14 @@ def main():
+@@ -863,6 +862,14 @@ def main():
      else:
        cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')
        cxx = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang++')

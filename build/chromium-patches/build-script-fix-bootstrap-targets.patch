@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -827,9 +827,7 @@ def main():
+@@ -811,9 +811,7 @@ def main():
        projects += ';lld'
  
      bootstrap_targets = 'X86'
