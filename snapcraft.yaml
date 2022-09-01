@@ -235,7 +235,7 @@ parts:
 
       # Install to $SNAPCRAFT_PART_INSTALL
       mkdir -p $SNAPCRAFT_PART_INSTALL
-      cp chrome/app/theme/chromium/product_logo_256.png $SNAPCRAFT_PART_INSTALL/chromium.png
+      cp chrome/app/theme/chromium/linux/product_logo_256.png $SNAPCRAFT_PART_INSTALL/chromium.png
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
