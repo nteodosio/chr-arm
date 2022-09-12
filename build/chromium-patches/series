@@ -14,6 +14,7 @@ build-script-unset-default-target-triple.patch
 build-script-revert-build-with-stable-clang.patch
 build-script-armhf-use-sysroot.patch
 build-script-limit-compile-jobs.patch
+dont-optimize-clang-armhf.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
 libaom-armhf-build-cpudetect.patch
