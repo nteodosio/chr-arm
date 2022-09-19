@@ -135,6 +135,7 @@ parts:
       - libcap-dev
       - libcups2-dev
       - libcurl4-openssl-dev
+      - libffi-dev
       - libicu-dev
       - libkrb5-dev
       - libnss3-dev
