@@ -232,7 +232,7 @@ parts:
       # because dri.pc (from mesa-common-dev) comes from the archive, not from
       # the gnome platform snap.
       cd /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
-      ln -s libdrm.pc libdrm-uninstalled.pc
+      ln -fs libdrm.pc libdrm-uninstalled.pc
       cd -
 
       $OUT/gn gen $OUT
