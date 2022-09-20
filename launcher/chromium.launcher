@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Move an existing profile directory over to $SNAP_USER_COMMON, which is shared
 # across revisions of the snap. This addresses profile corruption when the snap
@@ -114,10 +114,10 @@ if [ $WANT_HEADLESS -eq 0 ] ; then
 fi
 
 if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
-  exec "$SNAP/usr/lib/chromium-browser/chrome" --password-store=$PASSWORD_STORE $CHROMIUM_FLAGS "$@"
+  exec "$SNAP/usr/lib/chromium-browser/chrome" --password-store=$PASSWORD_STORE "${CHROMIUM_FLAGS[@]}" "$@"
 else
   TEMP_PROFILE=$(mktemp -d)
   trap "rm -rf $TEMP_PROFILE" EXIT
   # we can't exec here as we need to clean-up the temporary profile
-  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --password-store=$PASSWORD_STORE $CHROMIUM_FLAGS "$@"
+  "$SNAP/usr/lib/chromium-browser/chrome" --user-data-dir=$TEMP_PROFILE --password-store=$PASSWORD_STORE "${CHROMIUM_FLAGS[@]}" "$@"
 fi
