@@ -4,6 +4,17 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
+@@ -661,10 +661,6 @@ def main():
+       '-DLLVM_INCLUDE_GO_TESTS=OFF',
+       # See crbug.com/1126219: Use native symbolizer instead of DIA
+       '-DLLVM_ENABLE_DIA_SDK=OFF',
+-      # Link all binaries with lld. Effectively passes -fuse-ld=lld to the
+-      # compiler driver. On Windows, cmake calls the linker directly, so there
+-      # the same is achieved by passing -DCMAKE_LINKER=$lld below.
+-      '-DLLVM_ENABLE_LLD=ON',
+       # The default value differs per platform, force it off everywhere.
+       '-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF',
+       # Don't use curl.
 @@ -696,7 +696,6 @@ def main():
      cc = args.host_cc
      cxx = args.host_cxx
@@ -23,15 +34,6 @@ Forwarded: not-needed
  
      if sys.platform.startswith('linux'):
        MaybeDownloadHostGcc(args)
-@@ -718,7 +717,7 @@ def main():
-     # The host clang has lld, but self-hosting with lld is still slightly
-     # broken on mac.
-     # TODO: check if this works now.
--    base_cmake_args.append('-DLLVM_ENABLE_LLD=ON')
-+    pass
- 
-   if sys.platform.startswith('linux'):
-     # Download sysroots. This uses basically Chromium's sysroots, but with
 @@ -863,6 +862,14 @@ def main():
      else:
        cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')

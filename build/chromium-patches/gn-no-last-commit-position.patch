@@ -13,14 +13,3 @@ Forwarded: not-needed
    subprocess.check_call(
        [ninja_binary, '-C', gn_build_dir, '-w', 'dupbuild=err', 'gn'])
    shutil.copy2(os.path.join(gn_build_dir, 'gn'), gn_path)
---- a/tools/gn/src/gn/gn_main.cc
-+++ b/tools/gn/src/gn/gn_main.cc
-@@ -16,7 +16,7 @@
- #include "util/msg_loop.h"
- #include "util/sys_info.h"
- 
--#include "last_commit_position.h"
-+#define LAST_COMMIT_POSITION "UNKNOWN"
- 
- namespace {
- 

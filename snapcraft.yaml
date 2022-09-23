@@ -115,8 +115,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-107.0.5300.0.tar.xz
-    source-checksum: sha512/50e763f2054acb43172cf8e56c27640a407f1d516a5a48741213da9b838d29b5566c57d2c3f53b0b0c4ed25f203c96befe3fcd009aa564e7af2561439c5e164a
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-107.0.5304.10.tar.xz
+    source-checksum: sha512/39405bc7885670013ed9a84bfad2f504a7f80a9e7de1661409560d9c54e8a0f82dc05393e35ce2063e6bdbfa323ea85d3b4b5051e462a2a7464004d80843f1b4
     after:
       - chromium-build
       - launcher
@@ -152,6 +152,7 @@ parts:
       - python3-pkg-resources
       - python3-xcbgen
       - quilt
+      - qtbase5-dev
       - sed
       - subversion
       - wget
@@ -177,6 +178,10 @@ parts:
 
       # Get the Node.js binaries needed to build chromium's WebUI
       third_party/node/update_node_binaries
+
+      # Generate qt_shim_moc.cc with our moc or it fails to build with
+      # Focal's version of Qt.
+      moc ui/qt/qt_shim.h > ui/qt/qt_shim_moc.cc
 
       # Pre-built binaries are provided for clang on x86-64,
       # for all other architectures they have to be built from source.

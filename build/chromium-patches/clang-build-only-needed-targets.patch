@@ -4,12 +4,12 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -634,7 +634,7 @@ def main():
- 
-   targets = 'AArch64;ARM;Mips;PowerPC;RISCV;SystemZ;WebAssembly;X86'
- 
--  projects = 'clang;lld;clang-tools-extra'
-+  projects = 'clang;lld'
-   runtimes = 'compiler-rt'
- 
-   base_cmake_args = [
+@@ -645,7 +645,7 @@ def main():
+       '-GNinja',
+       '-DCMAKE_BUILD_TYPE=Release',
+       '-DLLVM_ENABLE_ASSERTIONS=%s' % ('OFF' if args.disable_asserts else 'ON'),
+-      '-DLLVM_ENABLE_PROJECTS=clang;lld;clang-tools-extra',
++      '-DLLVM_ENABLE_PROJECTS=clang;lld',
+       '-DLLVM_ENABLE_RUNTIMES=compiler-rt',
+       '-DLLVM_TARGETS_TO_BUILD=' + targets,
+       # PIC needed for Rust build (links LLVM into shared object)
