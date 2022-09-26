@@ -199,7 +199,9 @@ parts:
 
         # Fetch and build clang from source.
         python3 tools/clang/scripts/build.py --skip-build --without-android --without-fuchsia
-        python3 tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
+        # --with-ml-inliner-model= to avoid depending on vpython3,
+        # https://bugs.chromium.org/p/chromium/issues/detail?id=1368071
+        python3 tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake --with-ml-inliner-model=
       fi
 
       # Build GN
