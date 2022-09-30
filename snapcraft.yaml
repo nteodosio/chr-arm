@@ -7,7 +7,7 @@ description: |
 confinement: strict
 base: core20
 assumes:
-  - snapd2.43 # for 'snapctl is-connected', used in chromium.launcher
+  - snapd2.55 # >=2.55 needed for the cups interface
 compression: lzo
 
 apps:
@@ -28,7 +28,7 @@ apps:
       - audio-record
       - bluez # for Web Bluetooth (https://launchpad.net/bugs/1887201)
       - camera
-      - cups-control
+      - cups
       - home
       - joystick
       - mount-observe
@@ -56,7 +56,7 @@ apps:
       - audio-record
       - bluez
       - camera
-      - cups-control
+      - cups
       - home
       - joystick
       - mount-observe
@@ -75,6 +75,13 @@ apps:
       - mpris
 
 plugs:
+  # This is not used or needed for anything other than to trigger automatic
+  # installation of the cups snap via "default-provider: cups"
+  foo-install-cups:
+    interface: content
+    content: foo
+    default-provider: cups
+    target: $SNAP_DATA/foo
   browser-sandbox:
     interface: browser-support
     allow-sandbox: true
@@ -128,6 +135,7 @@ parts:
       - libcap-dev
       - libcups2-dev
       - libcurl4-openssl-dev
+      - libffi-dev
       - libicu-dev
       - libkrb5-dev
       - libnss3-dev
@@ -144,6 +152,7 @@ parts:
       - python3-pkg-resources
       - python3-xcbgen
       - quilt
+      - qtbase5-dev
       - sed
       - subversion
       - wget
@@ -170,6 +179,10 @@ parts:
       # Get the Node.js binaries needed to build chromium's WebUI
       third_party/node/update_node_binaries
 
+      # Generate qt_shim_moc.cc with our moc or it fails to build with
+      # Focal's version of Qt.
+      moc ui/qt/qt_shim.h > ui/qt/qt_shim_moc.cc
+
       # Pre-built binaries are provided for clang on x86-64,
       # for all other architectures they have to be built from source.
       if [ $SNAPCRAFT_TARGET_ARCH = "amd64" ]; then
@@ -186,7 +199,9 @@ parts:
 
         # Fetch and build clang from source.
         python3 tools/clang/scripts/build.py --skip-build --without-android --without-fuchsia
-        python3 tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake
+        # --with-ml-inliner-model= to avoid depending on vpython3,
+        # https://bugs.chromium.org/p/chromium/issues/detail?id=1368071
+        python3 tools/clang/scripts/build.py --skip-checkout --bootstrap --disable-asserts --pgo --without-android --without-fuchsia --gcc-toolchain=/usr --use-system-cmake --with-ml-inliner-model=
       fi
 
       # Build GN
@@ -217,7 +232,7 @@ parts:
       # because dri.pc (from mesa-common-dev) comes from the archive, not from
       # the gnome platform snap.
       cd /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
-      ln -s libdrm.pc libdrm-uninstalled.pc
+      ln -fs libdrm.pc libdrm-uninstalled.pc
       cd -
 
       $OUT/gn gen $OUT

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-REALHOME=$(getent passwd $(id -u) | cut -d ':' -f 6)
-
 # Move an existing profile directory over to $SNAP_USER_COMMON, which is shared
 # across revisions of the snap. This addresses profile corruption when the snap
 # is refreshed while running, until a proper solution is implemented in snapd.
@@ -21,7 +19,7 @@ fi
 # limitations). Ref: https://launchpad.net/bugs/1888380
 FIRSTRUN_PAGE=""
 if [ ! -d "$SNAP_USER_COMMON/chromium" ]; then
-  CHROMIUM_CONFIG="$REALHOME/.config/chromium"
+  CHROMIUM_CONFIG="$SNAP_REAL_HOME/.config/chromium"
   if [ -d "$CHROMIUM_CONFIG" ]; then
     PREF_FILE="$CHROMIUM_CONFIG/Default/Preferences"
     if [ -r "$PREF_FILE" ]; then
@@ -90,8 +88,8 @@ export GROFF_TMAC_PATH=$SNAP/usr/share/groff/current/tmac
 
 # Source ~/.chromium-browser.init for compatibility with the chromium-browser
 # deb package (https://launchpad.net/bugs/1837746)
-if [ -r $REALHOME/.chromium-browser.init ]; then
-  . $REALHOME/.chromium-browser.init
+if [ -r $SNAP_REAL_HOME/.chromium-browser.init ]; then
+  . $SNAP_REAL_HOME/.chromium-browser.init
 fi
 
 WANT_TEMP_PROFILE=0

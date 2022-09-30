@@ -4,8 +4,8 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -845,9 +845,7 @@ def main():
-       runtimes += ';libcxx'
+@@ -811,9 +811,7 @@ def main():
+       projects += ';lld'
  
      bootstrap_targets = 'X86'
 -    if sys.platform == 'darwin':

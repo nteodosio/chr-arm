@@ -4,7 +4,18 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -718,7 +718,6 @@ def main():
+@@ -661,10 +661,6 @@ def main():
+       '-DLLVM_INCLUDE_GO_TESTS=OFF',
+       # See crbug.com/1126219: Use native symbolizer instead of DIA
+       '-DLLVM_ENABLE_DIA_SDK=OFF',
+-      # Link all binaries with lld. Effectively passes -fuse-ld=lld to the
+-      # compiler driver. On Windows, cmake calls the linker directly, so there
+-      # the same is achieved by passing -DCMAKE_LINKER=$lld below.
+-      '-DLLVM_ENABLE_LLD=ON',
+       # The default value differs per platform, force it off everywhere.
+       '-DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF',
+       # Don't use curl.
+@@ -696,7 +696,6 @@ def main():
      cc = args.host_cc
      cxx = args.host_cxx
    else:
@@ -12,7 +23,7 @@ Forwarded: not-needed
      if sys.platform == 'win32':
        cc = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
        cxx = os.path.join(PINNED_CLANG_DIR, 'bin', 'clang-cl.exe')
-@@ -729,8 +728,8 @@ def main():
+@@ -707,8 +706,8 @@ def main():
        cxx = cxx.replace('\\', '/')
        lld = lld.replace('\\', '/')
      else:
@@ -23,16 +34,7 @@ Forwarded: not-needed
  
      if sys.platform.startswith('linux'):
        MaybeDownloadHostGcc(args)
-@@ -740,7 +739,7 @@ def main():
-     # The host clang has lld, but self-hosting with lld is still slightly
-     # broken on mac.
-     # TODO: check if this works now.
--    base_cmake_args.append('-DLLVM_ENABLE_LLD=ON')
-+    pass
- 
-   if sys.platform == 'darwin':
-     # For libc++, we only want the headers.
-@@ -897,6 +896,14 @@ def main():
+@@ -863,6 +862,14 @@ def main():
      else:
        cc = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang')
        cxx = os.path.join(LLVM_BOOTSTRAP_INSTALL_DIR, 'bin', 'clang++')
