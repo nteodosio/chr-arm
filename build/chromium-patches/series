@@ -16,7 +16,6 @@ build-script-armhf-use-sysroot.patch
 build-script-limit-compile-jobs.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
-libaom-armhf-build-cpudetect.patch
 closure-compiler-use-system-wide-java.patch
 webrtc-fix-ambiguous-operator.patch
 pkg-config-rewrite-include-paths.patch
