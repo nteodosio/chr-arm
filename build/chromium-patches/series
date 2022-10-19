@@ -10,6 +10,7 @@ gn-no-last-commit-position.patch
 clang-build-only-needed-targets.patch
 build-script-predownload-pgo-training-source.patch
 build-script-fix-bootstrap-targets.patch
+build-script-fix-libxml.patch
 build-script-unset-default-target-triple.patch
 build-script-revert-build-with-stable-clang.patch
 build-script-armhf-use-sysroot.patch
