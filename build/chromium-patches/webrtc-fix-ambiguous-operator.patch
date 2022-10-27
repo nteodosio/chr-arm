@@ -6,16 +6,16 @@ Forwarded: not-needed
 --- a/third_party/webrtc/pc/rtc_stats_collector.cc
 +++ b/third_party/webrtc/pc/rtc_stats_collector.cc
 @@ -431,8 +431,8 @@ std::unique_ptr<RTCInboundRTPStreamStats
-   SetInboundRTPStreamStatsFromMediaReceiverInfo(voice_receiver_info,
                                                  inbound_audio.get());
+   inbound_audio->transport_id = transport_id;
    inbound_audio->mid = mid;
 -  inbound_audio->media_type = "audio";
 -  inbound_audio->kind = "audio";
 +  inbound_audio->media_type = std::string("audio");
 +  inbound_audio->kind = std::string("audio");
-   if (voice_receiver_info.codec_payload_type) {
-     inbound_audio->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
-         mid, /*inbound=*/true, *voice_receiver_info.codec_payload_type);
+   if (voice_receiver_info.codec_payload_type.has_value()) {
+     auto codec_param_it = voice_media_info.receive_codecs.find(
+         voice_receiver_info.codec_payload_type.value());
 @@ -499,7 +499,7 @@ CreateRemoteOutboundAudioStreamStats(
    // Populate.
    // - RTCRtpStreamStats.
@@ -26,16 +26,16 @@ Forwarded: not-needed
    stats->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
        mid,
 @@ -534,8 +534,8 @@ void SetInboundRTPStreamStatsFromVideoRe
-   SetInboundRTPStreamStatsFromMediaReceiverInfo(video_receiver_info,
                                                  inbound_video);
+   inbound_video->transport_id = transport_id;
    inbound_video->mid = mid;
 -  inbound_video->media_type = "video";
 -  inbound_video->kind = "video";
 +  inbound_video->media_type = std::string("video");
 +  inbound_video->kind = std::string("video");
-   if (video_receiver_info.codec_payload_type) {
-     inbound_video->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
-         mid, /*inbound=*/true, *video_receiver_info.codec_payload_type);
+   if (video_receiver_info.codec_payload_type.has_value()) {
+     auto codec_param_it = video_media_info.receive_codecs.find(
+         video_receiver_info.codec_payload_type.value());
 @@ -590,7 +590,7 @@ void SetInboundRTPStreamStatsFromVideoRe
    // TODO(bugs.webrtc.org/10529): When info's `content_info` is optional
    // support the "unspecified" value.
@@ -57,16 +57,16 @@ Forwarded: not-needed
      outbound_audio->target_bitrate = voice_sender_info.target_bitrate;
    }
 @@ -648,8 +648,8 @@ void SetOutboundRTPStreamStatsFromVideoS
-   SetOutboundRTPStreamStatsFromMediaSenderInfo(video_sender_info,
                                                 outbound_video);
+   outbound_video->transport_id = transport_id;
    outbound_video->mid = mid;
 -  outbound_video->media_type = "video";
 -  outbound_video->kind = "video";
 +  outbound_video->media_type = std::string("video");
 +  outbound_video->kind = std::string("video");
-   if (video_sender_info.codec_payload_type) {
-     outbound_video->codec_id = RTCCodecStatsIDFromMidDirectionAndPayload(
-         mid, /*inbound=*/false, *video_sender_info.codec_payload_type);
+   if (video_sender_info.codec_payload_type.has_value()) {
+     auto codec_param_it = video_media_info.send_codecs.find(
+         video_sender_info.codec_payload_type.value());
 @@ -684,8 +684,8 @@ void SetOutboundRTPStreamStatsFromVideoS
        static_cast<double>(video_sender_info.total_packet_send_delay_ms) /
        rtc::kNumMillisecsPerSec;
