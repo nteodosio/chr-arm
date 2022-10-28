@@ -110,6 +110,12 @@ if [ $WANT_HEADLESS -eq 0 ] ; then
   fi
 fi
 
+CHROMIUM_FLAGS+=(
+  # Allows translation of pages in foreign languages. 
+  # Refer to https://bugs.archlinux.org/task/76268.
+  --disable-features=TFLiteLanguageDetectionEnabled
+)
+
 if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
   exec "$SNAP/usr/lib/chromium-browser/chrome" --password-store=$PASSWORD_STORE "${CHROMIUM_FLAGS[@]}" "$@"
 else
