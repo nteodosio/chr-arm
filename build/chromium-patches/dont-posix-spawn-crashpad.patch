@@ -1,0 +1,31 @@
+Description: Chromium bails out when it tries to spawn crashpad handler in the
+start up. It is of no use in the snap.
+Author: Nathan Pratta Teodosio <nathan.teodosio@canonical.com>
+Ubuntu-bug: https://launchpad.net/bugs/1993581
+Forwarded: not-yet.
+
+--- a/third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc
++++ b/third_party/crashpad/crashpad/util/posix/spawn_subprocess.cc
+@@ -212,13 +212,15 @@
+ #endif
+ 
+     auto posix_spawn_fp = use_path ? posix_spawnp : posix_spawn;
+-    if ((errno = posix_spawn_fp(nullptr,
+-                                argv_for_spawn[0],
+-                                file_actions_p,
+-                                attr_p,
+-                                argv_for_spawn,
+-                                envp_for_spawn)) != 0) {
+-      PLOG(FATAL) << (use_path ? "posix_spawnp" : "posix_spawn");
++    if (strstr(argv_for_spawn[0], "chrome_crashpad_handler") == NULL) {
++      if ((errno = posix_spawn_fp(nullptr,
++                                  argv_for_spawn[0],
++                                  file_actions_p,
++                                  attr_p,
++                                  argv_for_spawn,
++                                  envp_for_spawn)) != 0) {
++        PLOG(FATAL) << (use_path ? "posix_spawnp" : "posix_spawn");
++      }
+     }
+ 
+     // _exit() instead of exit(), because fork() was called.
