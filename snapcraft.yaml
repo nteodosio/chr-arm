@@ -247,7 +247,7 @@ parts:
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
-      cp chrome chromedriver \
+      cp chrome chromedriver chrome_crashpad_handler \
           chrome_*.pak resources.pak \
           icudtl.dat \
           libEGL.so libGLESv2.so libffmpeg.so \
