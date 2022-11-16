@@ -110,6 +110,14 @@ if [ $WANT_HEADLESS -eq 0 ] ; then
   fi
 fi
 
+case "$CHROMIUM_FLAGS" in
+  *\ *)
+    1>&2 printf '%s\n' \
+    "Warning: Do not pass arguments with spaces via CHROMIUM_FLAGS." \
+    "See https://launchpad.net/bugs/1514484 for context."
+    ;;
+esac
+
 # Allows translation of pages in foreign languages.
 # Refer to https://bugs.archlinux.org/task/76268.
 CHROMIUM_FLAGS="$CHROMIUM_FLAGS --disable-features=TFLiteLanguageDetectionEnabled"
