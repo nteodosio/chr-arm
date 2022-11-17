@@ -1,0 +1,16 @@
+Description: For screen capture to work in Wayland, enable Pipewire.
+Author: Nathan Pratta Teodosio <nathan.teodosio@canonical.com>
+Forwarded: no
+Ubuntu-bug: https://launchpad.net/bugs/1950040
+
+--- a/content/public/common/content_features.cc
++++ b/content/public/common/content_features.cc
+@@ -1479,7 +1479,7 @@
+ // Wayland display server.
+ BASE_FEATURE(kWebRtcPipeWireCapturer,
+              "WebRTCPipeWireCapturer",
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ #endif  // defined(WEBRTC_USE_PIPEWIRE)
+ 
+ enum class VideoCaptureServiceConfiguration {
