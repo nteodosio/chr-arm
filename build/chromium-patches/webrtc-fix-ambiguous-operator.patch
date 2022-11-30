@@ -46,16 +46,16 @@ Forwarded: not-needed
      inbound_video->decoder_implementation =
          video_receiver_info.decoder_implementation_name;
 @@ -628,8 +628,8 @@ void SetOutboundRTPStreamStatsFromVoiceS
-   SetOutboundRTPStreamStatsFromMediaSenderInfo(voice_sender_info,
                                                 outbound_audio);
+   outbound_audio->transport_id = transport_id;
    outbound_audio->mid = mid;
 -  outbound_audio->media_type = "audio";
 -  outbound_audio->kind = "audio";
 +  outbound_audio->media_type = std::string("audio");
 +  outbound_audio->kind = std::string("audio");
-   if (voice_sender_info.target_bitrate > 0) {
-     outbound_audio->target_bitrate = voice_sender_info.target_bitrate;
-   }
+   if (voice_sender_info.target_bitrate &&
+       *voice_sender_info.target_bitrate > 0) {
+     outbound_audio->target_bitrate = *voice_sender_info.target_bitrate;
 @@ -648,8 +648,8 @@ void SetOutboundRTPStreamStatsFromVideoS
                                                 outbound_video);
    outbound_video->transport_id = transport_id;
