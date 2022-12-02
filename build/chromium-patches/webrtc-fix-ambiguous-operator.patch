@@ -53,7 +53,7 @@ Forwarded: not-needed
 -  outbound_audio->kind = "audio";
 +  outbound_audio->media_type = std::string("audio");
 +  outbound_audio->kind = std::string("audio");
-   if (voice_sender_info.target_bitrate &&
+   if (voice_sender_info.target_bitrate.has_value() &&
        *voice_sender_info.target_bitrate > 0) {
      outbound_audio->target_bitrate = *voice_sender_info.target_bitrate;
 @@ -648,8 +648,8 @@ void SetOutboundRTPStreamStatsFromVideoS
