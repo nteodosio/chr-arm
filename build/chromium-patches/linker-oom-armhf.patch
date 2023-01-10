@@ -1,0 +1,21 @@
+Description: When building on armhf, pass --no-keep-memory to the linker
+in an attempt to reduce the memory pressure on the Launchpad builders,
+which consistently result in an OOM situation where the linker is killed
+and the build fails.
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Bug-Ubuntu: https://launchpad.net/bugs/1978989
+Forwarded: not-needed
+
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -491,6 +491,10 @@ config("compiler") {
+     # error.  "-lpthread" is added in //build/config:default_libs.
+   }
+ 
++  if (is_linux && target_cpu == "arm") {
++    ldflags += [ "-Wl,--no-keep-memory" ]
++  }
++
+   # Clang-specific compiler flags setup.
+   # ------------------------------------
+   if (is_clang) {

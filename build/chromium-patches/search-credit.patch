@@ -24,7 +24,7 @@ Forwarded: not-needed
        "type": "SEARCH_ENGINE_DUCKDUCKGO",
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
-@@ -997,6 +997,9 @@ std::string TemplateURLRef::HandleReplac
+@@ -996,6 +996,9 @@ std::string TemplateURLRef::HandleReplac
  
    std::string url = parsed_url_;
  
@@ -34,7 +34,7 @@ Forwarded: not-needed
    // replacements_ is ordered in ascending order, as such we need to iterate
    // from the back.
    for (const Replacement& replacement : base::Reversed(replacements_)) {
-@@ -1116,6 +1119,7 @@ std::string TemplateURLRef::HandleReplac
+@@ -1121,6 +1124,7 @@ std::string TemplateURLRef::HandleReplac
  
        case GOOGLE_BASE_URL:
          DCHECK(!replacement.is_post_param);
@@ -42,7 +42,7 @@ Forwarded: not-needed
          HandleReplacement(std::string(), search_terms_data.GoogleBaseURLValue(),
                            replacement, &url);
          break;
-@@ -1241,7 +1245,8 @@ std::string TemplateURLRef::HandleReplac
+@@ -1247,7 +1251,8 @@ std::string TemplateURLRef::HandleReplac
  
        case GOOGLE_SEARCH_CLIENT: {
          DCHECK(!replacement.is_post_param);
@@ -52,7 +52,7 @@ Forwarded: not-needed
          if (!client.empty())
            HandleReplacement("client", client, replacement, &url);
          break;
-@@ -1378,6 +1383,13 @@ std::string TemplateURLRef::HandleReplac
+@@ -1384,6 +1389,13 @@ std::string TemplateURLRef::HandleReplac
      }
    }
  
