@@ -10,6 +10,6 @@ Forwarded: not-needed
  
 -  shutil.copy2(
 -      os.path.join(BOOTSTRAP_DIR, 'last_commit_position.h'), gn_build_dir)
-   subprocess.check_call(
-       [ninja_binary, '-C', gn_build_dir, '-w', 'dupbuild=err', 'gn'])
-   shutil.copy2(os.path.join(gn_build_dir, 'gn'), gn_path)
+   cmd = [ninja_binary, '-C', gn_build_dir, '-w', 'dupbuild=err', 'gn']
+   if options.jobs:
+     cmd += ['-j', str(options.jobs)]
