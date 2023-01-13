@@ -6,7 +6,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/third_party/swiftshader/src/WSI/BUILD.gn
 +++ b/third_party/swiftshader/src/WSI/BUILD.gn
-@@ -22,6 +22,12 @@ config("WSI_metal_weak_framework") {
+@@ -23,6 +23,12 @@ config("WSI_metal_weak_framework") {
        "Metal",
      ]
    }
@@ -19,7 +19,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  swiftshader_source_set("WSI") {
-@@ -90,4 +96,8 @@ swiftshader_source_set("WSI") {
+@@ -94,4 +100,8 @@ swiftshader_source_set("WSI") {
    }
  
    configs = [ "../Vulkan:swiftshader_libvulkan_private_config" ]
@@ -30,7 +30,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
 --- a/third_party/swiftshader/src/Vulkan/BUILD.gn
 +++ b/third_party/swiftshader/src/Vulkan/BUILD.gn
-@@ -63,6 +63,13 @@ config("swiftshader_libvulkan_private_co
+@@ -66,6 +66,13 @@ config("swiftshader_libvulkan_private_co
       "SWIFTSHADER_LEGACY_PRECISION=true",  # TODO(chromium:1299047)
       "SWIFTSHADER_ZERO_INITIALIZE_DEVICE_MEMORY",
    ]
@@ -44,7 +44,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  swiftshader_source_set("swiftshader_libvulkan_headers") {
-@@ -225,6 +232,10 @@ swiftshader_shared_library("swiftshader_
+@@ -228,6 +235,10 @@ swiftshader_shared_library("swiftshader_
    public_deps = [
      ":swiftshader_libvulkan_headers",
    ]

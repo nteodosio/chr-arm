@@ -4,7 +4,7 @@ Forwarded: not-needed
 
 --- a/tools/gn/bootstrap/bootstrap.py
 +++ b/tools/gn/bootstrap/bootstrap.py
-@@ -120,8 +120,6 @@ def main(argv):
+@@ -121,8 +121,6 @@ def main(argv):
      cmd.append('--debug')
    subprocess.check_call(cmd)
  

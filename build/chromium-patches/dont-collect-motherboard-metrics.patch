@@ -4,9 +4,9 @@ From: Nathan Pratta Teodosio <nathan.teodosio@canonical.com>
 Ubuntu-bug: https://launchpad.net/bugs/1993562
 Forwarded: not-needed
 
---- a/components/metrics/motherboard.cc	2022-10-21 14:40:32.951761250 -0300
-+++ b/components/metrics/motherboard.cc	2022-10-21 14:36:20.925935492 -0300
-@@ -41,31 +41,7 @@
+--- a/components/metrics/motherboard.cc
++++ b/components/metrics/motherboard.cc
+@@ -43,31 +43,7 @@ using base::TrimWhitespaceASCII;
  using base::TRIM_TRAILING;
  
  MotherboardDetails ReadMotherboardDetails() {

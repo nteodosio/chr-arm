@@ -7,7 +7,7 @@ Forwarded: not-needed
 
 --- a/tools/clang/scripts/build.py
 +++ b/tools/clang/scripts/build.py
-@@ -831,6 +831,10 @@ def main():
+@@ -853,6 +853,10 @@ def main():
          '-D' + f
          for f in compiler_rt_cmake_flags(sanitizers=False, profile=args.pgo)
      ])
