@@ -115,8 +115,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-109.0.5414.74.tar.xz
-    source-checksum: sha512/79ff744b813e833ab4f257361a2f1847a57df579b9c925bad7575484f079c4c1b0b1c59c2c48e683bcee27a79e4bfd87f96c83fa28e0209ba4d3a71340842579
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-110.0.5481.30.tar.xz
+    source-checksum: sha512/b7d27ecb34ef8fdeef75583face49f2e746082be190d5afb18ae8cd99bd5b5be6f6fec71b7fc48ba35d89d90f65bb1e44e70e4021f47efe74cf315d6ecd1a2f3
     after:
       - chromium-build
       - launcher
