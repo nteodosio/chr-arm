@@ -277,6 +277,8 @@ parts:
           $SNAPCRAFT_PART_SRC/chrome/app/resources/manpage.1.in \
           > $SNAPCRAFT_PART_INSTALL/man1/chrome.1
       gzip -9n $SNAPCRAFT_PART_INSTALL/man1/chrome.1
+    stage:
+      - -usr/lib/*/libsecret-*
     prime:
       - -etc/init.d
       - -etc/xdg
@@ -336,6 +338,19 @@ parts:
       mkdir -p usr/bin
       cd usr/bin
       ln -s /usr/bin/xdg-open xdg-email
+
+  libsecret:
+    source: https://gitlab.gnome.org/GNOME/libsecret.git
+    source-depth: 1
+    source-tag: '0.20.5'
+    plugin: meson
+    meson-parameters:
+      - --prefix=/usr
+      - -Dgtk_doc=false
+      - -Dmanpage=false
+      - -Dgcrypt=false  # https://gitlab.gnome.org/GNOME/libsecret/-/issues/49
+    stage:
+      - usr/lib/*/libsecret-*
 
   # VA-API drivers for HW-accelerated video decoding
   va-drivers:
