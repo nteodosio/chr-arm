@@ -142,6 +142,7 @@ parts:
       - libpam0g-dev
       - libpci-dev
       - libssl-dev
+      - libsystemd-dev
       - libva-dev
       - libxshmfence-dev
       - libxss-dev
