@@ -1,5 +1,7 @@
-Description: Add Ubuntu id into search queries to get credit.
+Description: Add Ubuntu id into search queries and modify user agent to get
+ credit.
 Author: Chad Miller <chad.miller@canonical.com>
+Author: Nathan Pratta Teodosio <nathan.teodosio@canonical.com>
 Forwarded: not-needed
 
 --- a/components/search_engines/prepopulated_engines.json
@@ -48,7 +50,7 @@ Forwarded: not-needed
          DCHECK(!replacement.is_post_param);
 -        std::string client = search_terms_data.GetSearchClient();
 +        ubuntu_credit_for_search = true;
-+        std::string client = "ubuntu";
++        std::string client = "ubuntu-chr";
          if (!client.empty())
            HandleReplacement("client", client, replacement, &url);
          break;
@@ -59,10 +61,51 @@ Forwarded: not-needed
 +  /* Google search template from prefs might not have a client token. */
 +  if (is_google_search && !ubuntu_credit_for_search) {
 +    if (url.find_first_of('?', 8) != std::string::npos) {  // perhaps no GET params
-+      url.append("&client=ubuntu");
++      url.append("&client=ubuntu-chr");
 +    }
 +  }
 +
    if (!post_params_.empty())
      EncodeFormData(post_params_, post_content);
+ 
+--- a/content/common/user_agent.cc
++++ b/content/common/user_agent.cc
+@@ -30,7 +30,7 @@
+ namespace {
+ 
+ const char kFrozenUserAgentTemplate[] =
+-    "Mozilla/5.0 (%s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%s.0.0.0 "
++    "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%s.0.0.0 "
+ #if BUILDFLAG(IS_ANDROID)
+     "%s"
+ #endif
+@@ -64,7 +64,7 @@
+ #elif BUILDFLAG(IS_FUCHSIA)
+   return "Fuchsia";
+ #elif BUILDFLAG(IS_LINUX)
+-  return "X11; Linux x86_64";
++  return "X11; Ubuntu; Linux x86_64";
+ #else
+ #error Unsupported platform
+ #endif
+@@ -295,7 +295,7 @@
+   device_compat = mobile ? "Mobile " : "";
+ #endif
+   std::string user_agent =
+-      base::StringPrintf(kFrozenUserAgentTemplate, GetUnifiedPlatform().c_str(),
++      base::StringPrintf(kFrozenUserAgentTemplate,
+                          major_version.c_str()
+ #if BUILDFLAG(IS_ANDROID)
+                              ,
+@@ -382,9 +382,9 @@
+   // compatible with Safari, we hope!!
+   std::string user_agent;
+   base::StringAppendF(&user_agent,
+-                      "Mozilla/5.0 (%s) AppleWebKit/537.36 (KHTML, like Gecko) "
++                      "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                       "%s Safari/537.36",
+-                      os_info.c_str(), product.c_str());
++                      product.c_str());
+   return user_agent;
+ }
  
