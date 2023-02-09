@@ -10,7 +10,7 @@ Forwarded: not-needed
 
 --- a/chrome/test/chromedriver/chrome_launcher.cc
 +++ b/chrome/test/chromedriver/chrome_launcher.cc
-@@ -133,6 +133,8 @@ Status PrepareDesktopCommandLine(const C
+@@ -132,6 +132,8 @@ Status PrepareDesktopCommandLine(const C
                                   std::vector<std::string>* extension_bg_pages,
                                   base::FilePath* user_data_dir) {
    base::FilePath program = capabilities.binary;
