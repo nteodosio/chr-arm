@@ -80,7 +80,12 @@ warn_password_fixed() {
             printf "%s\n" "This is a placeholder file to disable password
                            storage informational note." > "$oldpasswords"
         else
-            PASSWORD_PAGE="$SNAP/firstrun/password-en.html"
+            lang_code=$(locale | awk -F '[_=]' '/LANG=/{print $2}')
+            PASSWORD_PAGE="$SNAP/firstrun/password-$lang_code.html"
+            if [ ! -f "$PASSWORD_PAGE" ]; then
+                # No localized version, fall back to English
+                PASSWORD_PAGE="$SNAP/firstrun/password-en.html"
+            fi
         fi
     fi
 }
