@@ -1,7 +1,10 @@
 Description: enable widevine and set its version string to "undefined"
 Author: Michael Gilbert <mgilbert@debian.org>
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+Author: Nathan Pratta Teodosio <nathan.teodosio@canonical.com>
+Last-Update: 2023-02-27
 Forwarded: not-needed
+Bug-Ubuntu: https://launchpad.net/bugs/2008433
 
 --- a/third_party/widevine/cdm/widevine_cdm_version.h
 +++ b/third_party/widevine/cdm/widevine_cdm_version.h
@@ -12,6 +15,16 @@ Forwarded: not-needed
 +#define WIDEVINE_CDM_VERSION_STRING "undefined"
  
  #endif  // WIDEVINE_CDM_VERSION_H_
+--- a/third_party/widevine/cdm/widevine.gni
++++ b/third_party/widevine/cdm/widevine.gni
+ library_widevine_cdm_available =
+     (is_chromeos &&
+      (target_cpu == "x64" || target_cpu == "arm" || target_cpu == "arm64")) ||
+-    (target_os == "linux" && target_cpu == "x64") ||
++    (target_os == "linux") ||
+     (target_os == "mac" && (target_cpu == "x64" || target_cpu == "arm64")) ||
+     (target_os == "win" &&
+      (target_cpu == "x86" || target_cpu == "x64" || target_cpu == "arm64"))
 --- a/chrome/common/media/cdm_registration.cc
 +++ b/chrome/common/media/cdm_registration.cc
 @@ -93,7 +93,7 @@ std::unique_ptr<content::CdmInfo> Create

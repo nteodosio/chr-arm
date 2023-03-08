@@ -5,7 +5,7 @@ Forwarded: not-needed
 
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -337,6 +337,8 @@ if (!is_android && !is_mac) {
+@@ -340,6 +340,8 @@ if (!is_android && !is_mac) {
            "//ui/base",
          ]
        }
@@ -16,7 +16,7 @@ Forwarded: not-needed
      if (is_chromeos_ash || is_win) {
 --- a/tools/v8_context_snapshot/BUILD.gn
 +++ b/tools/v8_context_snapshot/BUILD.gn
-@@ -111,6 +111,10 @@ if (use_v8_context_snapshot) {
+@@ -110,6 +110,10 @@ if (use_v8_context_snapshot) {
          "//v8",
        ]
  

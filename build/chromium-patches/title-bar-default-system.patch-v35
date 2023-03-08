@@ -3,7 +3,7 @@ Forwarded: not-needed
 
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
-@@ -474,6 +474,8 @@ bool HasWMSpecProperty(const base::flat_
+@@ -473,6 +473,8 @@ bool HasWMSpecProperty(const base::flat_
  }
  
  bool GetCustomFramePrefDefault() {
