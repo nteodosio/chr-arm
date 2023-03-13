@@ -66,30 +66,6 @@ if [ -d "$SNAP_POLICIES" ]; then
   fi
 fi
 
-# With libsecret 19, Chromium stopped being able to store passwords encrypted
-# with the keyring (https://gitlab.gnome.org/GNOME/libsecret/-/issues/49).
-# This leaves the user with a "invalid" Login Data (passwords file).
-# The issue was fixed, but for it to work the invalid file must be moved away.
-# Ref: https://launchpad.net/bugs/1997168
-warn_password_fixed() {
-    passwords="$SNAP_USER_COMMON/chromium/Default/Login Data"
-    oldpasswords="$passwords.old"
-    if [ ! -e "$oldpasswords" ]; then
-        if [ ! -s "$passwords" ]; then
-            mkdir -p "$(dirname "$oldpasswords")"
-            printf "%s\n" "This is a placeholder file to disable password
-                           storage informational note." > "$oldpasswords"
-        else
-            lang_code=$(locale | awk -F '[_=]' '/LANG=/{print $2}')
-            PASSWORD_PAGE="$SNAP/firstrun/password-$lang_code.html"
-            if [ ! -f "$PASSWORD_PAGE" ]; then
-                # No localized version, fall back to English
-                PASSWORD_PAGE="$SNAP/firstrun/password-en.html"
-            fi
-        fi
-    fi
-}
-
 # Specify that no encrypted password store (keyring) should be used when the
 # password-manager-service interface is not plugged, because Chromium won't
 # fall back to the basic store (no encryption) if it fails to talk to the
@@ -97,7 +73,6 @@ warn_password_fixed() {
 # Ref: https://launchpad.net/bugs/1763829
 if snapctl is-connected password-manager-service; then
   PASSWORD_STORE= # an empty string means detect the store based on the current DE (os_crypt::SelectBackend())
-  warn_password_fixed # inserting this here to avoid double call to snapctl
 else
   PASSWORD_STORE=basic
 fi
@@ -133,9 +108,6 @@ done
 if [ $WANT_HEADLESS -eq 0 ] ; then
   if [ ! -z "$FIRSTRUN_PAGE" ]; then
     set -- "$@" "$FIRSTRUN_PAGE"
-  fi
-  if [ ! -z "$PASSWORD_PAGE" ]; then
-    set -- "$@" "$PASSWORD_PAGE"
   fi
 fi
 
