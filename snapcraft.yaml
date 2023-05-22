@@ -221,8 +221,6 @@ parts:
         echo "use_lld = false" >> $OUT/args.gn
         # Do not build with ThinLTO either, because it requires lld
         echo "use_thin_lto = false" >> $OUT/args.gn
-      fi
-      if [ $SNAPCRAFT_TARGET_ARCH = "armhf" ]; then
         # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
         echo "arm_use_neon = false" >> $OUT/args.gn
       fi
