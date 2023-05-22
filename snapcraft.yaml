@@ -1,6 +1,7 @@
 name: chromium
 adopt-info: chromium
 summary: Chromium web browser, open-source version of Chrome
+source-code: https://code.launchpad.net/~chromium-team/chromium-browser/+git/snap-from-source/+ref/stable
 description: |
  An open-source browser project that aims to build a safer, faster, and more
  stable way for all Internet users to experience the web.
