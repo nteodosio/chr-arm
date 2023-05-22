@@ -36,7 +36,6 @@ apps:
       - network
       - network-manager
       - password-manager-service
-      - pulseaudio # remove once snapd 2.41 is available everywhere
       - raw-usb # for WebUSB (https://launchpad.net/bugs/1780678)
       - removable-media
       - screen-inhibit-control
@@ -64,7 +63,6 @@ apps:
       - network
       - network-manager
       - password-manager-service
-      - pulseaudio # remove once snapd 2.41 is available everywhere
       - raw-usb
       - removable-media
       - screen-inhibit-control
