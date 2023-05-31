@@ -7,7 +7,7 @@ Forwarded: not-needed
 @@ -644,7 +644,7 @@ def main():
    ldflags = []
  
-   targets = 'AArch64;ARM;Mips;PowerPC;RISCV;SystemZ;WebAssembly;X86'
+   targets = 'AArch64;ARM;LoongArch;Mips;PowerPC;RISCV;SystemZ;WebAssembly;X86'
 -  projects = 'clang;lld;clang-tools-extra'
 +  projects = 'clang;lld'
    if args.bolt:
