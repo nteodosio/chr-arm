@@ -121,6 +121,7 @@ parts:
       - manpage
       - pipewire
       - va-drivers
+      - libva
     build-packages:
       - chrpath
       - default-jre-headless
@@ -142,7 +143,7 @@ parts:
       - libpci-dev
       - libssl-dev
       - libsystemd-dev
-      - libva-dev
+      - libwayland-dev
       - libxshmfence-dev
       - libxss-dev
       - lsb-release
@@ -349,6 +350,20 @@ parts:
       - -Dgcrypt=false  # https://gitlab.gnome.org/GNOME/libsecret/-/issues/49
     stage:
       - usr/lib/*/libsecret-*
+
+  libva:
+    source: https://github.com/intel/libva/archive/refs/tags/2.17.0.tar.gz
+    plugin: meson # Because autotools makes a mess of this.
+    meson-parameters:
+      - --prefix=/usr
+    build-packages:
+      - pkg-config
+      - libdrm-dev
+      - xorg-dev
+      - libxcb-dri3-dev
+      - libgl1-mesa-dev
+      - libgl1-mesa-glx
+      - libwayland-dev
 
   # VA-API drivers for HW-accelerated video decoding
   va-drivers:

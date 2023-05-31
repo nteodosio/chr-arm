@@ -25,4 +25,4 @@ swiftshader-use-pkg-config.patch
 use-system-wide-eu-strip.patch
 dont-collect-motherboard-metrics.patch
 linker-oom-armhf.patch
-VAEncSequenceParameterBufferAV1.patch
+include-libva-config.patch
