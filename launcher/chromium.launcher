@@ -123,11 +123,6 @@ esac
 # Refer to https://bugs.archlinux.org/task/76268.
 CHROMIUM_FLAGS="$CHROMIUM_FLAGS --disable-features=TFLiteLanguageDetectionEnabled"
 
-# Stopgap: Invalidate GPU cache.
-# https://launchpad.net/bugs/2020604
-# https://bugs.chromium.org/p/chromium/issues/detail?id=1442633
-rm -r "$SNAP_USER_COMMON"/chromium/*/GPUCache
-
 if [ $WANT_TEMP_PROFILE -eq 0 ] ; then
   exec "$SNAP/usr/lib/chromium-browser/chrome" --password-store=$PASSWORD_STORE $CHROMIUM_FLAGS "$@"
 else
